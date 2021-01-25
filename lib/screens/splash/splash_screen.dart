@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:CampusCar/widgets/MyFadeIn.dart';
+import 'package:CampusCar/screens/main_screen.dart';
+import 'package:CampusCar/widgets/my_fadein.dart';
 import 'package:flutter/material.dart';
-import 'package:CampusCar/screens/HomeScreen.dart';
 import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPage() {
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+        MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
   }
 
   @override

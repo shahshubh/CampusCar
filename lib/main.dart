@@ -1,4 +1,4 @@
-import 'package:CampusCar/screens/SplashScreen.dart';
+import 'package:CampusCar/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
