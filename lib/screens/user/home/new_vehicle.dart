@@ -17,6 +17,7 @@ class _NewVehicleState extends State<NewVehicle> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
+      title: "New Vehicle",
       child: Column(
         children: [
           Container(height: 640, child: Text("New Vehicle")),

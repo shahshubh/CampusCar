@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:CampusCar/screens/main_screen.dart';
+import 'package:CampusCar/constants/colors.dart';
+import 'package:CampusCar/screens/user/main_screen.dart';
 import 'package:CampusCar/widgets/my_fadein.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -46,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                         fontFamily: 'CarterOne',
                         fontSize: 40,
-                        color: Color(0xff4850df))),
+                        color: primaryBlue)),
               ),
               SizedBox(
                 height: 20,

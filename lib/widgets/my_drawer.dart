@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:CampusCar/constants/colors.dart';
 
 List<BoxShadow> shadowList = [
   BoxShadow(color: Colors.grey[200], blurRadius: 30, offset: Offset(0, 10))
@@ -7,7 +8,8 @@ List<BoxShadow> shadowList = [
 
 class MyDrawer extends StatefulWidget {
   final child;
-  MyDrawer({@required this.child});
+  final String title;
+  MyDrawer({@required this.child, this.title});
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
@@ -86,6 +88,14 @@ class _MyDrawerState extends State<MyDrawer> {
                             onPressed: () {
                               openDrawer();
                             }),
+                    Text(
+                      widget.title != null ? widget.title : "",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24),
+                    ),
+                    SizedBox(width: 40),
                   ],
                 ),
               ),

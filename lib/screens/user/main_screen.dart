@@ -1,6 +1,6 @@
-import 'package:CampusCar/screens/home/drawer_screen.dart';
-import 'package:CampusCar/screens/home/home_screen.dart';
-import 'package:CampusCar/screens/home/new_vehicle.dart';
+import 'package:CampusCar/screens/user/drawer/drawer_screen.dart';
+import 'package:CampusCar/screens/user/home/home_screen.dart';
+import 'package:CampusCar/screens/user/home/new_vehicle.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
