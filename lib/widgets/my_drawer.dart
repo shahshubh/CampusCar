@@ -57,7 +57,7 @@ class _MyDrawerState extends State<MyDrawer> {
               BoxShadow(
                   color: Colors.black45, blurRadius: 30, offset: Offset(0, 15))
             ],
-            color: Colors.grey[200],
+            color: Colors.white,
             borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 0.0)),
         child: SingleChildScrollView(
           child: Column(
