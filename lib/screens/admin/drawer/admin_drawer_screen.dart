@@ -6,8 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 List<Map> adminDrawerItems = [
   {'icon': FontAwesomeIcons.list, 'title': 'Logs', 'index': 0},
   {'icon': FontAwesomeIcons.car, 'title': 'Vehicles', 'index': 1},
-  {'icon': FontAwesomeIcons.plus, 'title': 'Add Vehicle', 'index': 3},
-  {'icon': FontAwesomeIcons.userAlt, 'title': 'Login', 'index': 2},
+  {'icon': FontAwesomeIcons.plus, 'title': 'Add Vehicle', 'index': 2},
 ];
 
 class AdminDrawerScreen extends StatefulWidget {
@@ -29,7 +28,6 @@ class _AdminDrawerScreenState extends State<AdminDrawerScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Container(),
           Row(
             children: [
               SizedBox(

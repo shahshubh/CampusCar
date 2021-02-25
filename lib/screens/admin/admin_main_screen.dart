@@ -22,7 +22,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         break;
 
       case 2:
-        return AdminLogin();
+        return AdminAddVehicle();
         break;
 
       default:
@@ -38,7 +38,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   }
 
   changeCurrentScreen(int index) {
-    print(index);
+    // print(index);
     setState(() {
       currentScreen = index;
     });

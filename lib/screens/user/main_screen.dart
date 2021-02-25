@@ -33,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   changeCurrentScreen(int index) {
-    print(index);
+    // print(index);
     setState(() {
       currentScreen = index;
     });

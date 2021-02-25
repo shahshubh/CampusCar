@@ -71,6 +71,8 @@
 //   }
 // }
 
+import 'package:CampusCar/screens/admin/admin_main_screen.dart';
+import 'package:CampusCar/screens/admin/signup/admin_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CampusCar/constants/colors.dart' as Constants;
@@ -225,36 +227,47 @@ class LoginPageState extends State<AdminLogin> {
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => AdminMainScreen()),
+                        (route) => false);
+                  },
                 ),
               )),
           SizedBox(
             height: 20,
           ),
-          Center(
-            child: Text(
-              "FORGOT PASSWORD ?",
-              style: TextStyle(
-                  color: Constants.primaryBlue,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
               Text(
-                "Don't have an Account ? ",
+                "Forgot Password ?",
                 style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal),
+                    color: Constants.primaryBlue,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700),
               ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AdminSignup()));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Don't have an Account ?",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              )
             ],
-          )
+          ),
         ],
       ),
     );
