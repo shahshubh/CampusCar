@@ -1,5 +1,4 @@
 import 'package:CampusCar/constants/colors.dart';
-import 'package:CampusCar/screens/admin/admin_main_screen.dart';
 import 'package:CampusCar/screens/admin/login/admin_login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
