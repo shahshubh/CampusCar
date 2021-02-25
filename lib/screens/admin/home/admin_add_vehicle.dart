@@ -7,7 +7,6 @@ class AdminAddVehicle extends StatelessWidget {
     return MyDrawer(
       title: "Admin Add Vehicle",
       child: Container(
-        height: 800,
         child: Text("ADMIN ADD VEHICLE"),
       ),
     );

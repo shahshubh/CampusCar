@@ -48,6 +48,8 @@ class _MyDrawerState extends State<MyDrawer> {
         }
       },
       child: AnimatedContainer(
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         transform: Matrix4.translationValues(xOffset, yOffset, 0)
           ..scale(scaleFactor)
           ..rotateY(isDrawerOpen ? -0.5 : 0),

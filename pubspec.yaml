@@ -27,6 +27,8 @@ dependencies:
   font_awesome_flutter: ^8.11.0
   flutter_svg:
   cupertino_icons: ^0.1.3
+  image_picker: ^0.6.7+22
+  http: ^0.12.2
 
 
 dev_dependencies:
@@ -34,10 +36,11 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: "^0.8.0"
 
+# flutter pub pub run flutter_launcher_icons:main
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon.jpg"
+  image_path: "assets/icon/logo-cc-new.png"
 
 
 flutter:

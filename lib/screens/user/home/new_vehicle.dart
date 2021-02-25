@@ -20,16 +20,7 @@ class _NewVehicleState extends State<NewVehicle> {
       title: "New Vehicle",
       child: Column(
         children: [
-          Container(height: 640, child: Text("New Vehicle")),
-          // Container(
-          //   height: 240,
-          // ),
-          // Container(
-          //   height: 240,
-          // ),
-          // SizedBox(
-          //   height: 50,
-          // )
+          Container(child: Text("New Vehicle")),
         ],
       ),
     );

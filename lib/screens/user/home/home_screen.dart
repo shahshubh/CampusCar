@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
@@ -5,6 +8,7 @@ import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 List<BoxShadow> shadowList = [
   BoxShadow(color: Colors.grey[200], blurRadius: 30, offset: Offset(0, 10))
@@ -18,6 +22,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  File _image;
+  final picker = ImagePicker();
+  var url = 'http://192.168.0.104:3000/upload';
+
+  Future getImage() async {
+    print("LOADING.....");
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    var pic = await http.MultipartFile.fromPath("image", pickedFile.path);
+    request.files.add(pic);
+
+    var response = await request.send();
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+
+    print(responseString);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
@@ -45,7 +68,12 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 RoundedButton(
-                    press: () {},
+                    press: () async {
+                      var response = await http.get(url);
+                      print("==========================");
+                      print(response.body);
+                      print("==========================");
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -68,7 +96,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(fontSize: 18),
                 ),
                 RoundedButton(
-                    press: () {},
+                    press: () {
+                      getImage();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

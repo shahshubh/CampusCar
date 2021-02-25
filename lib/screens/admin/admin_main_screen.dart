@@ -1,7 +1,7 @@
 import 'package:CampusCar/screens/admin/drawer/admin_drawer_screen.dart';
 import 'package:CampusCar/screens/admin/home/admin_add_vehicle.dart';
 import 'package:CampusCar/screens/admin/home/admin_home_page.dart';
-import 'package:CampusCar/screens/admin/home/admin_login.dart';
+import 'package:CampusCar/screens/admin/login/admin_login.dart';
 import 'package:flutter/material.dart';
 
 class AdminMainScreen extends StatefulWidget {

@@ -7,7 +7,6 @@ class AdminHomeScreen extends StatelessWidget {
     return MyDrawer(
       title: "Admin Home",
       child: Container(
-        height: 800,
         child: Text("ADMIN HOME PAGE"),
       ),
     );
