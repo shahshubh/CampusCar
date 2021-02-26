@@ -2,13 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 
-class VehicleDetail extends StatelessWidget {
-  final checkmark = "https://assets3.lottiefiles.com/temp/lf20_5tgmik.json";
-  final crossmark =
-      "https://assets6.lottiefiles.com/private_files/lf30_jq4i7W.json";
+const checkmark =
+    "https://assets10.lottiefiles.com/private_files/lf30_dCzDJu.json";
+const crossmark =
+    "https://assets10.lottiefiles.com/private_files/lf30_QYPL9z.json";
+const defaultProfileImageUrl =
+    "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png";
+
+class VehicleDetail extends StatefulWidget {
+  final String numberPlate;
+  final String ownerName;
+  final String ownerImageUrl;
+  final String ownerPhone;
+  final String expires;
+  final String role;
+  final String model;
+  final String color;
+  final bool isAllowed;
+  final bool isExpired;
+  final bool success;
+  final String errorMsg;
+
+  VehicleDetail({
+    this.numberPlate = "",
+    this.ownerName = "",
+    this.ownerImageUrl,
+    this.ownerPhone,
+    this.expires,
+    this.role,
+    this.model,
+    this.color,
+    @required this.isAllowed,
+    this.isExpired,
+    @required this.success,
+    this.errorMsg,
+  });
 
   @override
+  _VehicleDetailState createState() => _VehicleDetailState();
+}
+
+class _VehicleDetailState extends State<VehicleDetail> {
+  @override
   Widget build(BuildContext context) {
+    String markIcon = widget.isAllowed ? checkmark : crossmark;
+
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         extendBodyBehindAppBar: true,
@@ -21,14 +59,26 @@ class VehicleDetail extends StatelessWidget {
           child: Column(
             children: <Widget>[
               ProfileHeader(
-                avatar: checkmark,
-                coverImage: NetworkImage(
-                    "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"),
-                title: "Ramesh Mana",
-                subtitle: "MH04AJ8895",
+                avatar: markIcon,
+                coverImage: NetworkImage(widget.ownerImageUrl != null
+                    ? widget.ownerImageUrl
+                    : defaultProfileImageUrl),
+                title: widget.ownerName,
+                subtitle: widget.numberPlate,
               ),
               const SizedBox(height: 10.0),
-              VehicleInfo(),
+              widget.success
+                  ? VehicleInfo(
+                      ownerPhone: widget.ownerPhone,
+                      expires: widget.expires,
+                      role: widget.role,
+                      model: widget.model,
+                      color: widget.color,
+                      isExpired: widget.isExpired,
+                    )
+                  : ErrorVehicleInfo(
+                      errorMsg: widget.errorMsg,
+                    ),
             ],
           ),
         ));
@@ -36,7 +86,19 @@ class VehicleDetail extends StatelessWidget {
 }
 
 class VehicleInfo extends StatelessWidget {
-  final isExpired = false;
+  final String ownerPhone;
+  final String expires;
+  final String role;
+  final String model;
+  final String color;
+  final bool isExpired;
+  VehicleInfo(
+      {this.ownerPhone,
+      this.expires,
+      this.role,
+      this.model,
+      this.color,
+      this.isExpired});
 
   @override
   Widget build(BuildContext context) {
@@ -68,22 +130,10 @@ class VehicleInfo extends StatelessWidget {
                       ...ListTile.divideTiles(
                         color: Colors.grey,
                         tiles: [
-                          // ListTile(
-                          //   contentPadding: EdgeInsets.symmetric(
-                          //       horizontal: 12, vertical: 4),
-                          //   leading: Icon(Icons.my_location),
-                          //   title: Text("Owner Name"),
-                          //   subtitle: Text("Ramesh Mana"),
-                          // ),
-                          // ListTile(
-                          //   leading: Icon(Icons.email),
-                          //   title: Text("Email"),
-                          //   subtitle: Text("sudeptech@gmail.com"),
-                          // ),
                           ListTile(
                             leading: Icon(Icons.phone),
                             title: Text("Phone"),
-                            subtitle: Text("99--99876-56"),
+                            subtitle: Text(ownerPhone),
                           ),
                           ListTile(
                             leading: Icon(
@@ -96,7 +146,7 @@ class VehicleInfo extends StatelessWidget {
                                   color: isExpired ? Colors.red : Colors.black),
                             ),
                             subtitle: Text(
-                              "25th Feb 2022",
+                              expires,
                               style: TextStyle(
                                   color: isExpired
                                       ? Colors.red
@@ -106,14 +156,14 @@ class VehicleInfo extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.person),
                             title: Text("Role"),
-                            subtitle: Text("Faculty."),
+                            subtitle: Text(role),
                           ),
                           ListTile(
                             leading: FaIcon(
                               FontAwesomeIcons.car,
                             ),
                             title: Text("Model"),
-                            subtitle: Text("WagonR"),
+                            subtitle: Text(model),
                           ),
                           ListTile(
                             leading: Icon(Icons.color_lens),
@@ -132,7 +182,7 @@ class VehicleInfo extends StatelessWidget {
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Text("#455566"),
+                                Text(color),
                               ],
                             ),
                           ),
@@ -145,6 +195,19 @@ class VehicleInfo extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class ErrorVehicleInfo extends StatelessWidget {
+  final String errorMsg;
+  ErrorVehicleInfo({this.errorMsg});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text(errorMsg),
       ),
     );
   }
@@ -188,10 +251,6 @@ class ProfileHeader extends StatelessWidget {
             children: <Widget>[
               Avatar(
                 imageUrl: avatar,
-                radius: 40,
-                backgroundColor: Colors.white,
-                borderColor: Colors.white,
-                borderWidth: 4.0,
               ),
               Text(
                 title,
@@ -222,23 +281,17 @@ class Avatar extends StatelessWidget {
   const Avatar(
       {Key key,
       @required this.imageUrl,
-      this.borderColor = Colors.grey,
-      this.backgroundColor,
-      this.radius = 30,
-      this.borderWidth = 5})
+      this.borderColor = Colors.white,
+      this.backgroundColor = Colors.grey,
+      this.radius = 40,
+      this.borderWidth = 4.0})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: radius + borderWidth,
-      backgroundColor: borderColor,
-      child: CircleAvatar(
-          radius: radius,
-          backgroundColor: backgroundColor != null
-              ? backgroundColor
-              : Theme.of(context).primaryColor,
-          child: Lottie.network(imageUrl)),
-    );
+        radius: radius,
+        backgroundColor: Colors.grey[100],
+        child: Lottie.network(imageUrl, repeat: false));
   }
 }

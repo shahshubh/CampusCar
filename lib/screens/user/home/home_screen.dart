@@ -30,10 +30,68 @@ class _HomeScreenState extends State<HomeScreen> {
   Future getImage() async {
     print("LOADING.....");
     // final pickedFile = await picker.getImage(source: ImageSource.camera);
+    bool success = true;
+    bool vehicleFound = true;
+    bool isExpired = false;
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return VehicleDetail();
-    }));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+    //   return VehicleDetail(
+    //     isAllowed: true,
+    //     success: true,
+    //     ownerImageUrl:
+    //         "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+    //     numberPlate: "MH04AJ8895",
+    //     ownerName: "Shubh Shah",
+    //     ownerPhone: "9900948989",
+    //     expires: "21 Feb 2022",
+    //     role: "Faculty",
+    //     model: "WagonR",
+    //     color: "#2444555",
+    //     errorMsg: "NO user",
+    //   );
+    // }));
+
+    if (success) {
+      if (vehicleFound) {
+        if (!isExpired) {
+          // add logs
+        }
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return VehicleDetail(
+            isAllowed: isExpired ? false : true,
+            isExpired: isExpired,
+            success: success,
+            ownerImageUrl:
+                "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+            numberPlate: "MH04AJ8895",
+            ownerName: "Shubh Shah",
+            ownerPhone: "9900948989",
+            expires: "21 Feb 2022",
+            role: "Faculty",
+            model: "WagonR",
+            color: "#2444555",
+          );
+        }));
+      }
+      // No vehicle found
+      else {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return VehicleDetail(
+            isAllowed: false,
+            success: false,
+            errorMsg: "NO VEHICLE FOUND",
+          );
+        }));
+      }
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return VehicleDetail(
+          isAllowed: false,
+          success: false,
+          errorMsg: "ERROR",
+        );
+      }));
+    }
 
     // var request = http.MultipartRequest("POST", Uri.parse(url));
     // var pic = await http.MultipartFile.fromPath("image", pickedFile.path);
