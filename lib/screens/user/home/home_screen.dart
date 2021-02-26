@@ -1,14 +1,14 @@
-import 'dart:convert';
+//import 'dart:convert';
 import 'dart:io';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
-import 'package:CampusCar/widgets/loading_screen.dart';
+//import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 List<BoxShadow> shadowList = [
