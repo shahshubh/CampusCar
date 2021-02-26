@@ -74,16 +74,19 @@
 import 'package:CampusCar/screens/admin/admin_main_screen.dart';
 import 'package:CampusCar/screens/admin/signup/admin_signup.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CampusCar/constants/colors.dart' as Constants;
-import 'package:lottie/lottie.dart';
+//import 'package:lottie/lottie.dart';
 
 class AdminLogin extends StatefulWidget {
   State createState() => LoginPageState();
 }
 
 class LoginPageState extends State<AdminLogin> {
-  @override
+  String _email, _password;
+  final auth = FirebaseAuth.instance;
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -165,7 +168,11 @@ class LoginPageState extends State<AdminLogin> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                onChanged: (String value) {},
+                onChanged: (String value) {
+                  setState(() {
+                    _email = value.trim();
+                  });
+                },
                 cursorColor: Constants.blue3,
                 decoration: InputDecoration(
                     hintText: "Email",
@@ -192,7 +199,11 @@ class LoginPageState extends State<AdminLogin> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                onChanged: (String value) {},
+                onChanged: (String value) {
+                  setState(() {
+                    _password = value.trim();
+                  });
+                },
                 cursorColor: Constants.blue5,
                 decoration: InputDecoration(
                     hintText: "Password",
@@ -228,6 +239,11 @@ class LoginPageState extends State<AdminLogin> {
                         fontSize: 18),
                   ),
                   onPressed: () {
+                    // auth.signInWithEmailAndPassword(
+                    //     email: _email, password: _password);
+                    auth.createUserWithEmailAndPassword(
+                        email: _email, password: _password);
+                    print("signed in");
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (context) => AdminMainScreen()),
