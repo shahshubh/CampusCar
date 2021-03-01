@@ -10,8 +10,10 @@ class LoadingScreen extends StatelessWidget {
         children: [
           Container(
             child: Center(
-              child:
-                  Lottie.asset('assets/gif/car-number-plate.json', width: 150),
+              child: Lottie.asset(
+                'assets/gif/car-number-plate.json',
+                width: 150,
+              ),
             ),
           ),
         ],

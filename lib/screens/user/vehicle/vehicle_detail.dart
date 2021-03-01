@@ -1,13 +1,7 @@
+import 'package:CampusCar/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
-
-const checkmark =
-    "https://assets10.lottiefiles.com/private_files/lf30_dCzDJu.json";
-const crossmark =
-    "https://assets10.lottiefiles.com/private_files/lf30_QYPL9z.json";
-const defaultProfileImageUrl =
-    "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png";
 
 class VehicleDetail extends StatefulWidget {
   final String numberPlate;
@@ -45,7 +39,7 @@ class VehicleDetail extends StatefulWidget {
 class _VehicleDetailState extends State<VehicleDetail> {
   @override
   Widget build(BuildContext context) {
-    String markIcon = widget.isAllowed ? checkmark : crossmark;
+    String markIcon = widget.isAllowed ? checkmarkAnim : crossmarkAnim;
 
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
@@ -292,6 +286,6 @@ class Avatar extends StatelessWidget {
     return CircleAvatar(
         radius: radius,
         backgroundColor: Colors.grey[100],
-        child: Lottie.network(imageUrl, repeat: false));
+        child: Lottie.asset(imageUrl, repeat: false));
   }
 }
