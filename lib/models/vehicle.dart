@@ -2,6 +2,7 @@ class Vehicle {
   String ownerName;
   String ownerMobileNo;
   String licensePlateNo;
+  String role;
   String model;
   String color;
   String expires;
@@ -11,6 +12,7 @@ class Vehicle {
     this.ownerName,
     this.ownerMobileNo,
     this.licensePlateNo,
+    this.role,
     this.model,
     this.color,
     this.expires,
@@ -22,6 +24,7 @@ class Vehicle {
       'ownerName': ownerName,
       'ownerMobileNo': ownerMobileNo,
       'licensePlateNo': licensePlateNo,
+      'role': role,
       'model': model,
       'color': color,
       'expires': expires,
@@ -34,6 +37,7 @@ class Vehicle {
       ownerName: data["ownerName"],
       ownerMobileNo: data["ownerMobileNo"],
       licensePlateNo: data["licensePlateNo"],
+      role: data["role"],
       model: data["model"],
       color: data["color"],
       expires: data["expires"],

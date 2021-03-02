@@ -1,9 +1,13 @@
+import 'package:CampusCar/enum/direction.dart';
+import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
+import 'package:CampusCar/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseService {
   CollectionReference vehiclesRef =
       FirebaseFirestore.instance.collection('vehicles');
+  CollectionReference logsRef = FirebaseFirestore.instance.collection('logs');
 
   Future<void> addVehicle() {
     Vehicle newVehicle = Vehicle(
@@ -30,6 +34,43 @@ class FirebaseService {
       Vehicle vehicle = Vehicle.fromMap(data.data());
       print(vehicle.licensePlateNo);
       return vehicle;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> addLog() {
+    Vehicle newVehicle = Vehicle(
+      licensePlateNo: 'MH12DE1433',
+      color: '#fff',
+      expires: new DateTime.now().toString(),
+      model: 'Ford',
+      ownerMobileNo: '9988786734',
+      ownerName: 'Shubh Shah',
+      profileImage:
+          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+      role: "Faculty",
+    );
+    var currTime = DateTime.now().toString();
+    Log log = Log(
+      vehicle: newVehicle.toMap(),
+      direction: Utils.directionToNum(Direction.Entering),
+      time: currTime,
+    );
+
+    return logsRef
+        .doc(currTime)
+        .set(log.toMap())
+        .then((value) => print("Log Added"))
+        .catchError((error) => print("Failed =>   $error"));
+  }
+
+  Future<Log> getLog() async {
+    var data = await logsRef.doc("2021-03-02 16:20:16.157259").get();
+    if (data.data() != null) {
+      Log log = Log.fromMap(data.data());
+      // Vehicle logVehicle = Vehicle.fromMap(log.vehicle);
+      return log;
     } else {
       return null;
     }

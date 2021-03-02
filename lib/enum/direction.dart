@@ -1,0 +1,4 @@
+enum Direction {
+  Entering,
+  Leaving,
+}
