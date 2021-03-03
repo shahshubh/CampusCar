@@ -1,34 +1,25 @@
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
+import 'package:CampusCar/models/vehicle.dart';
+import 'package:CampusCar/service/firebase_service.dart';
+import 'package:CampusCar/widgets/progress_widget.dart';
+import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 
 class VehicleDetail extends StatefulWidget {
-  final String numberPlate;
-  final String ownerName;
-  final String ownerImageUrl;
-  final String ownerPhone;
-  final String expires;
-  final String role;
-  final String model;
-  final String color;
   final bool isAllowed;
   final bool isExpired;
   final bool success;
   final String errorMsg;
+  final Vehicle vehicle;
 
   VehicleDetail({
-    this.numberPlate = "",
-    this.ownerName = "",
-    this.ownerImageUrl,
-    this.ownerPhone,
-    this.expires,
-    this.role,
-    this.model,
-    this.color,
+    @required this.vehicle,
     @required this.isAllowed,
-    this.isExpired,
     @required this.success,
+    this.isExpired,
     this.errorMsg,
   });
 
@@ -37,9 +28,53 @@ class VehicleDetail extends StatefulWidget {
 }
 
 class _VehicleDetailState extends State<VehicleDetail> {
+  var stateSuccess, stateErrorMsg, stateIsAllowed, stateIsExpired;
+  bool isLoading = false;
+  Vehicle stateVehicle;
+  FirebaseService firebaseService = new FirebaseService();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    stateSuccess = widget.success;
+    stateVehicle = widget.vehicle;
+    stateIsAllowed = widget.isAllowed;
+    stateErrorMsg = widget.errorMsg;
+    stateIsExpired = widget.isExpired;
+  }
+
+  void findVehicleHandler({String licensePlate}) async {
+    setState(() {
+      isLoading = true;
+    });
+    print("Find Vehicle Handler");
+    print(licensePlate);
+    var isExpired = false;
+    Vehicle foundVehicle =
+        await firebaseService.getVehicle(licensePlateNo: licensePlate);
+    if (foundVehicle != null) {
+      if (!isExpired) {
+        // add logs
+      }
+      setState(() {
+        isLoading = false;
+        stateSuccess = true;
+        stateIsExpired = isExpired;
+        stateIsAllowed = !isExpired;
+        stateVehicle = foundVehicle;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+        stateErrorMsg = "Again, No vehicle found with that license no.";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String markIcon = widget.isAllowed ? checkmarkAnim : crossmarkAnim;
+    String markIcon = stateIsAllowed ? checkmarkAnim : crossmarkAnim;
 
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
@@ -54,25 +89,25 @@ class _VehicleDetailState extends State<VehicleDetail> {
             children: <Widget>[
               ProfileHeader(
                 avatar: markIcon,
-                coverImage: NetworkImage(widget.ownerImageUrl != null
-                    ? widget.ownerImageUrl
+                coverImage: NetworkImage(stateVehicle != null
+                    ? stateVehicle.profileImage != null
+                        ? stateVehicle.profileImage
+                        : defaultProfileImageUrl
                     : defaultProfileImageUrl),
-                title: widget.ownerName,
-                subtitle: widget.numberPlate,
+                title: stateVehicle != null ? stateVehicle.ownerName : "",
+                subtitle:
+                    stateVehicle != null ? stateVehicle.licensePlateNo : "",
               ),
               const SizedBox(height: 10.0),
-              widget.success
+              stateSuccess
                   ? VehicleInfo(
-                      ownerPhone: widget.ownerPhone,
-                      expires: widget.expires,
-                      role: widget.role,
-                      model: widget.model,
-                      color: widget.color,
-                      isExpired: widget.isExpired,
+                      vehicle: stateVehicle,
+                      isExpired: stateIsExpired,
                     )
                   : ErrorVehicleInfo(
-                      errorMsg: widget.errorMsg,
-                    ),
+                      isLoading: isLoading,
+                      findVehicleHandler: findVehicleHandler,
+                      errorMsg: stateErrorMsg),
             ],
           ),
         ));
@@ -80,19 +115,9 @@ class _VehicleDetailState extends State<VehicleDetail> {
 }
 
 class VehicleInfo extends StatelessWidget {
-  final String ownerPhone;
-  final String expires;
-  final String role;
-  final String model;
-  final String color;
   final bool isExpired;
-  VehicleInfo(
-      {this.ownerPhone,
-      this.expires,
-      this.role,
-      this.model,
-      this.color,
-      this.isExpired});
+  final Vehicle vehicle;
+  VehicleInfo({this.isExpired, this.vehicle});
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +152,7 @@ class VehicleInfo extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.phone),
                             title: Text("Phone"),
-                            subtitle: Text(ownerPhone),
+                            subtitle: Text(vehicle.ownerMobileNo),
                           ),
                           ListTile(
                             leading: Icon(
@@ -140,7 +165,7 @@ class VehicleInfo extends StatelessWidget {
                                   color: isExpired ? Colors.red : Colors.black),
                             ),
                             subtitle: Text(
-                              expires,
+                              vehicle.expires,
                               style: TextStyle(
                                   color: isExpired
                                       ? Colors.red
@@ -150,14 +175,14 @@ class VehicleInfo extends StatelessWidget {
                           ListTile(
                             leading: Icon(Icons.person),
                             title: Text("Role"),
-                            subtitle: Text(role),
+                            subtitle: Text(vehicle.role),
                           ),
                           ListTile(
                             leading: FaIcon(
                               FontAwesomeIcons.car,
                             ),
                             title: Text("Model"),
-                            subtitle: Text(model),
+                            subtitle: Text(vehicle.model),
                           ),
                           ListTile(
                             leading: Icon(Icons.color_lens),
@@ -176,7 +201,7 @@ class VehicleInfo extends StatelessWidget {
                                 SizedBox(
                                   width: 5,
                                 ),
-                                Text(color),
+                                Text(vehicle.color),
                               ],
                             ),
                           ),
@@ -196,12 +221,57 @@ class VehicleInfo extends StatelessWidget {
 
 class ErrorVehicleInfo extends StatelessWidget {
   final String errorMsg;
-  ErrorVehicleInfo({this.errorMsg});
+  final bool isLoading;
+  final Function findVehicleHandler;
+  ErrorVehicleInfo({
+    this.errorMsg,
+    this.findVehicleHandler,
+    this.isLoading,
+  });
+
+  final TextEditingController textEditingController =
+      new TextEditingController();
+
+  void submitBtnHandler() {
+    print(textEditingController.text);
+    findVehicleHandler(licensePlate: textEditingController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text(errorMsg),
+      child: Column(
+        children: [
+          Center(
+            child: Text(errorMsg),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Text("Enter License Plate No. "),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                controller: textEditingController,
+                cursorColor: primaryBlue,
+                decoration: InputDecoration(
+                  hintText: "Enter License Plate No. ",
+                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+                ),
+              ),
+            ),
+          ),
+          RoundedButton(
+            press: () {
+              submitBtnHandler();
+            },
+            child: isLoading ? circularprogress() : Text("Submit"),
+          )
+        ],
       ),
     );
   }

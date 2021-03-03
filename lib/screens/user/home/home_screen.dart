@@ -37,12 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getLicensePlate({String source}) async {
     var url = 'http://192.168.0.105:3000/upload';
-    print("LOADING.....");
+    // print("LOADING.....");
     // ImageSource imageSource =
     //     source == "camera" ? ImageSource.camera : ImageSource.gallery;
     // final pickedFile = await picker.getImage(source: imageSource);
 
-    final pickedFile = await getImage(source: "gallery");
+    final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
     });
@@ -64,14 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
       print(jsonDecode(responseString));
-      print("=========== Getting Lic final done ==============");
+      // print("=========== Getting Lic final done ==============");
 
       return jsonDecode(responseString);
     }
   }
 
   Future getImage({String source}) async {
-    print("=========== Getting Image ==============");
+    // print("=========== Getting Image ==============");
     ImageSource imageSource =
         source == "camera" ? ImageSource.camera : ImageSource.gallery;
     final pickedFile = await picker.getImage(source: imageSource);
@@ -109,10 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   Future btnPressHandler({String source}) async {
-    // final image = await getImage(source: source);
-    // var response = await getLicensePlate(image: image);
-
-    var response = await getLicensePlate(source: "gallery");
+    var response = await getLicensePlate(source: source);
     if (response == null) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("No Image selected"),
@@ -127,56 +124,57 @@ class _HomeScreenState extends State<HomeScreen> {
     print("---------------------------");
     // print(response["license_plate"]);
 
-    String licensePlateNo = response["license_plate"];
-
     bool success = response["success"];
+
     bool isExpired = false;
 
     if (success) {
       // find vehicle in db
+      String licensePlateNo = response["license_plate"];
       Vehicle foundVehicle =
           await firebaseService.getVehicle(licensePlateNo: licensePlateNo);
-      setState(() {
-        isLoading = false;
-      });
+
       if (foundVehicle != null) {
         // check expiry
         if (!isExpired) {
           // add logs
         }
+        setState(() {
+          isLoading = false;
+        });
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return VehicleDetail(
             isAllowed: isExpired ? false : true,
             isExpired: isExpired,
             success: success,
-            ownerImageUrl:
-                "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-            numberPlate: "MH04AJ8895",
-            ownerName: "Shubh Shah",
-            ownerPhone: "9900948989",
-            expires: "21 Feb 2022",
-            role: "Faculty",
-            model: "WagonR",
-            color: "#2444555",
+            vehicle: foundVehicle,
           );
         }));
       }
       // No vehicle found
       else {
+        setState(() {
+          isLoading = false;
+        });
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return VehicleDetail(
             isAllowed: false,
             success: false,
-            errorMsg: "NO VEHICLE FOUND",
+            errorMsg: "NO VEHICLE FOUND for License Plate = $licensePlateNo",
+            vehicle: null,
           );
         }));
       }
     } else {
+      setState(() {
+        isLoading = false;
+      });
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return VehicleDetail(
           isAllowed: false,
           success: false,
           errorMsg: response["error"],
+          vehicle: null,
         );
       }));
     }
@@ -217,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       RoundedButton(
                           press: () async {
-                            // var response = await http.get(url);
+                            btnPressHandler(source: "gallery");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       RoundedButton(
                           press: () {
                             // getImage2();
-                            btnPressHandler(source: "gallery");
+                            btnPressHandler(source: "camera");
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
