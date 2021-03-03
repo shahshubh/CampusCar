@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:CampusCar/constants/colors.dart';
 
 List<BoxShadow> shadowList = [
   BoxShadow(color: Colors.grey[200], blurRadius: 30, offset: Offset(0, 10))

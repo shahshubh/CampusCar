@@ -6,6 +6,8 @@ import 'package:CampusCar/widgets/progress_widget.dart';
 import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 class VehicleDetail extends StatefulWidget {
@@ -67,7 +69,7 @@ class _VehicleDetailState extends State<VehicleDetail> {
     } else {
       setState(() {
         isLoading = false;
-        stateErrorMsg = "Again, No vehicle found with that license no.";
+        stateErrorMsg = "Again, No vehicle found with that license number.";
       });
     }
   }
@@ -77,40 +79,40 @@ class _VehicleDetailState extends State<VehicleDetail> {
     String markIcon = stateIsAllowed ? checkmarkAnim : crossmarkAnim;
 
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        extendBodyBehindAppBar: true,
-        extendBody: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
+      backgroundColor: Colors.grey.shade100,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            ProfileHeader(
+              avatar: markIcon,
+              coverImage: NetworkImage(stateVehicle != null
+                  ? stateVehicle.profileImage != null
+                      ? stateVehicle.profileImage
+                      : defaultProfileImageUrl
+                  : defaultProfileImageUrl),
+              title: stateVehicle != null ? stateVehicle.ownerName : "",
+              subtitle: stateVehicle != null ? stateVehicle.licensePlateNo : "",
+            ),
+            const SizedBox(height: 10.0),
+            stateSuccess
+                ? VehicleInfo(
+                    vehicle: stateVehicle,
+                    isExpired: stateIsExpired,
+                  )
+                : ErrorVehicleInfo(
+                    isLoading: isLoading,
+                    findVehicleHandler: findVehicleHandler,
+                    errorMsg: stateErrorMsg),
+          ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              ProfileHeader(
-                avatar: markIcon,
-                coverImage: NetworkImage(stateVehicle != null
-                    ? stateVehicle.profileImage != null
-                        ? stateVehicle.profileImage
-                        : defaultProfileImageUrl
-                    : defaultProfileImageUrl),
-                title: stateVehicle != null ? stateVehicle.ownerName : "",
-                subtitle:
-                    stateVehicle != null ? stateVehicle.licensePlateNo : "",
-              ),
-              const SizedBox(height: 10.0),
-              stateSuccess
-                  ? VehicleInfo(
-                      vehicle: stateVehicle,
-                      isExpired: stateIsExpired,
-                    )
-                  : ErrorVehicleInfo(
-                      isLoading: isLoading,
-                      findVehicleHandler: findVehicleHandler,
-                      errorMsg: stateErrorMsg),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
 
@@ -165,7 +167,8 @@ class VehicleInfo extends StatelessWidget {
                                   color: isExpired ? Colors.red : Colors.black),
                             ),
                             subtitle: Text(
-                              vehicle.expires,
+                              DateFormat("dd MMMM, yyyy")
+                                  .format(DateTime.parse(vehicle.expires)),
                               style: TextStyle(
                                   color: isExpired
                                       ? Colors.red
@@ -193,7 +196,7 @@ class VehicleInfo extends StatelessWidget {
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Colors.yellow,
+                                    color: HexColor(vehicle.color),
                                   ),
                                   height: 20,
                                   width: 20,
@@ -232,9 +235,17 @@ class ErrorVehicleInfo extends StatelessWidget {
   final TextEditingController textEditingController =
       new TextEditingController();
 
-  void submitBtnHandler() {
+  void searchBtnHandler(context) {
     print(textEditingController.text);
-    findVehicleHandler(licensePlate: textEditingController.text);
+    if (textEditingController.text != "" &&
+        textEditingController.text != null) {
+      findVehicleHandler(
+          licensePlate: textEditingController.text.toUpperCase());
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Input field cannot be empty !!"),
+      ));
+    }
   }
 
   @override
@@ -242,35 +253,90 @@ class ErrorVehicleInfo extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          Center(
-            child: Text(errorMsg),
-          ),
-          SizedBox(
-            height: 25,
-          ),
-          Text("Enter License Plate No. "),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32),
-            child: Material(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              child: TextField(
-                controller: textEditingController,
-                cursorColor: primaryBlue,
-                decoration: InputDecoration(
-                  hintText: "Enter License Plate No. ",
-                  border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25, vertical: 13),
-                ),
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.red[100],
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Text(
+              errorMsg,
+              style: TextStyle(
+                color: Colors.red,
               ),
             ),
           ),
-          RoundedButton(
-            press: () {
-              submitBtnHandler();
-            },
-            child: isLoading ? circularprogress() : Text("Submit"),
-          )
+          SizedBox(
+            height: 45,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Material(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  child: TextField(
+                    controller: textEditingController,
+                    cursorColor: primaryBlue,
+                    decoration: InputDecoration(
+                      hintText: "Enter License Plate No. ",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                            width: 1,
+                          )),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: primaryBlue,
+                        ),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    color: primaryBlue,
+                    onPressed: () {
+                      searchBtnHandler(context);
+                    },
+                    child: isLoading
+                        ? circularprogress()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Search",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -316,15 +382,17 @@ class ProfileHeader extends StatelessWidget {
               Avatar(
                 imageUrl: avatar,
               ),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.title,
-              ),
-              if (subtitle != null) ...[
+              title != ""
+                  ? Text(
+                      title,
+                      style: Theme.of(context).textTheme.headline5,
+                    )
+                  : Container(),
+              if (subtitle != null && subtitle != "") ...[
                 const SizedBox(height: 5.0),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ]
             ],
@@ -354,8 +422,12 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.grey[100],
-        child: Lottie.asset(imageUrl, repeat: false));
+      radius: radius,
+      backgroundColor: Colors.grey[100],
+      child: Lottie.asset(
+        imageUrl,
+        // repeat: false,
+      ),
+    );
   }
 }

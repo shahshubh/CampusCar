@@ -1,27 +1,15 @@
-//import 'dart:convert';
 import 'dart:convert';
-import 'dart:io';
-import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail.dart';
 import 'package:CampusCar/service/firebase_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
-//import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http_parser/http_parser.dart';
-//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
-List<BoxShadow> shadowList = [
-  BoxShadow(color: Colors.grey[200], blurRadius: 30, offset: Offset(0, 10))
-];
 
 class HomeScreen extends StatefulWidget {
   final Function currentScreenHandler;
@@ -36,12 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
 
   Future getLicensePlate({String source}) async {
-    var url = 'http://192.168.0.105:3000/upload';
-    // print("LOADING.....");
-    // ImageSource imageSource =
-    //     source == "camera" ? ImageSource.camera : ImageSource.gallery;
-    // final pickedFile = await picker.getImage(source: imageSource);
-
+    // const endpoint = apiUrl + 'upload/';
+    var endpoint = 'http://192.168.0.100:3000/upload';
     final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
@@ -51,11 +35,21 @@ class _HomeScreenState extends State<HomeScreen> {
       return null;
     }
 
-    var request = http.MultipartRequest("POST", Uri.parse(url));
+    var request = http.MultipartRequest("POST", Uri.parse(endpoint));
     var pic = await http.MultipartFile.fromPath("image", pickedFile.path);
     request.files.add(pic);
+    var response;
+    try {
+      response = await request.send();
+    } catch (error) {
+      return jsonDecode(
+          '{"success": false,"error": "Something went wrong !! Please try again after sometime"}');
+    }
 
-    var response = await request.send();
+    // var response = await request.send().catchError(
+    //       (onError) => print(
+    //           "Something went wrong !! Please try again after sometime ==>> $onError"),
+    //     );
 
     if (response.statusCode != 200) {
       return jsonDecode(
@@ -64,49 +58,18 @@ class _HomeScreenState extends State<HomeScreen> {
       var responseData = await response.stream.toBytes();
       var responseString = String.fromCharCodes(responseData);
       print(jsonDecode(responseString));
-      // print("=========== Getting Lic final done ==============");
 
       return jsonDecode(responseString);
     }
   }
 
   Future getImage({String source}) async {
-    // print("=========== Getting Image ==============");
     ImageSource imageSource =
         source == "camera" ? ImageSource.camera : ImageSource.gallery;
     final pickedFile = await picker.getImage(source: imageSource);
 
     return pickedFile;
   }
-
-  // Future getLicensePlate({image}) async {
-  //   print("=========== Getting License ==============");
-
-  //   var res = await http.get(apiUrl);
-  //   print(res.body);
-
-  //   // send request to server with image
-  //   var endpoint = apiUrl + 'upload/';
-  //   print(endpoint);
-  //   var request = http.MultipartRequest("POST", Uri.parse(endpoint));
-  //   var pic = await http.MultipartFile.fromPath("image", image.path);
-  //   request.files.add(pic);
-
-  //   var response = await request.send();
-  //   print("=========== Getting Lic done ==============");
-
-  //   if (response.statusCode != 200) {
-  //     return jsonDecode(
-  //         '{"success": false,"error": "Something went wrong !! Please try again after sometime"}');
-  //   } else {
-  //     var responseData = await response.stream.toBytes();
-  //     var responseString = String.fromCharCodes(responseData);
-  //     print(jsonDecode(responseString));
-  //     print("=========== Getting Lic final done ==============");
-
-  //     return jsonDecode(responseString);
-  //   }
-  // }
 
   Future btnPressHandler({String source}) async {
     var response = await getLicensePlate(source: source);
@@ -122,11 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
     print("---------------------------");
     print(response["license_plate"]);
     print("---------------------------");
-    // print(response["license_plate"]);
 
     bool success = response["success"];
-
-    bool isExpired = false;
 
     if (success) {
       // find vehicle in db
@@ -135,6 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
           await firebaseService.getVehicle(licensePlateNo: licensePlateNo);
 
       if (foundVehicle != null) {
+        var isExpired =
+            DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
+                ? false
+                : true;
+
         // check expiry
         if (!isExpired) {
           // add logs
@@ -160,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return VehicleDetail(
             isAllowed: false,
             success: false,
-            errorMsg: "NO VEHICLE FOUND for License Plate = $licensePlateNo",
+            errorMsg: "No vehicle found for License Plate = $licensePlateNo",
             vehicle: null,
           );
         }));
@@ -241,7 +206,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       RoundedButton(
                           press: () {
-                            // getImage2();
                             btnPressHandler(source: "camera");
                           },
                           child: Row(

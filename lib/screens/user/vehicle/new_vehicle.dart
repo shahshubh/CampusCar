@@ -2,10 +2,6 @@ import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-List<BoxShadow> shadowList = [
-  BoxShadow(color: Colors.grey[200], blurRadius: 30, offset: Offset(0, 10))
-];
-
 class NewVehicle extends StatefulWidget {
   final Function currentScreenHandler;
   NewVehicle({@required this.currentScreenHandler});
