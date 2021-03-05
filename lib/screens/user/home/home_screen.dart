@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:CampusCar/components/live_button.dart';
 import 'package:CampusCar/models/vehicle.dart';
+import 'package:CampusCar/screens/user/vehicle/live_vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail.dart';
 import 'package:CampusCar/service/firebase_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
@@ -25,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getLicensePlate({String source}) async {
     // const endpoint = apiUrl + 'upload/';
-    var endpoint = 'http://192.168.0.100:3000/upload';
+    var endpoint = 'http://192.168.0.103:3000/upload';
     final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
@@ -148,6 +151,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
+      rightIcon: GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => LiveVehicle()),
+          );
+        },
+        child: liveButton(),
+      ),
       child: isLoading
           ? Container(
               alignment: Alignment.center,

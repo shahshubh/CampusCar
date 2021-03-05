@@ -2,8 +2,7 @@ import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/service/firebase_service.dart';
-import 'package:CampusCar/widgets/progress_widget.dart';
-import 'package:CampusCar/widgets/rounded_button.dart';
+import 'package:CampusCar/components/progress_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -308,7 +307,9 @@ class ErrorVehicleInfo extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                     color: primaryBlue,
                     onPressed: () {
-                      searchBtnHandler(context);
+                      if (!isLoading) {
+                        searchBtnHandler(context);
+                      }
                     },
                     child: isLoading
                         ? circularprogress()

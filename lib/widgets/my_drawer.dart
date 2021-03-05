@@ -8,7 +8,8 @@ List<BoxShadow> shadowList = [
 class MyDrawer extends StatefulWidget {
   final child;
   final String title;
-  MyDrawer({@required this.child, this.title});
+  final Widget rightIcon;
+  MyDrawer({@required this.child, this.title, this.rightIcon});
   @override
   _MyDrawerState createState() => _MyDrawerState();
 }
@@ -97,6 +98,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           fontSize: 24),
                     ),
                     SizedBox(width: 40),
+                    widget.rightIcon != null ? widget.rightIcon : Container(),
                   ],
                 ),
               ),
