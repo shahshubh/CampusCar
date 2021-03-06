@@ -75,4 +75,31 @@ class FirebaseService {
       return null;
     }
   }
+
+  Future<void> addLiveVehicle() {
+    Vehicle newVehicle = Vehicle(
+      licensePlateNo: 'MH12DE1433',
+      color: '#fff',
+      expires: new DateTime.now().toString(),
+      model: 'Ford',
+      ownerMobileNo: '9988786734',
+      ownerName: 'Shubh Shah',
+      profileImage:
+          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+      role: "Faculty",
+    );
+    var timestamp = DateTime.now().toString();
+
+    return FirebaseFirestore.instance
+        .collection("livevehicles")
+        .doc(timestamp)
+        .set({
+      "isAllowed": true,
+      "isExpired": false,
+      "success": true,
+      "errorMsg": "No Error",
+      "vehicle": newVehicle.toMap(),
+      "timestamp": timestamp,
+    });
+  }
 }
