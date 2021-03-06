@@ -1,6 +1,6 @@
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/screens/admin/login/admin_login.dart';
-import 'package:CampusCar/screens/user/vehicle/live_vehicle.dart';
+import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

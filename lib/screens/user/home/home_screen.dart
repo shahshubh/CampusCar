@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:CampusCar/components/live_button.dart';
 import 'package:CampusCar/models/vehicle.dart';
-import 'package:CampusCar/screens/user/vehicle/live_vehicle.dart';
-import 'package:CampusCar/screens/user/vehicle/vehicle_detail.dart';
+import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
+import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
 import 'package:CampusCar/service/firebase_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -236,6 +236,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.white, fontSize: 18),
                               ),
                             ],
+                          )),
+                      // temporary button for testing
+                      RoundedButton(
+                          press: () {
+                            FirebaseService().addLiveVehicle();
+                          },
+                          child: Text(
+                            "Add Live Vehicle",
+                            style: TextStyle(color: Colors.white),
                           )),
                     ],
                   ),
