@@ -121,6 +121,7 @@ class _LiveVehicleState extends State<LiveVehicle> {
                         : defaultProfileImageUrl),
                     title: vehicle != null ? vehicle.ownerName : "",
                     subtitle: vehicle != null ? vehicle.licensePlateNo : "",
+                    timestamp: data["timestamp"],
                   ),
                   const SizedBox(height: 10.0),
                   data["success"]
