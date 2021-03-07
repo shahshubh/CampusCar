@@ -42,7 +42,7 @@ class _VehicleDetailState extends State<VehicleDetail> {
     stateIsExpired = widget.isExpired;
   }
 
-  void findVehicleHandler({String licensePlate}) async {
+  void findVehicleHandler({String licensePlate, String timestamp}) async {
     setState(() {
       isLoading = true;
     });
