@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
@@ -18,6 +21,34 @@ class _LiveVehicleState extends State<LiveVehicle> {
       FirebaseFirestore.instance.collection('livevehicles');
   bool isLoading = false;
   FirebaseService firebaseService = new FirebaseService();
+  Timer timer;
+  Color appBarIconColor;
+  @override
+  void initState() {
+    super.initState();
+    appBarIconColor = Colors.white;
+    // timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    //   // check if any live vehicles there
+    //   // if true
+    //   // delete the first doc i.e. the vehicle which is ahead in the queue.
+    //   print("DELETE DATA");
+    // });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void setAppBarIconColor(Color color) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        appBarIconColor = color;
+      });
+    });
+  }
 
   void findVehicleHandler({String licensePlate, String timestamp}) async {
     setState(() {
@@ -60,31 +91,19 @@ class _LiveVehicleState extends State<LiveVehicle> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // iconTheme: IconThemeData(
-        //   color: Colors.black, //change your color here
-        // ),
-        // title: Text(
-        //   "Live",
-        //   style: TextStyle(color: Colors.black),
-        // ),
-        // centerTitle: true,
+        iconTheme: IconThemeData(
+          color: appBarIconColor,
+        ),
         actions: [
           GestureDetector(
             onTap: () {
-              FirebaseFirestore.instance
-                  .collection("livevehicles")
-                  .orderBy("timestamp", descending: false)
-                  .limit(1)
-                  .get()
-                  .then((snapshot) {
-                for (DocumentSnapshot doc in snapshot.docs) {
-                  doc.reference.delete();
-                }
-              });
+              firebaseService.deleteTopmostLiveVehicle();
             },
             child: Padding(
               padding: EdgeInsets.all(12),
-              child: FaIcon(FontAwesomeIcons.times),
+              child: FaIcon(
+                FontAwesomeIcons.times,
+              ),
             ),
           ),
         ],
@@ -103,6 +122,7 @@ class _LiveVehicleState extends State<LiveVehicle> {
           //   );
           // }
           if (snapshot.hasData && snapshot.data.docs.length > 0) {
+            setAppBarIconColor(Colors.white);
             var data = snapshot.data.docs[0].data();
             Vehicle vehicle;
             if (data["vehicle"] != null) {
@@ -139,18 +159,33 @@ class _LiveVehicleState extends State<LiveVehicle> {
               ),
             );
           } else {
-            return Center(
-              child: Text("No DATA"),
+            setAppBarIconColor(Colors.black);
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "No Vehicles at the Gate",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  Stack(
+                    children: [
+                      Image.asset(
+                        'assets/images/Warning-rafiki.png',
+                      ),
+                      Image.asset(
+                        'assets/images/driver-pana.png',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
-          // return ListView(
-          //     children: snapshot.data.docs.map((DocumentSnapshot document) {
-          //       return new ListTile(
-          //         title: new Text(document.data()['name']),
-          //         subtitle: new Text(document.data()['timestamp']),
-          //       );
-          //     }).toList(),
-          //   );
         },
       ),
     );

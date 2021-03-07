@@ -8,22 +8,24 @@ class FirebaseService {
   CollectionReference vehiclesRef =
       FirebaseFirestore.instance.collection('vehicles');
   CollectionReference logsRef = FirebaseFirestore.instance.collection('logs');
+  CollectionReference liveVehiclesRef =
+      FirebaseFirestore.instance.collection("livevehicles");
 
+  Vehicle testVehicle = Vehicle(
+    licensePlateNo: 'MH12DE1433',
+    color: '#000000',
+    expires: new DateTime.now().toString(),
+    model: 'Ford',
+    ownerMobileNo: '9988786734',
+    ownerName: 'Shubh Shah',
+    profileImage:
+        "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+    role: "Faculty",
+  );
   Future<void> addVehicle() {
-    Vehicle newVehicle = Vehicle(
-      licensePlateNo: 'MH12DE1433',
-      color: '#fff',
-      expires: new DateTime.now().toString(),
-      model: 'Ford',
-      ownerMobileNo: '9988786734',
-      ownerName: 'Shubh Shah',
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-    );
-
     return vehiclesRef
-        .doc(newVehicle.licensePlateNo)
-        .set(newVehicle.toMap())
+        .doc(testVehicle.licensePlateNo)
+        .set(testVehicle.toMap())
         .then((value) => print("Vehicle Added"))
         .catchError((error) => print("Failed =>   $error"));
   }
@@ -40,20 +42,9 @@ class FirebaseService {
   }
 
   Future<void> addLog() {
-    Vehicle newVehicle = Vehicle(
-      licensePlateNo: 'MH12DE1433',
-      color: '#fff',
-      expires: new DateTime.now().toString(),
-      model: 'Ford',
-      ownerMobileNo: '9988786734',
-      ownerName: 'Shubh Shah',
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-      role: "Faculty",
-    );
     var currTime = DateTime.now().toString();
     Log log = Log(
-      vehicle: newVehicle.toMap(),
+      vehicle: testVehicle.toMap(),
       direction: Utils.directionToNum(Direction.Entering),
       time: currTime,
     );
@@ -77,19 +68,7 @@ class FirebaseService {
   }
 
   Future<void> addLiveVehicle() {
-    Vehicle newVehicle = Vehicle(
-      licensePlateNo: 'MH12DE1433',
-      color: '#fff',
-      expires: new DateTime.now().toString(),
-      model: 'Ford',
-      ownerMobileNo: '9988786734',
-      ownerName: 'Shubh Shah',
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-      role: "Faculty",
-    );
     var timestamp = DateTime.now().toString();
-
     return FirebaseFirestore.instance
         .collection("livevehicles")
         .doc(timestamp)
@@ -98,8 +77,20 @@ class FirebaseService {
       "isExpired": false,
       "success": true,
       "errorMsg": "No Error",
-      "vehicle": newVehicle.toMap(),
+      "vehicle": testVehicle.toMap(),
       "timestamp": timestamp,
+    });
+  }
+
+  Future<void> deleteTopmostLiveVehicle() {
+    return liveVehiclesRef
+        .orderBy("timestamp", descending: false)
+        .limit(1)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.delete();
+      }
     });
   }
 }

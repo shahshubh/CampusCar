@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getLicensePlate({String source}) async {
     // const endpoint = apiUrl + 'upload/';
-    var endpoint = 'http://192.168.0.103:3000/upload';
+    var endpoint = 'http://192.168.0.104:3000/upload';
     final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
