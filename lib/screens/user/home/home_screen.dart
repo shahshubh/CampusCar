@@ -3,7 +3,7 @@ import 'package:CampusCar/components/live_button.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
-import 'package:CampusCar/service/firebase_service.dart';
+import 'package:CampusCar/service/vehicles_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  FirebaseService firebaseService = new FirebaseService();
+  VehicleService vehicleService = new VehicleService();
   final picker = ImagePicker();
   bool isLoading = false;
 
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // find vehicle in db
       String licensePlateNo = response["license_plate"];
       Vehicle foundVehicle =
-          await firebaseService.getVehicle(licensePlateNo: licensePlateNo);
+          await vehicleService.getVehicle(licensePlateNo: licensePlateNo);
 
       if (foundVehicle != null) {
         var isExpired =
@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       // temporary button for testing
                       RoundedButton(
                           press: () {
-                            FirebaseService().addLiveVehicle();
+                            vehicleService.addLiveVehicle();
                           },
                           child: Text(
                             "Add Live Vehicle",

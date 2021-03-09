@@ -1,12 +1,12 @@
 import 'dart:async';
-
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
+import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info_error.dart';
-import 'package:CampusCar/service/firebase_service.dart';
+import 'package:CampusCar/service/vehicles_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,10 +17,12 @@ class LiveVehicle extends StatefulWidget {
 }
 
 class _LiveVehicleState extends State<LiveVehicle> {
+  // var vehiclesService = locator<VehicleService>();
+
   CollectionReference livevehicles =
       FirebaseFirestore.instance.collection('livevehicles');
   bool isLoading = false;
-  FirebaseService firebaseService = new FirebaseService();
+  VehicleService vehicleService = new VehicleService();
   Timer timer;
   Color appBarIconColor;
   @override
@@ -57,7 +59,7 @@ class _LiveVehicleState extends State<LiveVehicle> {
     print(licensePlate);
     var isExpired = false;
     Vehicle foundVehicle =
-        await firebaseService.getVehicle(licensePlateNo: licensePlate);
+        await vehicleService.getVehicle(licensePlateNo: licensePlate);
     if (foundVehicle != null) {
       if (!isExpired) {
         // add logs
@@ -97,7 +99,7 @@ class _LiveVehicleState extends State<LiveVehicle> {
         actions: [
           GestureDetector(
             onTap: () {
-              firebaseService.deleteTopmostLiveVehicle();
+              vehicleService.deleteTopmostLiveVehicle();
             },
             child: Padding(
               padding: EdgeInsets.all(12),

@@ -4,7 +4,7 @@ import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirebaseService {
+class VehicleService {
   CollectionReference vehiclesRef =
       FirebaseFirestore.instance.collection('vehicles');
   CollectionReference logsRef = FirebaseFirestore.instance.collection('logs');
