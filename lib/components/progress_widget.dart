@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-circularprogress() {
+circularprogress({Color color = Colors.white}) {
   return SizedBox(
     child: CircularProgressIndicator(
-      valueColor: AlwaysStoppedAnimation(Colors.white),
+      valueColor: AlwaysStoppedAnimation(color),
     ),
     height: 20.0,
     width: 20.0,

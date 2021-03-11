@@ -93,4 +93,8 @@ class VehicleService {
       }
     });
   }
+
+  Stream liveVehiclesStream() {
+    return liveVehiclesRef.orderBy("timestamp", descending: false).snapshots();
+  }
 }

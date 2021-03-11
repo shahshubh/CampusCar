@@ -3,7 +3,7 @@ import 'package:CampusCar/components/live_button.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
-import 'package:CampusCar/service/vehicles_service.dart';
+import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +13,7 @@ import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:CampusCar/locator.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function currentScreenHandler;
@@ -22,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  VehicleService vehicleService = new VehicleService();
+  var vehicleService = locator<VehicleService>();
   final picker = ImagePicker();
   bool isLoading = false;
 
@@ -184,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                     child: Image.asset(
-                      'assets/images/car-home-f.PNG',
+                      'assets/images/car-home.png',
                     ),
                   ),
                   Column(

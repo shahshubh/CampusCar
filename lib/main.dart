@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // setupLocator();
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -17,6 +17,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage('assets/images/warning.png'), context);
+    precacheImage(AssetImage('assets/images/car2.png'), context);
+    precacheImage(AssetImage('assets/images/car-home.png'), context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Campus Car',

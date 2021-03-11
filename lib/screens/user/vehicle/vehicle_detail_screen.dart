@@ -3,8 +3,9 @@ import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info_error.dart';
-import 'package:CampusCar/service/vehicles_service.dart';
+import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:flutter/material.dart';
+import 'package:CampusCar/locator.dart';
 
 class VehicleDetail extends StatefulWidget {
   final bool isAllowed;
@@ -26,10 +27,10 @@ class VehicleDetail extends StatefulWidget {
 }
 
 class _VehicleDetailState extends State<VehicleDetail> {
+  var vehicleService = locator<VehicleService>();
   var stateSuccess, stateErrorMsg, stateIsAllowed, stateIsExpired;
   bool isLoading = false;
   Vehicle stateVehicle;
-  VehicleService vehicleService = new VehicleService();
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _VehicleDetailState extends State<VehicleDetail> {
 
   @override
   Widget build(BuildContext context) {
+    print("RENDER VEHICLE DETAIL");
     String markIcon = stateIsAllowed ? checkmarkAnim : crossmarkAnim;
 
     return Scaffold(
