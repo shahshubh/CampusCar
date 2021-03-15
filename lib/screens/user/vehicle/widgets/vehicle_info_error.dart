@@ -22,7 +22,7 @@ class VehicleInfoError extends StatelessWidget {
     if (textEditingController.text != "" &&
         textEditingController.text != null) {
       findVehicleHandler(
-        licensePlate: textEditingController.text.toUpperCase(),
+        licensePlate: textEditingController.text,
         timestamp: timestamp,
       );
     } else {

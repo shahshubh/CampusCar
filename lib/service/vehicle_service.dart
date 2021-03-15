@@ -21,7 +21,9 @@ class VehicleService {
     profileImage:
         "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
     role: "Faculty",
+    isInCampus: false,
   );
+
   Future<void> addVehicle() {
     return vehiclesRef
         .doc(testVehicle.licensePlateNo)
@@ -41,11 +43,13 @@ class VehicleService {
     }
   }
 
-  Future<void> addLog() {
+  Future<void> addLog({Vehicle vehicle}) {
     var currTime = DateTime.now().toString();
     Log log = Log(
-      vehicle: testVehicle.toMap(),
-      direction: Utils.directionToNum(Direction.Entering),
+      vehicle: vehicle.toMap(),
+      direction: vehicle.isInCampus
+          ? Utils.directionToNum(Direction.Leaving)
+          : Utils.directionToNum(Direction.Entering),
       time: currTime,
     );
 

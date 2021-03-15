@@ -7,17 +7,18 @@ class Vehicle {
   String color;
   String expires;
   String profileImage;
+  bool isInCampus;
 
-  Vehicle({
-    this.ownerName,
-    this.ownerMobileNo,
-    this.licensePlateNo,
-    this.role,
-    this.model,
-    this.color,
-    this.expires,
-    this.profileImage,
-  });
+  Vehicle(
+      {this.ownerName,
+      this.ownerMobileNo,
+      this.licensePlateNo,
+      this.role,
+      this.model,
+      this.color,
+      this.expires,
+      this.profileImage,
+      this.isInCampus});
 
   Map<String, dynamic> toMap() {
     return {
@@ -29,6 +30,7 @@ class Vehicle {
       'color': color,
       'expires': expires,
       'profileImage': profileImage,
+      'isInCampus': isInCampus,
     };
   }
 
@@ -42,6 +44,7 @@ class Vehicle {
       color: data["color"],
       expires: data["expires"],
       profileImage: data["profileImage"],
+      isInCampus: data["isInCampus"],
     );
   }
 }

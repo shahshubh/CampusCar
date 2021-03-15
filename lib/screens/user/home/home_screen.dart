@@ -5,7 +5,6 @@ import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
@@ -28,13 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
 
   Future getLicensePlate({String source}) async {
-    // const endpoint = apiUrl + 'upload/';
-    var endpoint = 'http://192.168.0.104:3000/upload';
+    // var endpoint = 'http://localhost:3000/upload';
+    var endpoint = 'http://10.0.2.2:3000/upload';
+
     final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
     });
-
     if (pickedFile == null) {
       return null;
     }
@@ -49,11 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return jsonDecode(
           '{"success": false,"error": "Something went wrong !! Please try again after sometime"}');
     }
-
-    // var response = await request.send().catchError(
-    //       (onError) => print(
-    //           "Something went wrong !! Please try again after sometime ==>> $onError"),
-    //     );
 
     if (response.statusCode != 200) {
       return jsonDecode(
@@ -76,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future btnPressHandler({String source}) async {
+    // get license plate number from server
     var response = await getLicensePlate(source: source);
     if (response == null) {
       Scaffold.of(context).showSnackBar(SnackBar(
@@ -86,45 +81,46 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       return;
     }
-    print("---------------------------");
-    print(response["license_plate"]);
-    print("---------------------------");
-
     bool success = response["success"];
 
+    // if successful response is recieved
     if (success) {
-      // find vehicle in db
+      // find vehicle in db with the detected license plate no.
       String licensePlateNo = response["license_plate"];
       Vehicle foundVehicle =
           await vehicleService.getVehicle(licensePlateNo: licensePlateNo);
-
+      // If the vehicle is registered/exists in db
       if (foundVehicle != null) {
         var isExpired =
             DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
                 ? false
                 : true;
-
-        // check expiry
+        // If the access period of vehicle is not expired
         if (!isExpired) {
           // add logs
+          await vehicleService.addLog(vehicle: foundVehicle);
         }
+
         setState(() {
           isLoading = false;
         });
+        // finally show the vehicle detail screen
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return VehicleDetail(
-            isAllowed: isExpired ? false : true,
+            isAllowed: !isExpired,
             isExpired: isExpired,
             success: success,
             vehicle: foundVehicle,
           );
         }));
       }
-      // No vehicle found
+
+      // If the vehicle is NOT registered/exists in db
       else {
         setState(() {
           isLoading = false;
         });
+        // Show Vehicle detail screen with appropriate error msg.
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return VehicleDetail(
             isAllowed: false,
@@ -134,10 +130,13 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }));
       }
-    } else {
+    }
+    // if successful response is NOT recieved
+    else {
       setState(() {
         isLoading = false;
       });
+      // Show error screen
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return VehicleDetail(
           isAllowed: false,
@@ -238,15 +237,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           )),
+
                       // temporary button for testing
-                      RoundedButton(
-                          press: () {
-                            vehicleService.addLiveVehicle();
-                          },
-                          child: Text(
-                            "Add Live Vehicle",
-                            style: TextStyle(color: Colors.white),
-                          )),
+                      // RoundedButton(
+                      //     press: () {
+                      //       vehicleService.addLiveVehicle();
+                      //     },
+                      //     child: Text(
+                      //       "Add Live Vehicle",
+                      //       style: TextStyle(color: Colors.white),
+                      //     )),
                     ],
                   ),
                 ],

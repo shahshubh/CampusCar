@@ -34,7 +34,6 @@ class _VehicleDetailState extends State<VehicleDetail> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     stateSuccess = widget.success;
     stateVehicle = widget.vehicle;
@@ -47,14 +46,16 @@ class _VehicleDetailState extends State<VehicleDetail> {
     setState(() {
       isLoading = true;
     });
-    print("Find Vehicle Handler");
-    print(licensePlate);
-    var isExpired = false;
     Vehicle foundVehicle =
         await vehicleService.getVehicle(licensePlateNo: licensePlate);
     if (foundVehicle != null) {
+      var isExpired =
+          DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
+              ? false
+              : true;
       if (!isExpired) {
         // add logs
+        await vehicleService.addLog(vehicle: foundVehicle);
       }
       setState(() {
         isLoading = false;
@@ -73,7 +74,6 @@ class _VehicleDetailState extends State<VehicleDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print("RENDER VEHICLE DETAIL");
     String markIcon = stateIsAllowed ? checkmarkAnim : crossmarkAnim;
 
     return Scaffold(
@@ -113,32 +113,3 @@ class _VehicleDetailState extends State<VehicleDetail> {
     );
   }
 }
-
-// class Avatar extends StatelessWidget {
-//   final String imageUrl;
-//   final Color borderColor;
-//   final Color backgroundColor;
-//   final double radius;
-//   final double borderWidth;
-
-//   const Avatar(
-//       {Key key,
-//       @required this.imageUrl,
-//       this.borderColor = Colors.white,
-//       this.backgroundColor = Colors.grey,
-//       this.radius = 40,
-//       this.borderWidth = 4.0})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return CircleAvatar(
-//       radius: radius,
-//       backgroundColor: Colors.grey[100],
-//       child: Lottie.asset(
-//         imageUrl,
-//         // repeat: false,
-//       ),
-//     );
-//   }
-// }

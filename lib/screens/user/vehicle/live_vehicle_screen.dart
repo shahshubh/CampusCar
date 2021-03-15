@@ -52,10 +52,13 @@ class _LiveVehicleState extends State<LiveVehicle> {
     setState(() {
       isLoading = true;
     });
-    var isExpired = false;
     Vehicle foundVehicle =
         await vehicleService.getVehicle(licensePlateNo: licensePlate);
     if (foundVehicle != null) {
+      var isExpired =
+          DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
+              ? false
+              : true;
       if (!isExpired) {
         // add logs
       }

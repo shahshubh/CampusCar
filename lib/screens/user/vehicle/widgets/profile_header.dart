@@ -48,9 +48,6 @@ class ProfileHeader extends StatelessWidget {
                   // repeat: false,
                 ),
               ),
-              // Avatar(
-              //   imageUrl: avatar,
-              // ),
               title != ""
                   ? Text(
                       title,
