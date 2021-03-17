@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/enum/direction.dart';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class VehicleService {
   CollectionReference vehiclesRef =
@@ -100,5 +104,21 @@ class VehicleService {
 
   Stream liveVehiclesStream() {
     return liveVehiclesRef.orderBy("timestamp", descending: false).snapshots();
+  }
+
+  Future<String> uploadImageToFirestoreAndStorage(File image, String licensePlate) async {
+    String mFileName = licensePlate;
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('profile/$mFileName.png')
+          .putFile(image);
+      String downloadURL = await firebase_storage.FirebaseStorage.instance
+          .ref('profile/$mFileName.png')
+          .getDownloadURL();
+      return downloadURL;
+    } on FirebaseException catch (e) {
+      print(e);
+      return defaultProfileImageUrl;
+    }
   }
 }
