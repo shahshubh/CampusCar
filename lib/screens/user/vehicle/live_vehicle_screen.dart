@@ -99,15 +99,17 @@ class _LiveVehicleState extends State<LiveVehicle> {
         actions: [
           GestureDetector(
             onTap: () {
-              print("DELETE");
               vehicleService.deleteTopmostLiveVehicle();
               Fluttertoast.showToast(msg: "Deleted");
             },
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: FaIcon(
-                FontAwesomeIcons.trash,
-                size: 20,
+            child: Container(
+              color: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(40, 20, 20, 20),
+                child: FaIcon(
+                  FontAwesomeIcons.trash,
+                  size: 20,
+                ),
               ),
             ),
           ),
