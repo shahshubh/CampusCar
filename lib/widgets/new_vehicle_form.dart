@@ -98,7 +98,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
 
   void getImage({String source}) async {
     ImageSource imageSource = ImageSource.camera;
-    var pickedFile = await picker.getImage(source: imageSource);
+    var pickedFile = await picker.getImage(source: imageSource, imageQuality: 50);
     if (pickedFile != null) {
       widget.setPickedImage(pickedFile);
     }

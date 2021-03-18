@@ -81,6 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       return;
     }
+
+    // var response = {"success": false, "error": "Testing"}
     bool success = response["success"];
 
     // if successful response is recieved

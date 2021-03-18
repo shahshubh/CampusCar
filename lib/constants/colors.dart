@@ -9,4 +9,4 @@ const blue5 = Color(0xff757AFE);
 const blue6 = Color(0xff87ACDF);
 
 const errorColor = Colors.redAccent;
-const successColor = Colors.greenAccent;
+const successColor = Colors.green;

@@ -13,6 +13,8 @@ import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:CampusCar/widgets/loading_screen.dart';
+
 
 class NewVehicle extends StatefulWidget {
   final Function currentScreenHandler;
@@ -33,6 +35,7 @@ class _NewVehicleState extends State<NewVehicle> {
   bool profileImageCheckbox = true;
   var pickedImage;
   Color color = Colors.red;
+  bool isLoading = false;
 
   static DateTime currDate = DateTime.now();
   DateTime expiryDate = currDate
@@ -64,6 +67,21 @@ class _NewVehicleState extends State<NewVehicle> {
   setColor(data) => setState(() {
         color = data;
       });
+
+  void clearFormHandler(){
+    setState((){
+      nameTextController.text = "";
+      mobileTextController.text = "";
+      licenseTextController.text = "";
+      modelTextController.text = "";
+      roleTextController.text = "";
+      role = "Visitor";
+      profileImageCheckbox = true;
+      pickedImage = null;
+      color = Colors.red;
+    });
+  }
+
 
   bool newVehicleFormValidator() {
     if (nameTextController.text.isEmpty) {
@@ -123,11 +141,16 @@ class _NewVehicleState extends State<NewVehicle> {
   }
 
   addVehicleHandler() async {
+    
     if (newVehicleFormValidator()) {
+      setState((){
+        isLoading = true;
+      });
       String profileImageUrl = defaultProfileImageUrl;
 
       // upload profile image to firebase storage.
-      if (profileImageCheckbox) {
+      if (!profileImageCheckbox) {
+        print("Uploading profile pic");
         String res = await vehicleService.uploadImageToFirestoreAndStorage(
             File(pickedImage.path), licenseTextController.text.toUpperCase());
         if (res == 'Error') {
@@ -161,6 +184,7 @@ class _NewVehicleState extends State<NewVehicle> {
           message: 'Successfully added vehicle - ${newVehicle.licensePlateNo}.',
           color: successColor,
         );
+        clearFormHandler();
       } catch (e) {
         print(e);
         Utils.showFlashMsg(
@@ -169,6 +193,9 @@ class _NewVehicleState extends State<NewVehicle> {
           color: errorColor,
         );
       }
+      setState((){
+        isLoading = false;
+      });
     }
   }
 
@@ -181,7 +208,14 @@ class _NewVehicleState extends State<NewVehicle> {
           addVehicleHandler();
         },
       ),
-      child: Container(
+      child: isLoading ? Container(
+              alignment: Alignment.center,
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height - 95),
+              child: LoadingScreen(),
+            ) : Container(
+        constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height - 95),
         child: Column(
           children: <Widget>[
             Container(
@@ -211,6 +245,7 @@ class _NewVehicleState extends State<NewVehicle> {
                 setColor: setColor,
               ),
             ),
+            
           ],
         ),
       ),
