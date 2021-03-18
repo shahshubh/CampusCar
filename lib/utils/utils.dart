@@ -26,15 +26,18 @@ class Utils {
     }
   }
 
-  static showErrorFlash(
-      {FlashStyle style = FlashStyle.floating, String message, context}) {
+  static showFlashMsg(
+      {FlashStyle style = FlashStyle.floating,
+      String message,
+      Color color = Colors.greenAccent,
+      context}) {
     showFlash(
       context: context,
       duration: const Duration(seconds: 2),
       builder: (_, controller) {
         return Flash(
           controller: controller,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: color,
           brightness: Brightness.light,
           boxShadows: [BoxShadow(blurRadius: 4)],
           barrierBlur: 3.0,
@@ -44,7 +47,7 @@ class Utils {
           position: FlashPosition.top,
           child: FlashBar(
             title: Text(
-              'Error',
+              color == Colors.redAccent ? 'Error' : 'Success',
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

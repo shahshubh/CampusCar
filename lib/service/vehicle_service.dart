@@ -28,10 +28,10 @@ class VehicleService {
     isInCampus: false,
   );
 
-  Future<void> addVehicle() {
+  Future<void> addVehicle({Vehicle vehicle}) {
     return vehiclesRef
-        .doc(testVehicle.licensePlateNo)
-        .set(testVehicle.toMap())
+        .doc(vehicle.licensePlateNo)
+        .set(vehicle.toMap())
         .then((value) => print("Vehicle Added"))
         .catchError((error) => print("Failed =>   $error"));
   }
@@ -106,7 +106,8 @@ class VehicleService {
     return liveVehiclesRef.orderBy("timestamp", descending: false).snapshots();
   }
 
-  Future<String> uploadImageToFirestoreAndStorage(File image, String licensePlate) async {
+  Future<String> uploadImageToFirestoreAndStorage(
+      File image, String licensePlate) async {
     String mFileName = licensePlate;
     try {
       await firebase_storage.FirebaseStorage.instance
@@ -118,7 +119,7 @@ class VehicleService {
       return downloadURL;
     } on FirebaseException catch (e) {
       print(e);
-      return defaultProfileImageUrl;
+      return 'Error';
     }
   }
 }
