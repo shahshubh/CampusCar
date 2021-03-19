@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:CampusCar/components/progress_widget.dart';
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/locator.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
-
 
 class NewVehicle extends StatefulWidget {
   final Function currentScreenHandler;
@@ -68,8 +68,8 @@ class _NewVehicleState extends State<NewVehicle> {
         color = data;
       });
 
-  void clearFormHandler(){
-    setState((){
+  void clearFormHandler() {
+    setState(() {
       nameTextController.text = "";
       mobileTextController.text = "";
       licenseTextController.text = "";
@@ -81,7 +81,6 @@ class _NewVehicleState extends State<NewVehicle> {
       color = Colors.red;
     });
   }
-
 
   bool newVehicleFormValidator() {
     if (nameTextController.text.isEmpty) {
@@ -141,18 +140,33 @@ class _NewVehicleState extends State<NewVehicle> {
   }
 
   addVehicleHandler() async {
-    
+    String numberPlate = licenseTextController.text.toUpperCase();
     if (newVehicleFormValidator()) {
-      setState((){
+      setState(() {
         isLoading = true;
       });
-      String profileImageUrl = defaultProfileImageUrl;
 
-      // upload profile image to firebase storage.
+      // check is already any vehicle is there with this license plate
+      var foundVehicle =
+          await vehicleService.getVehicle(licensePlateNo: numberPlate);
+      if (foundVehicle != null) {
+        Utils.showFlashMsg(
+          context: context,
+          color: errorColor,
+          message:
+              'Vehicle with license plate no. $numberPlate is already registered.',
+        );
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      // upload profile image to firebase storage if checkbox is NOT checked.
+      String profileImageUrl = defaultProfileImageUrl;
       if (!profileImageCheckbox) {
-        print("Uploading profile pic");
         String res = await vehicleService.uploadImageToFirestoreAndStorage(
-            File(pickedImage.path), licenseTextController.text.toUpperCase());
+            File(pickedImage.path), numberPlate);
         if (res == 'Error') {
           Utils.showFlashMsg(
               context: context,
@@ -193,7 +207,7 @@ class _NewVehicleState extends State<NewVehicle> {
           color: errorColor,
         );
       }
-      setState((){
+      setState(() {
         isLoading = false;
       });
     }
@@ -202,53 +216,70 @@ class _NewVehicleState extends State<NewVehicle> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
-      rightIcon: IconButton(
-        icon: FaIcon(FontAwesomeIcons.check),
-        onPressed: () {
-          addVehicleHandler();
-        },
-      ),
-      child: isLoading ? Container(
+      // rightIcon: IconButton(
+      //   icon: FaIcon(FontAwesomeIcons.check),
+      //   onPressed: () {
+      //     addVehicleHandler();
+      //   },
+      // ),
+      child: isLoading
+          ? Container(
               alignment: Alignment.center,
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height - 95),
               child: LoadingScreen(),
-            ) : Container(
-        constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 95),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Text(
-                "Add New Vehicle",
-                style: TextStyle(color: Colors.black, fontSize: 24),
+            )
+          : Container(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "Add New Vehicle",
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(20),
+                    child: NewVehicleForm(
+                      isAdmin: false,
+                      nameTextController: nameTextController,
+                      licenseTextController: licenseTextController,
+                      mobileTextController: mobileTextController,
+                      modelTextController: modelTextController,
+                      roleTextController: roleTextController,
+                      role: role,
+                      color: color,
+                      pickedImage: pickedImage,
+                      profileImageCheckbox: profileImageCheckbox,
+                      expiryDate: expiryDate,
+                      setExpiryDate: setExpiryDate,
+                      setProfileImageCheckbox: setProfileImageCheckbox,
+                      setRole: setRole,
+                      setPickedImage: setPickedImage,
+                      setColor: setColor,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: addVehicleHandler,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      padding: EdgeInsets.all(20),
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: primaryBlue,
+                      ),
+                      child: Text('Add Vehicle',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300)),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(20),
-              child: NewVehicleForm(
-                isAdmin: false,
-                nameTextController: nameTextController,
-                licenseTextController: licenseTextController,
-                mobileTextController: mobileTextController,
-                modelTextController: modelTextController,
-                roleTextController: roleTextController,
-                role: role,
-                color: color,
-                pickedImage: pickedImage,
-                profileImageCheckbox: profileImageCheckbox,
-                expiryDate: expiryDate,
-                setExpiryDate: setExpiryDate,
-                setProfileImageCheckbox: setProfileImageCheckbox,
-                setRole: setRole,
-                setPickedImage: setPickedImage,
-                setColor: setColor,
-              ),
-            ),
-            
-          ],
-        ),
-      ),
     );
   }
 }

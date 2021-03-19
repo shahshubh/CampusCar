@@ -23,7 +23,9 @@ class CustomInputField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         errorText: errorText,
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+        contentPadding:
+            new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         suffixIcon: suffixIcon,
       ),
     );

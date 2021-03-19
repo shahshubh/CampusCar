@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/widgets/custom_input_field.dart';
+import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -50,6 +53,7 @@ class NewVehicleForm extends StatefulWidget {
 class _NewVehicleFormState extends State<NewVehicleForm> {
   final picker = ImagePicker();
   Color tempColor = Colors.red;
+  TextStyle labelStyle = TextStyle(fontWeight: FontWeight.w300, fontSize: 16);
 
   void _openDialog(String title, Widget content, context) {
     showDialog(
@@ -79,7 +83,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
 
   void _openColorPicker(context) async {
     _openDialog(
-        "Color picker",
+        "Pick your Car Color",
         MaterialColorPicker(
           // allowShades: false,
           selectedColor: widget.color,
@@ -90,7 +94,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
             });
           },
           // onMainColorChange: (color) => print(color),
-          colors: [Colors.red, Colors.green],
+          // colors: [Colors.red, Colors.green, Colors.grey],
           // onBack: () => print("Back button pressed"),
         ),
         context);
@@ -98,7 +102,8 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
 
   void getImage({String source}) async {
     ImageSource imageSource = ImageSource.camera;
-    var pickedFile = await picker.getImage(source: imageSource, imageQuality: 50);
+    var pickedFile =
+        await picker.getImage(source: imageSource, imageQuality: 50);
     if (pickedFile != null) {
       widget.setPickedImage(pickedFile);
     }
@@ -146,7 +151,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Role"),
+            Text("Role", style: labelStyle),
             DropdownButton(
               value: widget.role,
               items: <String>[
@@ -185,9 +190,9 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Color"),
+            Text("Color", style: labelStyle),
             CircleColor(
-              circleSize: 25.0,
+              circleSize: 30.0,
               color: widget.color,
               onColorChoose: () {
                 _openColorPicker(context);
@@ -195,12 +200,13 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
             ),
           ],
         ),
+        SizedBox(height: 20),
 
         //expires
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Expires"),
+            Text("Expires", style: labelStyle),
             Container(
               child: Row(
                 children: [
@@ -210,27 +216,34 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
                     style: TextStyle(
                         color: widget.isAdmin ? Colors.black : Colors.grey),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.calendar_today,
-                      color: widget.isAdmin ? Colors.black : Colors.grey,
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                    child: InkWell(
+                      child: Icon(
+                        Icons.calendar_today,
+                        color: widget.isAdmin ? Colors.black : Colors.grey,
+                      ),
+                      onTap: () {
+                        selectDate(context);
+                      },
                     ),
-                    onPressed: () {
-                      selectDate(context);
-                    },
                   ),
                 ],
               ),
             ),
           ],
         ),
+        SizedBox(height: 20),
 
         //profile
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Auto select default profile image"),
-            Checkbox(
+            Text("Auto select default profile image", style: labelStyle),
+            CircularCheckBox(
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              activeColor: primaryBlue,
               onChanged: (value) {
                 widget.setProfileImageCheckbox(value);
               },
@@ -238,27 +251,55 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
             ),
           ],
         ),
+        widget.profileImageCheckbox != true && widget.pickedImage != null
+            ? Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Stack(
+                    fit: StackFit.passthrough,
+                    children: [
+                      Image.file(
+                        File(widget.pickedImage.path),
+                        height: 180,
+                        fit: BoxFit.cover,
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: IconButton(
+                          icon: FaIcon(
+                            FontAwesomeIcons.times,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            widget.setPickedImage(null);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Container(),
         widget.profileImageCheckbox != true
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Profile Image"),
+                  Text("Profile Image", style: labelStyle),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: Icon(
+                      Icons.camera_alt,
+                      size: 28,
+                    ),
                     onPressed: () {
                       getImage();
                     },
                   ),
                 ],
-              )
-            : Container(),
-
-        widget.profileImageCheckbox != true && widget.pickedImage != null
-            ? Container(
-                child: Image.file(
-                  File(widget.pickedImage.path),
-                  height: 100,
-                ),
               )
             : Container(),
       ],

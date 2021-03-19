@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Campus Car',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white
-          // Colors.grey[300]
-          ),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       home: SplashScreen(),
     );
   }
