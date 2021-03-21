@@ -29,11 +29,9 @@ class VehicleService {
   );
 
   Future<void> addVehicle({Vehicle vehicle}) {
-    return vehiclesRef
-        .doc(vehicle.licensePlateNo)
-        .set(vehicle.toMap())
-        .then((value) => print("Vehicle Added"))
-        .catchError((error) => print("Failed =>   $error"));
+    return vehiclesRef.doc(vehicle.licensePlateNo).set(vehicle.toMap());
+    // .then((value) => print("Vehicle Added"))
+    // .catchError((error) => print("Failed =>   $error"));
   }
 
   Future<Vehicle> getVehicle({String licensePlateNo}) async {
@@ -57,11 +55,32 @@ class VehicleService {
       time: currTime,
     );
 
-    return logsRef
-        .doc(currTime)
-        .set(log.toMap())
-        .then((value) => print("Log Added"))
-        .catchError((error) => print("Failed =>   $error"));
+    // update vehicle status isInCampus
+    vehiclesRef.doc(vehicle.licensePlateNo).update({
+      'isInCampus': !vehicle.isInCampus,
+    });
+    // add log
+
+    return logsRef.add(log.toMap());
+    // .then((value) => print("Log Added"))
+    //     .catchError((error) => print("Failed =>   $error"));
+  }
+
+  Future<List<Log>> getLogsOfVehicle({String licensePlate}) async {
+    // await addLog(vehicle: testVehicle);
+    List<Log> allLogs = [];
+    QuerySnapshot querySnapshot = await logsRef
+        .where('vehicle.licensePlateNo', isEqualTo: licensePlate)
+        .orderBy('time', descending: true)
+        .get();
+
+    querySnapshot.docs.forEach((element) {
+      allLogs.add(Log.fromMap(element.data()));
+    });
+
+    print(allLogs[0].toMap());
+
+    return allLogs;
   }
 
   Future<Log> getLog() async {

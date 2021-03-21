@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:CampusCar/components/live_button.dart';
+import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
@@ -70,8 +71,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future btnPressHandler({String source}) async {
+    List<Log> allLogs =
+        await vehicleService.getLogsOfVehicle(licensePlate: 'MH12DE1433');
+    print(allLogs.length);
+    print(allLogs);
+
     // get license plate number from server
-    var response = await getLicensePlate(source: source);
+    // var response = await getLicensePlate(source: source);
+    var response = null;
     if (response == null) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("No Image selected"),

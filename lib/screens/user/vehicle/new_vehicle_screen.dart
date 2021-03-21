@@ -187,17 +187,20 @@ class _NewVehicleState extends State<NewVehicle> {
         expires: expiryDate.toString(),
         profileImage: profileImageUrl,
         color: '#${color.value.toRadixString(16)}',
-        isInCampus: true,
+        isInCampus: false,
       );
 
-      // add vehicle to firebase
       try {
-        vehicleService.addVehicle(vehicle: newVehicle);
+        // add vehicle to firebase
+        await vehicleService.addVehicle(vehicle: newVehicle);
         Utils.showFlashMsg(
           context: context,
           message: 'Successfully added vehicle - ${newVehicle.licensePlateNo}.',
           color: successColor,
         );
+
+        // add log of the vehicle
+        await vehicleService.addLog(vehicle: newVehicle);
         clearFormHandler();
       } catch (e) {
         print(e);
@@ -207,6 +210,7 @@ class _NewVehicleState extends State<NewVehicle> {
           color: errorColor,
         );
       }
+
       setState(() {
         isLoading = false;
       });

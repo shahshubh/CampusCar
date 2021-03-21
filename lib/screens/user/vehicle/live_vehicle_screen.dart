@@ -61,6 +61,7 @@ class _LiveVehicleState extends State<LiveVehicle> {
               : true;
       if (!isExpired) {
         // add logs
+        await vehicleService.addLog(vehicle: foundVehicle);
       }
 
       livevehicles.doc(timestamp).update({
@@ -98,8 +99,8 @@ class _LiveVehicleState extends State<LiveVehicle> {
         // ),
         actions: [
           GestureDetector(
-            onTap: () {
-              vehicleService.deleteTopmostLiveVehicle();
+            onTap: () async {
+              await vehicleService.deleteTopmostLiveVehicle();
               Fluttertoast.showToast(msg: "Deleted");
             },
             child: Container(
