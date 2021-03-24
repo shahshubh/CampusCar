@@ -50,7 +50,7 @@ class VehicleInfo extends StatelessWidget {
                               color: isExpired ? Colors.red : Colors.grey[550],
                             ),
                             title: Text(
-                              "Expires",
+                              isExpired ? "Expired" : "Expires",
                               style: TextStyle(
                                   color: isExpired ? Colors.red : Colors.black),
                             ),

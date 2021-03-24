@@ -28,6 +28,20 @@ class VehicleService {
     isInCampus: false,
   );
 
+  Future<String> getApiUrl() async {
+    // getting the apiUrl from firebase since flask server isnt deployed and the url changes every time we run the server.
+    // so we store the apiUrl in firebase and can directly change the url in firebase instead of changing the code and
+    // runnign the app again
+    var data =
+        await FirebaseFirestore.instance.collection('api').doc('uri').get();
+    if (data.data() != null) {
+      print(data.data());
+      return data.data()["apiUrl"];
+    } else {
+      return null;
+    }
+  }
+
   Future<void> addVehicle({Vehicle vehicle}) {
     return vehiclesRef.doc(vehicle.licensePlateNo).set(vehicle.toMap());
     // .then((value) => print("Vehicle Added"))

@@ -6,8 +6,8 @@ circularprogress({Color color = Colors.white}) {
     child: CircularProgressIndicator(
       valueColor: AlwaysStoppedAnimation(color),
     ),
-    height: 20.0,
-    width: 20.0,
+    height: 30.0,
+    width: 30.0,
   );
 }
 

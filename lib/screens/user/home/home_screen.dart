@@ -29,7 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future getLicensePlate({String source}) async {
     // var endpoint = 'http://localhost:3000/upload';
-    var endpoint = 'http://10.0.2.2:3000/upload';
+    String apiUrl = await vehicleService.getApiUrl();
+    var endpoint = apiUrl != null ? apiUrl : 'http://10.0.2.2:3000/upload';
+    print(endpoint);
 
     final pickedFile = await getImage(source: source);
     setState(() {
@@ -42,6 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
     var request = http.MultipartRequest("POST", Uri.parse(endpoint));
     var pic = await http.MultipartFile.fromPath("image", pickedFile.path);
     request.files.add(pic);
+
+    // clear cache
+    imageCache.clear();
+
     var response;
     try {
       response = await request.send();
@@ -71,14 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future btnPressHandler({String source}) async {
-    List<Log> allLogs =
-        await vehicleService.getLogsOfVehicle(licensePlate: 'MH12DE1433');
-    print(allLogs.length);
-    print(allLogs);
-
     // get license plate number from server
-    // var response = await getLicensePlate(source: source);
-    var response = null;
+    var response = await getLicensePlate(source: source);
     if (response == null) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("No Image selected"),
