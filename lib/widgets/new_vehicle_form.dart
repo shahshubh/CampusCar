@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:CampusCar/constants/colors.dart';
+import 'package:CampusCar/widgets/custom_icon_button.dart';
 import 'package:CampusCar/widgets/custom_input_field.dart';
 import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +101,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
         context);
   }
 
-  void getImage({String source}) async {
-    ImageSource imageSource = ImageSource.camera;
+  void getImage({@required ImageSource imageSource}) async {
     var pickedFile =
         await picker.getImage(source: imageSource, imageQuality: 50);
     if (pickedFile != null) {
@@ -291,12 +291,55 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
                 children: [
                   Text("Profile Image", style: labelStyle),
                   IconButton(
-                    icon: Icon(
-                      Icons.camera_alt,
-                      size: 28,
-                    ),
+                    icon: FaIcon(FontAwesomeIcons.image, size: 28),
                     onPressed: () {
-                      getImage();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 125,
+                              // color: lightBlue,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  // mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () {
+                                        getImage(
+                                            imageSource: ImageSource.camera);
+                                      },
+                                      child: CustomIconButton(
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.camera,
+                                          color: Colors.white,
+                                          size: 26,
+                                        ),
+                                        bgColor: primaryBlue,
+                                        text: "Camera",
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        getImage(
+                                            imageSource: ImageSource.gallery);
+                                      },
+                                      child: CustomIconButton(
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.images,
+                                          color: Colors.white,
+                                          size: 26,
+                                        ),
+                                        bgColor: primaryBlue,
+                                        text: "Gallery",
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
                     },
                   ),
                 ],
