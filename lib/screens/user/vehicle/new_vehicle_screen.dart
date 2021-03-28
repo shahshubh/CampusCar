@@ -1,19 +1,15 @@
 import 'dart:io';
 
-import 'package:CampusCar/components/progress_widget.dart';
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:CampusCar/utils/utils.dart';
-import 'package:CampusCar/widgets/custom_input_field.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:CampusCar/widgets/new_vehicle_form.dart';
-import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 
 class NewVehicle extends StatefulWidget {

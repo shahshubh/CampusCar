@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:CampusCar/components/progress_widget.dart';
-import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
@@ -9,7 +8,6 @@ import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info_error.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
-import 'package:CampusCar/widgets/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,12 +31,13 @@ class _LiveVehicleState extends State<LiveVehicle> {
     super.initState();
     isLoading = false;
     appBarIconColor = Colors.white;
-    // timer = Timer.periodic(Duration(seconds: 10), (timer) {
-    //   // check if any live vehicles there
-    //   // if true
-    //   // delete the first doc i.e. the vehicle which is ahead in the queue.
-    //   print("DELETE DATA");
-    // });
+    timer = Timer.periodic(Duration(seconds: 10), (timer) async {
+      // check if any live vehicles there
+      // if true
+      // delete the first doc i.e. the vehicle which is ahead in the queue.
+      print("DELETE DATA");
+      await vehicleService.deleteTopmostLiveVehicle();
+    });
   }
 
   @override

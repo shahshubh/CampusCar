@@ -108,17 +108,18 @@ class VehicleService {
     }
   }
 
-  Future<void> addLiveVehicle() {
+  Future<void> addLiveVehicle(
+      {Vehicle vehicle, bool isExpired, bool success, String errorMsg = ""}) {
     var timestamp = DateTime.now().toString();
     return FirebaseFirestore.instance
         .collection("livevehicles")
         .doc(timestamp)
         .set({
-      "isAllowed": true,
-      "isExpired": false,
-      "success": true,
-      "errorMsg": "No Error",
-      "vehicle": testVehicle.toMap(),
+      "isAllowed": !isExpired,
+      "isExpired": isExpired,
+      "success": success,
+      "errorMsg": errorMsg,
+      "vehicle": vehicle != null ? vehicle.toMap() : null,
       "timestamp": timestamp,
     });
   }

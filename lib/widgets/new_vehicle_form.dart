@@ -307,6 +307,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
                                   children: <Widget>[
                                     GestureDetector(
                                       onTap: () {
+                                        Navigator.pop(context);
                                         getImage(
                                             imageSource: ImageSource.camera);
                                       },
@@ -322,6 +323,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        Navigator.pop(context);
                                         getImage(
                                             imageSource: ImageSource.gallery);
                                       },

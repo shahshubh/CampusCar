@@ -109,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
           // add logs
           await vehicleService.addLog(vehicle: foundVehicle);
         }
-
+        await vehicleService.addLiveVehicle(
+            vehicle: foundVehicle, isExpired: isExpired, success: success);
         setState(() {
           isLoading = false;
         });
@@ -126,6 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // If the vehicle is NOT registered/exists in db
       else {
+        await vehicleService.addLiveVehicle(
+            vehicle: null,
+            isExpired: true,
+            success: false,
+            errorMsg: "No vehicle found for License Plate = $licensePlateNo");
         setState(() {
           isLoading = false;
         });
@@ -142,6 +148,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     // if successful response is NOT recieved
     else {
+      await vehicleService.addLiveVehicle(
+          vehicle: null,
+          isExpired: true,
+          success: success,
+          errorMsg: response["error"]);
       setState(() {
         isLoading = false;
       });
@@ -149,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return VehicleDetail(
           isAllowed: false,
-          success: false,
+          success: success,
           errorMsg: response["error"],
           vehicle: null,
         );
