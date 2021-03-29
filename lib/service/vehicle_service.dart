@@ -14,6 +14,7 @@ class VehicleService {
   CollectionReference logsRef = FirebaseFirestore.instance.collection('logs');
   CollectionReference liveVehiclesRef =
       FirebaseFirestore.instance.collection("livevehicles");
+  CollectionReference scansRef = FirebaseFirestore.instance.collection("scans");
 
   Vehicle testVehicle = Vehicle(
     licensePlateNo: 'MH12DE1433',
@@ -155,5 +156,20 @@ class VehicleService {
       print(e);
       return 'Error';
     }
+  }
+
+  Future<void> updateScans() {
+    var date = DateTime.now();
+    var currDate = date.subtract(Duration(
+      hours: date.hour,
+      minutes: date.minute,
+      seconds: date.second,
+      milliseconds: date.millisecond,
+      microseconds: date.microsecond,
+    ));
+    return scansRef.doc(currDate.toString()).update({
+      'count': FieldValue.increment(1),
+      'timestamp': currDate.toString(),
+    });
   }
 }

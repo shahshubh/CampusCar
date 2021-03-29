@@ -88,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       return;
     }
-
+    // keep track of total scans for graphs and statistics
+    vehicleService.updateScans();
     // var response = {"success": false, "error": "Testing"}
     bool success = response["success"];
 
