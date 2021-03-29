@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 List<Map> adminDrawerItems = [
-  {'icon': FontAwesomeIcons.list, 'title': 'Logs', 'index': 0},
-  {'icon': FontAwesomeIcons.car, 'title': 'Vehicles', 'index': 1},
-  {'icon': FontAwesomeIcons.plus, 'title': 'Add Vehicle', 'index': 2},
+  {'icon': Icons.dashboard, 'title': 'Dashboard', 'index': 0},
+  {'icon': FontAwesomeIcons.list, 'title': 'Logs', 'index': 1},
+  {'icon': FontAwesomeIcons.car, 'title': 'Vehicles', 'index': 2},
+  {'icon': FontAwesomeIcons.plus, 'title': 'Add Vehicle', 'index': 3},
 ];
 
 class AdminDrawerScreen extends StatefulWidget {
