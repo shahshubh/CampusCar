@@ -72,7 +72,6 @@
 // }
 
 import 'package:CampusCar/screens/admin/admin_main_screen.dart';
-import 'package:CampusCar/screens/admin/signup/admin_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -266,8 +265,8 @@ class LoginPageState extends State<AdminLogin> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => AdminSignup()));
+                  // Navigator.of(context).push(
+                  //     MaterialPageRoute(builder: (context) => AdminSignup()));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
