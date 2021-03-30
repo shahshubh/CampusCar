@@ -1,4 +1,5 @@
 import 'package:CampusCar/locator.dart';
+import 'package:CampusCar/screens/admin/home/widgets/chart_container.dart';
 import 'package:CampusCar/service/admin_service.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -26,47 +27,28 @@ class DoughnutChart extends StatelessWidget {
             new _PieData(
                 'Outside Campus', vehiclesOutCampusCount, Colors.blueAccent)
           ];
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[300],
-                  blurRadius: 15,
-                  spreadRadius: 1,
+          return ChartContainer(
+            child: SfCircularChart(
+              title: ChartTitle(
+                text: 'Vehicle Location',
+                textStyle: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
                 ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.95,
-                  child: SfCircularChart(
-                    title: ChartTitle(
-                      text: 'Vehicle Location',
-                      textStyle: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    legend: Legend(isVisible: true),
-                    series: <DoughnutSeries<_PieData, String>>[
-                      DoughnutSeries<_PieData, String>(
-                        explode: true,
-                        pointColorMapper: (_PieData data, _) => data.color,
-                        explodeIndex: 0,
-                        dataSource: graphData,
-                        xValueMapper: (_PieData data, _) => data.xData,
-                        yValueMapper: (_PieData data, _) => data.yData,
-                        dataLabelMapper: (_PieData data, _) =>
-                            data.yData.toString(),
-                        dataLabelSettings: DataLabelSettings(
-                            isVisible: true,
-                            textStyle: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
+              ),
+              legend: Legend(isVisible: true),
+              series: <DoughnutSeries<_PieData, String>>[
+                DoughnutSeries<_PieData, String>(
+                  explode: true,
+                  pointColorMapper: (_PieData data, _) => data.color,
+                  explodeIndex: 0,
+                  dataSource: graphData,
+                  xValueMapper: (_PieData data, _) => data.xData,
+                  yValueMapper: (_PieData data, _) => data.yData,
+                  dataLabelMapper: (_PieData data, _) => data.yData.toString(),
+                  dataLabelSettings: DataLabelSettings(
+                      isVisible: true,
+                      textStyle: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

@@ -10,3 +10,9 @@ const blue6 = Color(0xff87ACDF);
 
 const errorColor = Colors.redAccent;
 const successColor = Colors.green;
+
+List<Color> graphColors = [
+  Colors.red[100],
+  Colors.blueAccent,
+  Colors.red[400],
+];
