@@ -32,4 +32,12 @@ class AdminService {
     });
     return count;
   }
+
+  Stream dailyScansStream() {
+    return scansRef.orderBy("timestamp", descending: false).snapshots();
+  }
+
+  Stream vehiclesStream() {
+    return vehiclesRef.snapshots();
+  }
 }

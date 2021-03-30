@@ -64,7 +64,7 @@ class StatsGrid extends StatelessWidget {
   Expanded _buildStatCard(String title, int count, Color color) {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.all(5.0),
+        margin: EdgeInsets.all(7.0),
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: color,
