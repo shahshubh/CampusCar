@@ -158,7 +158,7 @@ class VehicleService {
     }
   }
 
-  Future<void> updateScans() {
+  Future<void> updateScans() async {
     var date = DateTime.now();
     var currDate = date.subtract(Duration(
       hours: date.hour,
@@ -167,9 +167,20 @@ class VehicleService {
       milliseconds: date.millisecond,
       microseconds: date.microsecond,
     ));
-    return scansRef.doc(currDate.toString()).update({
-      'count': FieldValue.increment(1),
-      'timestamp': currDate.toString(),
-    });
+    var data = await scansRef.doc(currDate.toString()).get();
+    // if document exists already then update the document
+    if (data.data() != null) {
+      return scansRef.doc(currDate.toString()).update({
+        'count': FieldValue.increment(1),
+        'timestamp': currDate.toString(),
+      });
+    }
+    // else create new doc
+    else {
+      return scansRef.doc(currDate.toString()).set({
+        'count': 1,
+        'timestamp': currDate.toString(),
+      });
+    }
   }
 }
