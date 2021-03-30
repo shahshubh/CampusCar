@@ -1,8 +1,20 @@
 import 'package:CampusCar/constants/colors.dart';
+import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StatsGrid extends StatelessWidget {
+  final totalVehiclesCount;
+  final totalScansCount;
+  final totalVehicleLogsCount;
+  final totalExpiredVehiclesCount;
+  StatsGrid({
+    @required this.totalVehiclesCount,
+    @required this.totalScansCount,
+    @required this.totalVehicleLogsCount,
+    @required this.totalExpiredVehiclesCount,
+  });
+
   final graphRed = Color(0xffff6a69);
   final graphBlue = Color(0xff7a54ff);
   final graphOrange = Color(0xffff8f61);
@@ -21,20 +33,18 @@ class StatsGrid extends StatelessWidget {
           Flexible(
             child: Row(
               children: <Widget>[
-                _buildStatCard('Total Vehicles',
-                    numberFormatter.format(1200000), graphRed),
+                _buildStatCard('Total Vehicles', totalVehiclesCount, graphRed),
                 _buildStatCard(
-                    'Permit Expired', numberFormatter.format(1100), graphBlue),
+                    'Permit Expired', totalExpiredVehiclesCount, graphBlue),
               ],
             ),
           ),
           Flexible(
             child: Row(
               children: <Widget>[
-                _buildStatCard(
-                    'Total Scans', numberFormatter.format(391900), graphOrange),
-                _buildStatCard('Total Vehicle Logs',
-                    numberFormatter.format(3587), graphLightBlue),
+                _buildStatCard('Total Scans', totalScansCount, graphOrange),
+                _buildStatCard('Total Vehicle Logs', totalVehicleLogsCount,
+                    graphLightBlue),
               ],
             ),
           ),
@@ -51,7 +61,7 @@ class StatsGrid extends StatelessWidget {
     );
   }
 
-  Expanded _buildStatCard(String title, String count, Color color) {
+  Expanded _buildStatCard(String title, int count, Color color) {
     return Expanded(
       child: Container(
         margin: EdgeInsets.all(5.0),
@@ -79,14 +89,25 @@ class StatsGrid extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            Text(
-              count,
+            Countup(
+              begin: 0,
+              end: count.toDouble(),
+              separator: ',',
+              duration: Duration(seconds: 2),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            // Text(
+            //   count,
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: 22.0,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
           ],
         ),
       ),
