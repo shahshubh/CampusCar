@@ -31,21 +31,21 @@ class _LiveVehicleState extends State<LiveVehicle> {
     super.initState();
     isLoading = false;
     appBarIconColor = Colors.white;
-    timer = Timer.periodic(Duration(seconds: 10), (timer) async {
-      // check if any live vehicles there
-      // if true
-      // delete the first doc i.e. the vehicle which is ahead in the queue.
-      print("DELETE DATA");
-      await vehicleService.deleteTopmostLiveVehicle();
-    });
+    // timer = Timer.periodic(Duration(seconds: 10), (timer) async {
+    //   // check if any live vehicles there
+    //   // if true
+    //   // delete the first doc i.e. the vehicle which is ahead in the queue.
+    //   print("DELETE DATA");
+    //   await vehicleService.deleteTopmostLiveVehicle();
+    // });
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    timer?.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   timer?.cancel();
+  //   super.dispose();
+  // }
 
   void findVehicleHandler({String licensePlate, String timestamp}) async {
     setState(() {

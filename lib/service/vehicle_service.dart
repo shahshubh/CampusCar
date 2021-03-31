@@ -112,16 +112,18 @@ class VehicleService {
   Future<void> addLiveVehicle(
       {Vehicle vehicle, bool isExpired, bool success, String errorMsg = ""}) {
     var timestamp = DateTime.now().toString();
-    return FirebaseFirestore.instance
-        .collection("livevehicles")
-        .doc(timestamp)
-        .set({
+    liveVehiclesRef.doc(timestamp).set({
       "isAllowed": !isExpired,
       "isExpired": isExpired,
       "success": success,
       "errorMsg": errorMsg,
       "vehicle": vehicle != null ? vehicle.toMap() : null,
       "timestamp": timestamp,
+    });
+
+    Future.delayed(Duration(seconds: 20), () {
+      print("DELETE Document");
+      liveVehiclesRef.doc(timestamp).delete();
     });
   }
 
