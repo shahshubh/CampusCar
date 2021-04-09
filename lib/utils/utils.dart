@@ -26,6 +26,17 @@ class Utils {
     }
   }
 
+  static String numToString(int number) {
+    switch (number) {
+      case 0:
+        return "Entering";
+      case 1:
+        return "Leaving";
+      default:
+        return "Entering";
+    }
+  }
+
   static showFlashMsg(
       {FlashStyle style = FlashStyle.floating,
       String message,

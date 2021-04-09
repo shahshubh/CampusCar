@@ -1,3 +1,4 @@
+import 'package:CampusCar/models/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminService {
@@ -39,5 +40,33 @@ class AdminService {
 
   Stream vehiclesStream() {
     return vehiclesRef.snapshots();
+  }
+
+  Future<List<Log>> getLogsOfVehicle({String licensePlate}) async {
+    // await addLog(vehicle: testVehicle);
+    List<Log> allLogs = [];
+    QuerySnapshot querySnapshot = await logsRef
+        .where('vehicle.licensePlateNo', isEqualTo: licensePlate)
+        .orderBy('time', descending: true)
+        .get();
+
+    querySnapshot.docs.forEach((element) {
+      allLogs.add(Log.fromMap(element.data()));
+    });
+
+    print(allLogs[0].toMap());
+
+    return allLogs;
+  }
+
+  Future<Log> getLog() async {
+    var data = await logsRef.doc("2021-03-02 16:20:16.157259").get();
+    if (data.data() != null) {
+      Log log = Log.fromMap(data.data());
+      // Vehicle logVehicle = Vehicle.fromMap(log.vehicle);
+      return log;
+    } else {
+      return null;
+    }
   }
 }

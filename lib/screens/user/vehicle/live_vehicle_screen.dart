@@ -5,7 +5,7 @@ import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/no_vehicles.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
-import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info.dart';
+import 'package:CampusCar/widgets/vehicle_info.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info_error.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

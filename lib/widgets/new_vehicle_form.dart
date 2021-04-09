@@ -22,6 +22,7 @@ class NewVehicleForm extends StatefulWidget {
   final Color color;
   final pickedImage;
   final bool profileImageCheckbox;
+  final bool isInCampus;
   final DateTime expiryDate;
   final Function setExpiryDate;
   final Function setRole;
@@ -48,6 +49,7 @@ class NewVehicleForm extends StatefulWidget {
     @required this.setPickedImage,
     @required this.setColor,
     this.setIsInCampus,
+    this.isInCampus,
   });
 
   @override
@@ -239,20 +241,22 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
         SizedBox(height: 20),
 
         //Is in campus
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Is inside campus ?", style: labelStyle),
-            Switch(
-              value: false,
-              activeColor: primaryBlue,
-              onChanged: (bool value) {
-                widget.setIsInCampus(value);
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20),
+        widget.isAdmin
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Is inside campus ?", style: labelStyle),
+                  Switch(
+                    value: widget.isInCampus,
+                    activeColor: primaryBlue,
+                    onChanged: (bool value) {
+                      widget.setIsInCampus(value);
+                    },
+                  ),
+                ],
+              )
+            : Container(),
+        widget.isAdmin ? SizedBox(height: 20) : Container(),
 
         //profile
         Row(

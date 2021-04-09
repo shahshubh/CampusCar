@@ -1,3 +1,4 @@
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +8,10 @@ import 'package:intl/intl.dart';
 class VehicleInfo extends StatelessWidget {
   final bool isExpired;
   final Vehicle vehicle;
-  VehicleInfo({this.isExpired, this.vehicle});
+  final Function showLogs;
+  final bool isAdmin;
+  VehicleInfo(
+      {this.isExpired, this.vehicle, this.showLogs, this.isAdmin = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +22,48 @@ class VehicleInfo extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
             alignment: Alignment.topLeft,
-            child: Text(
-              "Vehicle Information",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Vehicle Information",
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                isAdmin
+                    ? GestureDetector(
+                        onTap: () {
+                          showLogs(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: lightBlue,
+                          ),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              FaIcon(FontAwesomeIcons.list,
+                                  size: 14, color: Colors.white),
+                              SizedBox(width: 5),
+                              Text(
+                                "Logs",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
           ),
           Card(

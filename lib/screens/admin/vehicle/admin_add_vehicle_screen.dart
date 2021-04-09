@@ -264,6 +264,7 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
                       setPickedImage: setPickedImage,
                       setColor: setColor,
                       setIsInCampus: setIsInCampus,
+                      isInCampus: isInCampus,
                     ),
                   ),
                   InkWell(
