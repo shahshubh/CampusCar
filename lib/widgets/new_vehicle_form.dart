@@ -28,6 +28,8 @@ class NewVehicleForm extends StatefulWidget {
   final Function setProfileImageCheckbox;
   final Function setPickedImage;
   final Function setColor;
+  final Function setIsInCampus;
+
   NewVehicleForm({
     @required this.isAdmin,
     @required this.nameTextController,
@@ -45,6 +47,7 @@ class NewVehicleForm extends StatefulWidget {
     @required this.setRole,
     @required this.setPickedImage,
     @required this.setColor,
+    this.setIsInCampus,
   });
 
   @override
@@ -230,6 +233,22 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+
+        //Is in campus
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Is inside campus ?", style: labelStyle),
+            Switch(
+              value: false,
+              activeColor: primaryBlue,
+              onChanged: (bool value) {
+                widget.setIsInCampus(value);
+              },
             ),
           ],
         ),

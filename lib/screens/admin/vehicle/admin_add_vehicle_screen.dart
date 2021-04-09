@@ -33,6 +33,7 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
   var pickedImage;
   Color color = Colors.red;
   bool isLoading = false;
+  bool isInCampus = false;
 
   static DateTime currDate = DateTime.now();
   DateTime expiryDate = currDate
@@ -63,6 +64,10 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
 
   setColor(data) => setState(() {
         color = data;
+      });
+
+  setIsInCampus(data) => setState(() {
+        isInCampus = data;
       });
 
   void clearFormHandler() {
@@ -184,7 +189,7 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
         expires: expiryDate.toString(),
         profileImage: profileImageUrl,
         color: '#${color.value.toRadixString(16)}',
-        isInCampus: false,
+        isInCampus: isInCampus,
       );
 
       try {
@@ -258,6 +263,7 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
                       setRole: setRole,
                       setPickedImage: setPickedImage,
                       setColor: setColor,
+                      setIsInCampus: setIsInCampus,
                     ),
                   ),
                   InkWell(
