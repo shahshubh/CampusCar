@@ -1,82 +1,8 @@
-// import 'package:flutter/material.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:CampusCar/constants/colors.dart';
-
-// class AdminLogin extends StatefulWidget {
-//   State createState() => LoginPageState();
-// }
-
-// class LoginPageState extends State<AdminLogin> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//         child: new Scaffold(
-//       backgroundColor: Colors.white,
-//       body: new Column(
-//         children: <Widget>[
-//           new SizedBox(
-//             height: 100,
-//           ),
-//           new Image(
-//             image: new AssetImage('assets/ccLogo.jpg'),
-//             fit: BoxFit.cover,
-//             alignment: Alignment.center,
-//           ),
-//           new SizedBox(
-//             height: 50,
-//           ),
-//           new Container(
-//             padding: const EdgeInsets.all(40.0),
-//             child: new Form(
-//                 child: new Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: <Widget>[
-//                 new TextFormField(
-//                   decoration: new InputDecoration(hintText: "Enter Email"),
-//                   keyboardType: TextInputType.emailAddress,
-//                 ),
-//                 new TextFormField(
-//                   decoration: new InputDecoration(hintText: "Enter Password"),
-//                   keyboardType: TextInputType.text,
-//                   obscureText: true,
-//                 ),
-//                 new Padding(
-//                   padding: const EdgeInsets.only(top: 60.0),
-//                 ),
-//                 new MaterialButton(
-//                   height: 50.0,
-//                   minWidth: 150.0,
-//                   color: Colors.blue,
-//                   textColor: Colors.white,
-//                   child: new Icon(FontAwesomeIcons.signInAlt),
-//                   onPressed: () {
-//                     print("object");
-//                   },
-//                 ),
-//                 // new RaisedButton(
-//                 //   onPressed: null,
-//                 //   color: Colors.blue,
-//                 //   textColor: Colors.white,
-//                 //   padding: const EdgeInsets.all(8.0),
-//                 //   child: new Text(
-//                 //     "Login",
-//                 //   ),
-//                 // )
-//               ],
-//             )),
-//           ),
-//         ],
-//       ),
-//     ));
-//   }
-// }
-
 import 'package:CampusCar/screens/admin/admin_main_screen.dart';
+import 'package:CampusCar/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CampusCar/constants/colors.dart' as Constants;
-//import 'package:lottie/lottie.dart';
 
 class AdminLogin extends StatefulWidget {
   State createState() => LoginPageState();
@@ -86,6 +12,8 @@ class LoginPageState extends State<AdminLogin> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
 
+  var _controllerEmail = TextEditingController();
+  var _controllerPass = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -137,14 +65,6 @@ class LoginPageState extends State<AdminLogin> {
                               fontFamily: 'CarterOne',
                               fontSize: 40,
                               color: Colors.white)),
-
-                      // Text(
-                      //   "Taste Me",
-                      //   style: TextStyle(
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.w700,
-                      //       fontSize: 30),
-                      // ),
                     ],
                   ),
                   width: double.infinity,
@@ -167,6 +87,7 @@ class LoginPageState extends State<AdminLogin> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
+                controller: _controllerEmail,
                 onChanged: (String value) {
                   setState(() {
                     _email = value.trim();
@@ -198,6 +119,7 @@ class LoginPageState extends State<AdminLogin> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
+                controller: _controllerPass,
                 onChanged: (String value) {
                   setState(() {
                     _password = value.trim();
@@ -217,6 +139,7 @@ class LoginPageState extends State<AdminLogin> {
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+                obscureText: true,
               ),
             ),
           ),
@@ -237,16 +160,34 @@ class LoginPageState extends State<AdminLogin> {
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),
-                  onPressed: () {
-                    // auth.signInWithEmailAndPassword(
-                    //     email: _email, password: _password);
-                    auth.createUserWithEmailAndPassword(
-                        email: _email, password: _password);
-                    print("signed in");
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => AdminMainScreen()),
-                        (route) => false);
+                  onPressed: () async {
+                    //Start Here
+                    try {
+                      User user = (await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                        email: _email,
+                        password: _password,
+                      ))
+                          .user;
+                      if (user != null) {
+                        //ADD Navigation
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => AdminMainScreen()),
+                            (route) => false);
+                      }
+                    } catch (e) {
+                      print(e);
+                      _email = "";
+                      _password = "";
+                      Utils.showFlashMsg(
+                          color: Colors.redAccent,
+                          context: context,
+                          message: 'Email ID or Password is incorrect!');
+
+                      _controllerEmail.clear();
+                      _controllerPass.clear();
+                    }
                   },
                 ),
               )),
