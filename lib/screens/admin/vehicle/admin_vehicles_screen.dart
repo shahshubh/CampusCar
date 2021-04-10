@@ -1,3 +1,4 @@
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
@@ -15,7 +16,6 @@ class AdminVehiclesScreen extends StatefulWidget {
 
 class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   var adminService = locator<AdminService>();
-  List<Vehicle> allVehicles;
   var filterValue = 'All';
   List<Vehicle> filteredData;
 
@@ -25,7 +25,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   }
 
   Future<List<Vehicle>> getData() async {
-    allVehicles = await adminService.getAllVehicles();
+    var allVehicles = await adminService.getAllVehicles();
     return allVehicles;
   }
 
@@ -65,13 +65,13 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                             var newData;
                             switch (newValue) {
                               case 'In Campus':
-                                newData = allVehicles
+                                newData = snapshot.data
                                     .where((element) => element.isInCampus)
                                     .toList();
 
                                 break;
                               case 'Expired':
-                                newData = allVehicles
+                                newData = snapshot.data
                                     .where((element) =>
                                         Utils.isExpired(element.expires))
                                     .toList();
@@ -155,7 +155,7 @@ class _DataSource extends DataTableSource {
         _Row(
           vehicle.licensePlateNo,
           vehicle.ownerName,
-          DateFormat("dd/MM hh:mm aa").format(DateTime.parse(vehicle.expires)),
+          vehicle.expires,
           vehicle.isInCampus ? "In Campus" : "-",
         ),
       );
@@ -200,9 +200,13 @@ class _DataSource extends DataTableSource {
           ],
         )),
         DataCell(Text(row.licensePlateNo)),
-        DataCell(Text(row.expires)),
-        DataCell(Text(row.status)),
-        // DataCell(row.action),
+        DataCell(Text(
+          DateFormat("dd/MM hh:mm aa").format(DateTime.parse(row.expires)),
+          style: Utils.isExpired(row.expires)
+              ? TextStyle(color: Colors.red)
+              : null,
+        )),
+        DataCell(Center(child: Text(row.status))),
       ],
     );
   }

@@ -6,6 +6,7 @@ import 'package:CampusCar/service/admin_service.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/vehicle_info.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AdminVehicleDetailScreen extends StatefulWidget {
@@ -40,23 +41,34 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          child: data.length > 0
-              ? PaginatedDataTable(
-                  header: Text(''),
-                  // rowsPerPage: data.length < 10 ? data.length : 10,
-                  columns: [
-                    DataColumn(label: Text('Vehicle')),
-                    DataColumn(label: Text('Owner Name')),
-                    DataColumn(label: Text('Time')),
-                    DataColumn(label: Text('Direction')),
-                    // DataColumn(label: Text('Action')),
-                  ],
-                  source: _DataSource(context, data),
-                )
-              : Center(
-                  child: Text(
-                      "No Logs found for ${widget.vehicle.licensePlateNo}"),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: FaIcon(FontAwesomeIcons.times)),
                 ),
+              ),
+              data.length > 0
+                  ? PaginatedDataTable(
+                      header: Text(''),
+                      columns: [
+                        DataColumn(label: Text('Vehicle')),
+                        DataColumn(label: Text('Owner Name')),
+                        DataColumn(label: Text('Time')),
+                        DataColumn(label: Text('Direction')),
+                      ],
+                      source: _DataSource(context, data),
+                    )
+                  : Center(
+                      child: Text(
+                          "No Logs found for ${widget.vehicle.licensePlateNo}"),
+                    ),
+            ],
+          ),
         );
       },
     );
