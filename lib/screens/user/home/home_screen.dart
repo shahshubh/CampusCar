@@ -5,6 +5,7 @@ import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
+import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
@@ -101,10 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
           await vehicleService.getVehicle(licensePlateNo: licensePlateNo);
       // If the vehicle is registered/exists in db
       if (foundVehicle != null) {
-        var isExpired =
-            DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
-                ? false
-                : true;
+        var isExpired = Utils.isExpired(foundVehicle.expires);
+
         // If the access period of vehicle is not expired
         if (!isExpired) {
           // add logs

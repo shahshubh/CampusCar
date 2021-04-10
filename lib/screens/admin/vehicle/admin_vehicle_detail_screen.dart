@@ -94,11 +94,7 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
               VehicleInfo(
                 isAdmin: true,
                 showLogs: showLogs,
-                isExpired: DateTime.parse(widget.vehicle.expires)
-                            .compareTo(DateTime.now()) >
-                        0
-                    ? false
-                    : true,
+                isExpired: Utils.isExpired(widget.vehicle.expires),
                 vehicle: widget.vehicle,
               ),
             ],

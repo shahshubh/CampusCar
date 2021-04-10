@@ -5,6 +5,7 @@ import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/no_vehicles.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/profile_header.dart';
+import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/vehicle_info.dart';
 import 'package:CampusCar/screens/user/vehicle/widgets/vehicle_info_error.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
@@ -54,10 +55,8 @@ class _LiveVehicleState extends State<LiveVehicle> {
     Vehicle foundVehicle =
         await vehicleService.getVehicle(licensePlateNo: licensePlate);
     if (foundVehicle != null) {
-      var isExpired =
-          DateTime.parse(foundVehicle.expires).compareTo(DateTime.now()) > 0
-              ? false
-              : true;
+      var isExpired = Utils.isExpired(foundVehicle.expires);
+
       if (!isExpired) {
         // add logs
         await vehicleService.addLog(vehicle: foundVehicle);

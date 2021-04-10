@@ -78,4 +78,11 @@ class Utils {
       },
     );
   }
+
+  static bool isExpired(String date) {
+    if (DateTime.parse(date).compareTo(DateTime.now()) > 0)
+      return false;
+    else
+      return true;
+  }
 }

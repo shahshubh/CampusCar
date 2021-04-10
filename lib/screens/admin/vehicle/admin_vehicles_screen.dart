@@ -2,6 +2,7 @@ import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
+import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
@@ -72,11 +73,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                               case 'Expired':
                                 newData = allVehicles
                                     .where((element) =>
-                                        DateTime.parse(element.expires)
-                                                    .compareTo(DateTime.now()) >
-                                                0
-                                            ? false
-                                            : true)
+                                        Utils.isExpired(element.expires))
                                     .toList();
                                 break;
                             }
