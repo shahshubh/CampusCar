@@ -1,4 +1,5 @@
 import 'package:CampusCar/models/log.dart';
+import 'package:CampusCar/models/vehicle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminService {
@@ -43,7 +44,6 @@ class AdminService {
   }
 
   Future<List<Log>> getLogsOfVehicle({String licensePlate}) async {
-    // await addLog(vehicle: testVehicle);
     List<Log> allLogs = [];
     QuerySnapshot querySnapshot = await logsRef
         .where('vehicle.licensePlateNo', isEqualTo: licensePlate)
@@ -53,8 +53,6 @@ class AdminService {
     querySnapshot.docs.forEach((element) {
       allLogs.add(Log.fromMap(element.data()));
     });
-
-    print(allLogs[0].toMap());
 
     return allLogs;
   }
@@ -68,5 +66,15 @@ class AdminService {
     } else {
       return null;
     }
+  }
+
+  Future<List<Vehicle>> getAllVehicles() async {
+    List<Vehicle> allVehicles = [];
+    QuerySnapshot querySnapshot = await vehiclesRef.get();
+
+    querySnapshot.docs.forEach((element) {
+      allVehicles.add(Vehicle.fromMap(element.data()));
+    });
+    return allVehicles;
   }
 }

@@ -1,7 +1,8 @@
 import 'package:CampusCar/screens/admin/drawer/admin_drawer_screen.dart';
 import 'package:CampusCar/screens/admin/home/admin_dashboard_screen.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_add_vehicle_screen.dart';
-import 'package:CampusCar/screens/admin/home/admin_home_screen.dart';
+import 'package:CampusCar/screens/admin/vehicle/admin_logs_screen.dart';
+import 'package:CampusCar/screens/admin/vehicle/admin_vehicles_screen.dart';
 //import 'package:CampusCar/screens/admin/login/admin_login.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,10 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         return AdminDashboardScreen();
         break;
       case 1:
-        return AdminHomeScreen();
+        return AdminLogsScreen();
         break;
       case 2:
-        return AdminHomeScreen();
+        return AdminVehiclesScreen();
         break;
       case 3:
         return AdminAddVehicleScreen(

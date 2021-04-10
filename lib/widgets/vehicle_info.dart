@@ -41,8 +41,8 @@ class VehicleInfo extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: lightBlue,
+                            borderRadius: BorderRadius.circular(10),
+                            color: secondaryBlue,
                           ),
                           padding: EdgeInsets.all(10),
                           child: Row(

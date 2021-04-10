@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AdminVehicleDetailScreen extends StatefulWidget {
+  final Vehicle vehicle;
+  AdminVehicleDetailScreen({@required this.vehicle});
   @override
   _AdminVehicleDetailScreenState createState() =>
       _AdminVehicleDetailScreenState();
@@ -25,8 +27,8 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
   }
 
   void getData() async {
-    var allLogs =
-        await adminService.getLogsOfVehicle(licensePlate: "MH12DE1433");
+    var allLogs = await adminService.getLogsOfVehicle(
+        licensePlate: widget.vehicle.licensePlateNo);
     setState(() {
       data = allLogs;
     });
@@ -38,18 +40,23 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          child: PaginatedDataTable(
-            header: Text('Logs'),
-            // rowsPerPage: 4,
-            columns: [
-              DataColumn(label: Text('Vehicle')),
-              DataColumn(label: Text('Owner Name')),
-              DataColumn(label: Text('Time')),
-              DataColumn(label: Text('Direction')),
-              DataColumn(label: Text('Action')),
-            ],
-            source: _DataSource(context, data),
-          ),
+          child: data.length > 0
+              ? PaginatedDataTable(
+                  header: Text(''),
+                  // rowsPerPage: data.length < 10 ? data.length : 10,
+                  columns: [
+                    DataColumn(label: Text('Vehicle')),
+                    DataColumn(label: Text('Owner Name')),
+                    DataColumn(label: Text('Time')),
+                    DataColumn(label: Text('Direction')),
+                    // DataColumn(label: Text('Action')),
+                  ],
+                  source: _DataSource(context, data),
+                )
+              : Center(
+                  child: Text(
+                      "No Logs found for ${widget.vehicle.licensePlateNo}"),
+                ),
         );
       },
     );
@@ -69,12 +76,10 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
           child: Column(
             children: <Widget>[
               ProfileHeader(
-                avatar: NetworkImage(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"),
-                coverImage: NetworkImage(
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"),
-                title: "Ramesh Mana",
-                subtitle: "Manager",
+                avatar: NetworkImage(widget.vehicle.profileImage),
+                coverImage: NetworkImage(widget.vehicle.profileImage),
+                title: widget.vehicle.ownerName,
+                subtitle: widget.vehicle.licensePlateNo,
                 actions: <Widget>[
                   MaterialButton(
                     color: Colors.white,
@@ -89,19 +94,12 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
               VehicleInfo(
                 isAdmin: true,
                 showLogs: showLogs,
-                isExpired: true,
-                vehicle: Vehicle(
-                  licensePlateNo: 'MH12DE1433',
-                  color: '#000000',
-                  expires: new DateTime.now().toString(),
-                  model: 'Ford',
-                  ownerMobileNo: '9988786734',
-                  ownerName: 'Shubh Shah',
-                  profileImage:
-                      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-                  role: "Faculty",
-                  isInCampus: false,
-                ),
+                isExpired: DateTime.parse(widget.vehicle.expires)
+                            .compareTo(DateTime.now()) >
+                        0
+                    ? false
+                    : true,
+                vehicle: widget.vehicle,
               ),
             ],
           ),
@@ -242,7 +240,7 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.ownerName)),
         DataCell(Text(row.time)),
         DataCell(Text(row.direction)),
-        DataCell(row.action),
+        // DataCell(row.action),
       ],
     );
   }
