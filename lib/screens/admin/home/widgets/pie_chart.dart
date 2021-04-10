@@ -31,7 +31,7 @@ class PieChart extends StatelessWidget {
 
           data.forEach((key, value) {
             // if colors are less then repeat from start
-            if (i + 1 >= graphColors.length) i = 0;
+            if (i + 1 > graphColors.length) i = 0;
             graphData.add(_PieData(key, value, graphColors[i++]));
           });
           return ChartContainer(

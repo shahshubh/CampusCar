@@ -12,7 +12,12 @@ const errorColor = Colors.redAccent;
 const successColor = Colors.green;
 
 List<Color> graphColors = [
-  Colors.red[100],
+  Colors.purpleAccent,
+  Colors.red.shade100,
   Colors.blueAccent,
-  Colors.red[400],
+  Colors.amber,
+  Colors.purple.shade100,
+  Colors.orange,
+  Colors.pink,
+  Colors.teal,
 ];
