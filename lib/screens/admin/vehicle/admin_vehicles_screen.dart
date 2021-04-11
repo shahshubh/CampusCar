@@ -3,10 +3,12 @@ import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
+import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AdminVehiclesScreen extends StatefulWidget {
@@ -93,6 +95,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                       DataColumn(label: Text('License Plate')),
                       DataColumn(label: Text('Expires')),
                       DataColumn(label: Text('Status')),
+                      DataColumn(label: Text('Actions')),
                     ],
                     source: _DataSource(context,
                         filteredData != null ? filteredData : snapshot.data),
@@ -169,6 +172,8 @@ class _DataSource extends DataTableSource {
     assert(index >= 0);
     if (index >= _rows.length) return null;
     final row = _rows[index];
+    String formattedDate =
+        DateFormat("dd/MM hh:mm aa").format(DateTime.parse(row.expires));
     return DataRow.byIndex(
       index: index,
       // selected: row.selected,
@@ -201,12 +206,30 @@ class _DataSource extends DataTableSource {
         )),
         DataCell(Text(row.licensePlateNo)),
         DataCell(Text(
-          DateFormat("dd/MM hh:mm aa").format(DateTime.parse(row.expires)),
+          formattedDate,
           style: Utils.isExpired(row.expires)
               ? TextStyle(color: Colors.red)
               : null,
         )),
         DataCell(Center(child: Text(row.status))),
+        DataCell(
+          GestureDetector(
+            onTap: () {
+              SmsUtil.sendReminderSms(
+                number: data[index].ownerMobileNo,
+                name: data[index].ownerName,
+                expiryDate: data[index].expires,
+                licensePlate: data[index].licensePlateNo,
+              );
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: FaIcon(FontAwesomeIcons.stopwatch),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

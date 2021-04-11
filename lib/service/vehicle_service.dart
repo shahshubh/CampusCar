@@ -4,9 +4,11 @@ import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/enum/direction.dart';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
+import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:intl/intl.dart';
 
 class VehicleService {
   CollectionReference vehiclesRef =
@@ -44,9 +46,13 @@ class VehicleService {
   }
 
   Future<void> addVehicle({Vehicle vehicle}) {
+    SmsUtil.sendWelcomeSms(
+      name: vehicle.ownerName,
+      number: vehicle.ownerMobileNo,
+      licensePlate: vehicle.licensePlateNo,
+      expiryDate: vehicle.expires,
+    );
     return vehiclesRef.doc(vehicle.licensePlateNo).set(vehicle.toMap());
-    // .then((value) => print("Vehicle Added"))
-    // .catchError((error) => print("Failed =>   $error"));
   }
 
   Future<Vehicle> getVehicle({String licensePlateNo}) async {
