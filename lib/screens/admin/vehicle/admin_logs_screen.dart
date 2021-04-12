@@ -1,6 +1,7 @@
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
+import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
@@ -21,9 +22,7 @@ class AdminLogsScreen extends StatefulWidget {
 }
 
 class _AdminLogsScreenState extends State<AdminLogsScreen> {
-  
   var adminService = locator<AdminService>();
-  var filterValue = 'All';
   List<Log> filteredData;
 
   @override
@@ -36,59 +35,68 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
     return allLogs;
   }
 
+  void searchHandler({String text, List<Log> data}) {
+    var newData = data
+        .where((element) =>
+            element.vehicle["ownerName"].contains(text) ||
+            element.vehicle["licensePlateNo"].contains(text) ||
+            element.vehicle["ownerMobileNo"].contains(text) ||
+            DateFormat("dd/MM/yyyy hh:mm aa")
+                .format(DateTime.parse(element.time))
+                .contains(text))
+        .toList();
+    setState(() {
+      filteredData = newData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
-      title: "Logs Screen",
       child: GestureDetector(
         onTap: () {},
         child: Container(
           child: Column(
             children: [
-              Container(child: Text("PAGE")),
               FutureBuilder(
                 future: getData(),
                 builder: (context, AsyncSnapshot<List<Log>> snapshot) {
                   if (snapshot.hasData) {
                     return PaginatedDataTable(
                       header: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          DropdownButton(
-                            value: filterValue,
-                            items: <String>[
-                              'All',
-                              'Expired',
-                              'In Campus',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              var newData;
-                              switch (newValue) {
-                                case 'In Campus':
-                                  newData = snapshot.data
-                                      .where((element) => element.vehicle['isInCampus'])
-                                      .toList();
-
-                                  break;
-                                case 'Expired':
-                                  newData = snapshot.data
-                                      .where((element) =>
-                                          Utils.isExpired(element.vehicle['expires']))
-                                      .toList();
-                                  break;
-                              }
-
-                              setState(() {
-                                filteredData = newData;
-                                filterValue = newValue;
-                              });
-                            },
+                          Expanded(
+                            child: AnimatedSearchBar(
+                              searchDecoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  )),
+                              label: "Vehicle Logs",
+                              labelStyle:
+                                  TextStyle(color: Colors.black, fontSize: 24),
+                              onChanged: (text) {
+                                searchHandler(text: text, data: snapshot.data);
+                              },
+                            ),
                           ),
+                          // Expanded(
+                          //   child: TextField(
+                          //     decoration: InputDecoration(
+                          //       contentPadding: EdgeInsets.symmetric(
+                          //           horizontal: 20, vertical: 0),
+                          //       border: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(30.0),
+                          //       ),
+                          //       labelText: "Search",
+                          //       suffixIcon: Icon(Icons.search),
+                          //     ),
+                          //     onChanged: (text) {
+                          //       searchHandler(text: text, data: snapshot.data);
+                          //     },
+                          //   ),
+                          // ),
                         ],
                       ),
                       rowsPerPage:
@@ -97,7 +105,7 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
                         DataColumn(label: Text('Owner Name')),
                         DataColumn(label: Text('License Plate')),
                         DataColumn(label: Text('Time')),
-                        DataColumn(label: Text('Direction')),                        
+                        DataColumn(label: Text('Direction')),
                       ],
                       source: _DataSource(context,
                           filteredData != null ? filteredData : snapshot.data),
@@ -126,7 +134,6 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
     );
   }
 }
-
 
 class _Row {
   _Row(
@@ -176,7 +183,7 @@ class _DataSource extends DataTableSource {
     assert(index >= 0);
     if (index >= _rows.length) return null;
     final row = _rows[index];
-  
+
     return DataRow.byIndex(
       index: index,
       // selected: row.selected,
@@ -192,10 +199,9 @@ class _DataSource extends DataTableSource {
         DataCell(Text(row.ownerName)),
         DataCell(Text(row.licensePlateNo)),
         DataCell(Text(
-          row.time,    
+          row.time,
         )),
         DataCell(Center(child: Text(row.direction))),
- 
       ],
     );
   }
@@ -209,4 +215,3 @@ class _DataSource extends DataTableSource {
   @override
   int get selectedRowCount => _selectedCount;
 }
-
