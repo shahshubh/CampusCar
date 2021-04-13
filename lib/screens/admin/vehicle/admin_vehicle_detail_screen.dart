@@ -1,7 +1,9 @@
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/widgets/avatar.dart';
+import 'package:CampusCar/screens/admin/vehicle/widgets/dialog_content.dart';
 import 'package:CampusCar/service/admin_service.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/vehicle_info.dart';
@@ -35,39 +37,73 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
     });
   }
 
+  void vehicleEditHandler() {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text("Edit Expiry Date"),
+        children: [
+          DialogContent(
+            vehicle: widget.vehicle,
+          ),
+        ],
+      ),
+    );
+  }
+
   void showLogs(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: FaIcon(FontAwesomeIcons.times)),
+        return SingleChildScrollView(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: FaIcon(FontAwesomeIcons.times)),
+                  ),
                 ),
-              ),
-              data.length > 0
-                  ? PaginatedDataTable(
-                      header: Text(''),
-                      columns: [
-                        DataColumn(label: Text('Vehicle')),
-                        DataColumn(label: Text('Owner Name')),
-                        DataColumn(label: Text('Time')),
-                        DataColumn(label: Text('Direction')),
-                      ],
-                      source: _DataSource(context, data),
-                    )
-                  : Center(
-                      child: Text(
-                          "No Logs found for ${widget.vehicle.licensePlateNo}"),
-                    ),
-            ],
+                data.length > 0
+                    ? PaginatedDataTable(
+                        header: RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+                                text: '${widget.vehicle.licensePlateNo} ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                )),
+                            TextSpan(
+                                text: ' Logs',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                ))
+                          ]),
+                        ),
+                        columns: [
+                          DataColumn(label: Text('Time')),
+                          DataColumn(label: Text('Direction')),
+                        ],
+                        source: _DataSource(context, data),
+                      )
+                    : Center(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height - 150,
+                          child: Text(
+                              "No Logs found for ${widget.vehicle.licensePlateNo}"),
+                        ),
+                      ),
+              ],
+            ),
           ),
         );
       },
@@ -98,7 +134,7 @@ class _AdminVehicleDetailScreenState extends State<AdminVehicleDetailScreen> {
                     shape: CircleBorder(),
                     elevation: 0,
                     child: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: vehicleEditHandler,
                   )
                 ],
               ),
@@ -190,18 +226,12 @@ class ProfileHeader extends StatelessWidget {
 
 class _Row {
   _Row(
-    this.vehicle,
-    this.ownerName,
     this.time,
     this.direction,
-    this.action,
   );
 
-  final String vehicle;
-  final String ownerName;
   final String time;
   final String direction;
-  final Icon action;
 
   bool selected = false;
 }
@@ -215,11 +245,8 @@ class _DataSource extends DataTableSource {
     data.forEach((Log log) {
       _rows.add(
         _Row(
-          log.vehicle["licensePlateNo"],
-          log.vehicle["ownerName"],
           DateFormat("dd/MM hh:mm aa").format(DateTime.parse(log.time)),
           Utils.numToString(log.direction),
-          Icon(Icons.edit),
         ),
       );
     });
@@ -244,8 +271,6 @@ class _DataSource extends DataTableSource {
       //   }
       // },
       cells: [
-        DataCell(Text(row.vehicle)),
-        DataCell(Text(row.ownerName)),
         DataCell(Text(row.time)),
         DataCell(Text(row.direction)),
         // DataCell(row.action),

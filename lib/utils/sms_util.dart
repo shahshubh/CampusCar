@@ -33,4 +33,12 @@ class SmsUtil {
         "Hello $name \nWelcome to Campus Car.\nYour registration for vehicle $licensePlate is successful and valid till  $expiryDate.";
     sendSms(number: number, msg: messageTxt, showSuccessMsg: false);
   }
+
+  static void sendExpiryUpdateSms(
+      {String number, String name, String expiryDate, String licensePlate}) {
+    expiryDate = formatDate(expiryDate);
+    String messageTxt =
+        "Hello $name \nExpiry date for your vehicle $licensePlate has been updated to $expiryDate .";
+    sendSms(number: number, msg: messageTxt, showSuccessMsg: false);
+  }
 }

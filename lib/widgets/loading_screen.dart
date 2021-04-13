@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class LoadingScreen extends StatelessWidget {
+  final String lottieAssetPath;
+  LoadingScreen({
+    this.lottieAssetPath = 'assets/gif/car-number-plate.json',
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +15,7 @@ class LoadingScreen extends StatelessWidget {
           Container(
             child: Center(
               child: Lottie.asset(
-                'assets/gif/car-number-plate.json',
+                lottieAssetPath,
                 width: 150,
               ),
             ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:CampusCar/constants/colors.dart';
+import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/widgets/custom_icon_button.dart';
 import 'package:CampusCar/widgets/custom_input_field.dart';
 import 'package:circular_check_box/circular_check_box.dart';
@@ -159,13 +160,7 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
             Text("Role", style: labelStyle),
             DropdownButton(
               value: widget.role,
-              items: <String>[
-                'Visitor',
-                'Faculty',
-                'Staff',
-                'College Fest',
-                'Other'
-              ].map<DropdownMenuItem<String>>((String value) {
+              items: allRoles.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),

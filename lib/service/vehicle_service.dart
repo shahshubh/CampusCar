@@ -45,13 +45,23 @@ class VehicleService {
     }
   }
 
-  Future<void> addVehicle({Vehicle vehicle}) {
-    SmsUtil.sendWelcomeSms(
-      name: vehicle.ownerName,
-      number: vehicle.ownerMobileNo,
-      licensePlate: vehicle.licensePlateNo,
-      expiryDate: vehicle.expires,
-    );
+  Future<void> addVehicle({Vehicle vehicle, bool isEdit = false}) {
+    if (!isEdit) {
+      SmsUtil.sendWelcomeSms(
+        name: vehicle.ownerName,
+        number: vehicle.ownerMobileNo,
+        licensePlate: vehicle.licensePlateNo,
+        expiryDate: vehicle.expires,
+      );
+    } else {
+      SmsUtil.sendExpiryUpdateSms(
+        name: vehicle.ownerName,
+        number: vehicle.ownerMobileNo,
+        licensePlate: vehicle.licensePlateNo,
+        expiryDate: vehicle.expires,
+      );
+    }
+
     return vehiclesRef.doc(vehicle.licensePlateNo).set(vehicle.toMap());
   }
 
