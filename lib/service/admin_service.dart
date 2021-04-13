@@ -77,4 +77,14 @@ class AdminService {
     });
     return allVehicles;
   }
+
+  Future<List<Log>> getAllLogs() async {
+    List<Log> allLogs = [];
+    QuerySnapshot querySnapshot = await logsRef.get();
+
+    querySnapshot.docs.forEach((element) {
+      allLogs.add(Log.fromMap(element.data()));
+    });
+    return allLogs;
+  }
 }
