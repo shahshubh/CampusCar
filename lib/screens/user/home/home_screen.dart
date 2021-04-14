@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:CampusCar/components/live_button.dart';
-import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
 import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
@@ -29,11 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
 
   Future getLicensePlate({String source}) async {
-    // var endpoint = 'http://localhost:3000/upload';
-    String apiUrl = await vehicleService.getApiUrl();
-    var endpoint = apiUrl != null ? apiUrl : 'http://10.0.2.2:3000/upload';
-    print(endpoint);
-
+    // pick an image
     final pickedFile = await getImage(source: source);
     setState(() {
       isLoading = true;
@@ -42,9 +38,41 @@ class _HomeScreenState extends State<HomeScreen> {
       return null;
     }
 
+    // make request to 3rd party api for better alpr
+    // -------------------------------------------------------------
+    Map<String, String> headers = {
+      "Authorization": "Token ${env['ALPR_TOKEN']}"
+    };
+    var alprRequest = http.MultipartRequest(
+        "POST", Uri.parse('https://api.platerecognizer.com/v1/plate-reader/'));
+    var alprPic = await http.MultipartFile.fromPath("upload", pickedFile.path);
+    alprRequest.files.add(alprPic);
+    alprRequest.headers.addAll(headers);
+    alprRequest.fields["regions"] = "in";
+    var alprRes = await alprRequest.send();
+    var alprResponseData = await alprRes.stream.toBytes();
+    var alprResponseString = String.fromCharCodes(alprResponseData);
+    var alprResults = jsonDecode(alprResponseString)["results"] != null
+        ? jsonDecode(alprResponseString)["results"]
+        : null;
+    // if we get a successfull result then return
+    if (alprResults != null && alprResults.length > 0) {
+      // clear cache
+      imageCache.clear();
+      return {
+        "success": true,
+        "license_plate": alprResults[0]["plate"].toUpperCase()
+      };
+    }
+    // -------------------------------------------------------------
+    // else make request to our own flask api for number plate recognition
+    // get flask ngrok api url
+
+    String apiUrl = await vehicleService.getApiUrl();
+    var endpoint = apiUrl != null ? apiUrl : 'http://10.0.2.2:3000/upload';
     var request = http.MultipartRequest("POST", Uri.parse(endpoint));
-    var pic = await http.MultipartFile.fromPath("image", pickedFile.path);
-    request.files.add(pic);
+    var pic2 = await http.MultipartFile.fromPath("upload", pickedFile.path);
+    request.files.add(pic2);
 
     // clear cache
     imageCache.clear();
@@ -53,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       response = await request.send();
     } catch (error) {
+      print(error);
       return jsonDecode(
           '{"success": false,"error": "Something went wrong !! Please try again after sometime"}');
     }
