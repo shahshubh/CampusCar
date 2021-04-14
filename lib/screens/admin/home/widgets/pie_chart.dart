@@ -48,7 +48,7 @@ class PieChart extends StatelessWidget {
                 PieSeries<_PieData, String>(
                   explodeGesture: ActivationMode.singleTap,
                   explode: true,
-                  pointColorMapper: (_PieData data, _) => data.color,
+                  // pointColorMapper: (_PieData data, _) => data.color,
                   dataSource: graphData,
                   xValueMapper: (_PieData data, _) => data.xData,
                   yValueMapper: (_PieData data, _) => data.yData,

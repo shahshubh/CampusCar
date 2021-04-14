@@ -17,7 +17,9 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
   getTheScreen() {
     switch (currentScreen) {
       case 0:
-        return AdminDashboardScreen();
+        return AdminDashboardScreen(
+          currentScreenHandler: changeCurrentScreen,
+        );
         break;
       case 1:
         return AdminLogsScreen();

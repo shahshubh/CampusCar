@@ -36,13 +36,15 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   }
 
   void searchHandler({String text, List<Log> data}) {
+    text = text.toLowerCase();
     var newData = data
         .where((element) =>
-            element.vehicle["ownerName"].contains(text) ||
-            element.vehicle["licensePlateNo"].contains(text) ||
-            element.vehicle["ownerMobileNo"].contains(text) ||
+            element.vehicle["ownerName"].toLowerCase().contains(text) ||
+            element.vehicle["licensePlateNo"].toLowerCase().contains(text) ||
+            element.vehicle["ownerMobileNo"].toLowerCase().contains(text) ||
             DateFormat("dd/MM/yyyy hh:mm aa")
                 .format(DateTime.parse(element.time))
+                .toLowerCase()
                 .contains(text))
         .toList();
     setState(() {
@@ -121,8 +123,9 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
                     return Container(
                       alignment: Alignment.center,
                       constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height - 95),
-                      child: LoadingScreen(),
+                          minHeight: MediaQuery.of(context).size.height - 145),
+                      child: LoadingScreen(
+                          lottieAssetPath: "assets/gif/loading-animation.json"),
                     );
                   }
                 },

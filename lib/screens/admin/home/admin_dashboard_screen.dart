@@ -12,6 +12,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
+  final Function currentScreenHandler;
+  const AdminDashboardScreen({this.currentScreenHandler});
+
   @override
   _AdminDashboardScreenState createState() => _AdminDashboardScreenState();
 }
@@ -65,8 +68,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ? Container(
               alignment: Alignment.center,
               constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 95),
-              child: LoadingScreen(),
+                  minHeight: MediaQuery.of(context).size.height - 145),
+              child: LoadingScreen(
+                  lottieAssetPath: "assets/gif/loading-animation.json"),
             )
           : Container(
               child: Column(
@@ -87,6 +91,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       totalExpiredVehiclesCount: totalExpiredVehiclesCount,
                       totalScansCount: totalScansCount,
                       totalVehicleLogsCount: totalVehicleLogsCount,
+                      currentScreenHandler: widget.currentScreenHandler,
                     ),
                   ),
                   Padding(

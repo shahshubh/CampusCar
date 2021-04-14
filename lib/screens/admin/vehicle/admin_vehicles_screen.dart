@@ -1,5 +1,6 @@
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
+import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
@@ -7,6 +8,7 @@ import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
+import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +22,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   var adminService = locator<AdminService>();
   var filterValue = 'All';
   List<Vehicle> filteredData;
+  List<Vehicle> allVehicles;
 
   @override
   void initState() {
@@ -27,8 +30,24 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   }
 
   Future<List<Vehicle>> getData() async {
-    var allVehicles = await adminService.getAllVehicles();
-    return allVehicles;
+    var allVeh = await adminService.getAllVehicles();
+    setState(() {
+      allVehicles = allVeh;
+    });
+    return allVeh;
+  }
+
+  void searchHandler({String text}) {
+    text = text.toLowerCase();
+    var newData = allVehicles
+        .where((element) =>
+            element.ownerName.toLowerCase().contains(text) ||
+            element.licensePlateNo.toLowerCase().contains(text) ||
+            element.ownerMobileNo.toLowerCase().contains(text))
+        .toList();
+    setState(() {
+      filteredData = newData;
+    });
   }
 
   @override
@@ -37,12 +56,28 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
       child: Container(
         child: Column(
           children: [
-            Container(
-              child: Text(
-                "All Vehicles",
-                style: TextStyle(color: Colors.black, fontSize: 24),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: AnimatedSearchBar(
+                label: "All Vehicles",
+                searchDecoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    )),
+                labelStyle: TextStyle(color: Colors.black, fontSize: 24),
+                onChanged: (text) {
+                  searchHandler(text: text);
+                },
               ),
             ),
+            // Container(
+            //   child: Text(
+            //     "All Vehicles",
+            //     style: TextStyle(color: Colors.black, fontSize: 24),
+            //   ),
+            // ),
             FutureBuilder(
               future: getData(),
               builder: (context, AsyncSnapshot<List<Vehicle>> snapshot) {
@@ -111,8 +146,9 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                   return Container(
                     alignment: Alignment.center,
                     constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height - 95),
-                    child: LoadingScreen(),
+                        minHeight: MediaQuery.of(context).size.height - 145),
+                    child: LoadingScreen(
+                        lottieAssetPath: "assets/gif/loading-animation.json"),
                   );
                 }
               },

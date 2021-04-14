@@ -8,11 +8,14 @@ class StatsGrid extends StatelessWidget {
   final totalScansCount;
   final totalVehicleLogsCount;
   final totalExpiredVehiclesCount;
+  final Function currentScreenHandler;
+
   StatsGrid({
     @required this.totalVehiclesCount,
     @required this.totalScansCount,
     @required this.totalVehicleLogsCount,
     @required this.totalExpiredVehiclesCount,
+    this.currentScreenHandler,
   });
 
   final graphRed = Color(0xffff6a69);
@@ -33,18 +36,27 @@ class StatsGrid extends StatelessWidget {
           Flexible(
             child: Row(
               children: <Widget>[
-                _buildStatCard('Total Vehicles', totalVehiclesCount, graphRed),
+                _buildStatCard('Total Vehicles', totalVehiclesCount, graphRed,
+                    () {
+                  currentScreenHandler(2);
+                }),
                 _buildStatCard(
-                    'Permit Expired', totalExpiredVehiclesCount, graphBlue),
+                    'Permit Expired', totalExpiredVehiclesCount, graphBlue, () {
+                  currentScreenHandler(2);
+                }),
               ],
             ),
           ),
           Flexible(
             child: Row(
               children: <Widget>[
-                _buildStatCard('Total Scans', totalScansCount, graphOrange),
-                _buildStatCard('Total Vehicle Logs', totalVehicleLogsCount,
-                    graphLightBlue),
+                _buildStatCard(
+                    'Total Scans', totalScansCount, graphOrange, () {}),
+                _buildStatCard(
+                    'Total Vehicle Logs', totalVehicleLogsCount, graphLightBlue,
+                    () {
+                  currentScreenHandler(1);
+                }),
               ],
             ),
           ),
@@ -61,54 +73,58 @@ class StatsGrid extends StatelessWidget {
     );
   }
 
-  Expanded _buildStatCard(String title, int count, Color color) {
+  Expanded _buildStatCard(
+      String title, int count, Color color, Function navigateHandler) {
     return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(7.0),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: color,
-              blurRadius: 12,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
+      child: GestureDetector(
+        onTap: navigateHandler,
+        child: Container(
+          margin: EdgeInsets.all(7.0),
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: color,
+                blurRadius: 12,
+                spreadRadius: 1,
               ),
-            ),
-            Countup(
-              begin: 0,
-              end: count.toDouble(),
-              separator: ',',
-              duration: Duration(seconds: 2),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            // Text(
-            //   count,
-            //   style: TextStyle(
-            //     color: Colors.white,
-            //     fontSize: 22.0,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
-          ],
+              Countup(
+                begin: 0,
+                end: count.toDouble(),
+                separator: ',',
+                duration: Duration(seconds: 2),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // Text(
+              //   count,
+              //   style: TextStyle(
+              //     color: Colors.white,
+              //     fontSize: 22.0,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

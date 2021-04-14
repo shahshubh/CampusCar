@@ -40,7 +40,7 @@ class DoughnutChart extends StatelessWidget {
               series: <DoughnutSeries<_PieData, String>>[
                 DoughnutSeries<_PieData, String>(
                   explode: true,
-                  pointColorMapper: (_PieData data, _) => data.color,
+                  // pointColorMapper: (_PieData data, _) => data.color,
                   explodeIndex: 0,
                   dataSource: graphData,
                   xValueMapper: (_PieData data, _) => data.xData,
