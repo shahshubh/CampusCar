@@ -68,7 +68,6 @@ class Utils {
               message,
               style: TextStyle(color: Colors.white),
             ),
-            // showProgressIndicator: true,
             primaryAction: FlatButton(
               onPressed: () => controller.dismiss(),
               child: FaIcon(FontAwesomeIcons.times, color: Colors.white),

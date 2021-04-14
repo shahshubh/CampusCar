@@ -45,7 +45,6 @@ class LineChart extends StatelessWidget {
               series: <LineSeries<_ScansData, String>>[
                 LineSeries<_ScansData, String>(
                   name: 'Daily Scans',
-                  // color: ,
                   dataSource: graphData,
                   xValueMapper: (_ScansData data, _) =>
                       DateFormat("dd/MM/yy").format(data.date),

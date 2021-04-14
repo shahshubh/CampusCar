@@ -1,6 +1,4 @@
-import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
-import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
@@ -72,12 +70,6 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                 },
               ),
             ),
-            // Container(
-            //   child: Text(
-            //     "All Vehicles",
-            //     style: TextStyle(color: Colors.black, fontSize: 24),
-            //   ),
-            // ),
             FutureBuilder(
               future: getData(),
               builder: (context, AsyncSnapshot<List<Vehicle>> snapshot) {
@@ -212,15 +204,6 @@ class _DataSource extends DataTableSource {
         DateFormat("dd/MM hh:mm aa").format(DateTime.parse(row.expires));
     return DataRow.byIndex(
       index: index,
-      // selected: row.selected,
-      // onSelectChanged: (value) {
-      //   if (row.selected != value) {
-      //     _selectedCount += value ? 1 : -1;
-      //     assert(_selectedCount >= 0);
-      //     row.selected = value;
-      //     notifyListeners();
-      //   }
-      // },
       cells: [
         DataCell(Row(
           children: [

@@ -3,7 +3,6 @@ import 'package:CampusCar/screens/admin/home/admin_dashboard_screen.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_add_vehicle_screen.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_logs_screen.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicles_screen.dart';
-//import 'package:CampusCar/screens/admin/login/admin_login.dart';
 import 'package:flutter/material.dart';
 
 class AdminMainScreen extends StatefulWidget {
@@ -28,27 +27,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
         return AdminVehiclesScreen();
         break;
       case 3:
-        return AdminAddVehicleScreen(
-          currentScreenHandler: changeCurrentScreen,
-        );
+        return AdminAddVehicleScreen();
         break;
 
       default:
-        return AdminAddVehicleScreen(
-          currentScreenHandler: changeCurrentScreen,
-        );
+        return AdminAddVehicleScreen();
         break;
-
-      // default:
-      //   return AdminHomeScreen(
-      //     currentScreenHandler: changeCurrentScreen,
-      //   );
-      //   break;
     }
   }
 
   changeCurrentScreen(int index) {
-    // print(index);
     setState(() {
       currentScreen = index;
     });

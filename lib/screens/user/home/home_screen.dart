@@ -17,8 +17,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:CampusCar/locator.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Function currentScreenHandler;
-  HomeScreen({@required this.currentScreenHandler});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -286,16 +284,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           )),
-
-                      // temporary button for testing
-                      // RoundedButton(
-                      //     press: () {
-                      //       vehicleService.addLiveVehicle();
-                      //     },
-                      //     child: Text(
-                      //       "Add Live Vehicle",
-                      //       style: TextStyle(color: Colors.white),
-                      //     )),
                     ],
                   ),
                 ],

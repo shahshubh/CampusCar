@@ -1,8 +1,6 @@
 import 'package:CampusCar/screens/user/drawer/drawer_screen.dart';
 import 'package:CampusCar/screens/user/home/home_screen.dart';
-import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:CampusCar/screens/user/vehicle/new_vehicle_screen.dart';
-import 'package:CampusCar/screens/user/vehicle/vehicle_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,30 +14,18 @@ class _MainScreenState extends State<MainScreen> {
   getTheScreen() {
     switch (currentScreen) {
       case 0:
-        return HomeScreen(
-          currentScreenHandler: changeCurrentScreen,
-        );
+        return HomeScreen();
         break;
       case 1:
-        return NewVehicle(
-          currentScreenHandler: changeCurrentScreen,
-        );
+        return NewVehicle();
         break;
-
-      // case 2:
-      //   return LiveVehicle();
-      //   break;
-
       default:
-        return HomeScreen(
-          currentScreenHandler: changeCurrentScreen,
-        );
+        return HomeScreen();
         break;
     }
   }
 
   changeCurrentScreen(int index) {
-    // print(index);
     setState(() {
       currentScreen = index;
     });

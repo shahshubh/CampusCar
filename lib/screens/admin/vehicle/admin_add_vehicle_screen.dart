@@ -1,6 +1,4 @@
-// AdminAddVehicleScreen
 import 'dart:io';
-
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/locator.dart';
@@ -14,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 
 class AdminAddVehicleScreen extends StatefulWidget {
-  final Function currentScreenHandler;
-  AdminAddVehicleScreen({@required this.currentScreenHandler});
   @override
   _AdminAddVehicleScreenState createState() => _AdminAddVehicleScreenState();
 }
@@ -222,12 +218,6 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
-      // rightIcon: IconButton(
-      //   icon: FaIcon(FontAwesomeIcons.check),
-      //   onPressed: () {
-      //     addVehicleHandler();
-      //   },
-      // ),
       child: isLoading
           ? Container(
               alignment: Alignment.center,

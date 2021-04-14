@@ -1,13 +1,11 @@
 class Log {
   Map<String, dynamic> vehicle;
   String time;
-  // bool isEnteringCampus;
   int direction;
 
   Log({
     this.vehicle,
     this.time,
-    // this.isEnteringCampus,
     this.direction,
   });
 
@@ -15,7 +13,6 @@ class Log {
     return {
       'vehicle': vehicle,
       'time': time,
-      // 'isEnteringCampus': isEnteringCampus,
       'direction': direction,
     };
   }
@@ -24,7 +21,6 @@ class Log {
     return Log(
       vehicle: data["vehicle"],
       time: data["time"],
-      // isEnteringCampus: data["isEnteringCampus"],
       direction: data["direction"],
     );
   }

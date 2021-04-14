@@ -61,7 +61,6 @@ class AdminService {
     var data = await logsRef.doc("2021-03-02 16:20:16.157259").get();
     if (data.data() != null) {
       Log log = Log.fromMap(data.data());
-      // Vehicle logVehicle = Vehicle.fromMap(log.vehicle);
       return log;
     } else {
       return null;

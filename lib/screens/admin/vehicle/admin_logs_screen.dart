@@ -3,17 +3,11 @@ import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
-import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
-import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
-import 'package:CampusCar/widgets/my_drawer.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AdminLogsScreen extends StatefulWidget {

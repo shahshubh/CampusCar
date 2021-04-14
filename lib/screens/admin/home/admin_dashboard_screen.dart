@@ -1,14 +1,11 @@
-import 'package:CampusCar/components/progress_widget.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/screens/admin/home/widgets/doughnut_chart.dart';
 import 'package:CampusCar/screens/admin/home/widgets/line_chart.dart';
 import 'package:CampusCar/screens/admin/home/widgets/pie_chart.dart';
 import 'package:CampusCar/screens/admin/home/widgets/stats_grid.dart';
 import 'package:CampusCar/service/admin_service.dart';
-import 'package:CampusCar/service/vehicle_service.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboardScreen extends StatefulWidget {

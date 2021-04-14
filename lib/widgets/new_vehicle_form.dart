@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/widgets/custom_icon_button.dart';
@@ -100,9 +98,6 @@ class _NewVehicleFormState extends State<NewVehicleForm> {
               tempColor = color;
             });
           },
-          // onMainColorChange: (color) => print(color),
-          // colors: [Colors.red, Colors.green, Colors.grey],
-          // onBack: () => print("Back button pressed"),
         ),
         context);
   }

@@ -1,13 +1,11 @@
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/screens/admin/login/admin_login.dart';
-import 'package:CampusCar/screens/user/vehicle/live_vehicle_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 List<Map> userDrawerItems = [
   {'icon': FontAwesomeIcons.home, 'title': 'Home', 'index': 0},
   {'icon': FontAwesomeIcons.plus, 'title': 'New Vehicle', 'index': 1},
-  // {'icon': FontAwesomeIcons.circle, 'title': 'Live', 'index': 2},
 ];
 
 class DrawerScreen extends StatefulWidget {
@@ -29,13 +27,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Container(),
           Row(
             children: [
-              // Container(
-              //   child: Lottie.asset('assets/gif/fast-furious.json', height: 58),
-              //   // color: Colors.black,
-              // ),
               SizedBox(
                 width: 10,
               ),
@@ -88,33 +81,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ),
                   ),
                 )),
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.of(context).push(
-            //       MaterialPageRoute(builder: (context) => LiveVehicle()),
-            //     );
-            //   },
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //         // color: Colors.grey[100],
-            //         borderRadius: BorderRadius.circular(30)),
-            //     padding: EdgeInsets.only(top: 18, bottom: 18, left: 14),
-            //     child: Row(
-            //       children: [
-            //         Icon(
-            //           FontAwesomeIcons.dotCircle,
-            //           color: Colors.white,
-            //           size: 20,
-            //         ),
-            //         SizedBox(
-            //           width: 10,
-            //         ),
-            //         Text("Live",
-            //             style: TextStyle(color: Colors.white, fontSize: 18)),
-            //       ],
-            //     ),
-            //   ),
-            // ),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushAndRemoveUntil(
@@ -144,38 +110,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
             )
           ]),
           Container()
-          // Row(
-          //   children: [
-          //     Icon(
-          //       Icons.settings,
-          //       color: Colors.white,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       'Settings',
-          //       style:
-          //           TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Container(
-          //       width: 2,
-          //       height: 20,
-          //       color: Colors.white,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       'Log out',
-          //       style:
-          //           TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          //     )
-          //   ],
-          // )
         ],
       ),
     );

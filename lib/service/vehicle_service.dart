@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:CampusCar/constants/constants.dart';
 import 'package:CampusCar/enum/direction.dart';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/models/vehicle.dart';
@@ -8,7 +6,6 @@ import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:intl/intl.dart';
 
 class VehicleService {
   CollectionReference vehiclesRef =
@@ -17,19 +14,6 @@ class VehicleService {
   CollectionReference liveVehiclesRef =
       FirebaseFirestore.instance.collection("livevehicles");
   CollectionReference scansRef = FirebaseFirestore.instance.collection("scans");
-
-  Vehicle testVehicle = Vehicle(
-    licensePlateNo: 'MH12DE1433',
-    color: '#000000',
-    expires: new DateTime.now().toString(),
-    model: 'Ford',
-    ownerMobileNo: '9988786734',
-    ownerName: 'Shubh Shah',
-    profileImage:
-        "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-    role: "Faculty",
-    isInCampus: false,
-  );
 
   Future<String> getApiUrl() async {
     // getting the apiUrl from firebase since flask server isnt deployed and the url changes every time we run the server.
@@ -93,8 +77,6 @@ class VehicleService {
     // add log
 
     return logsRef.add(log.toMap());
-    // .then((value) => print("Log Added"))
-    //     .catchError((error) => print("Failed =>   $error"));
   }
 
   Future<void> addLiveVehicle(

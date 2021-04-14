@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 
 class NewVehicle extends StatefulWidget {
-  final Function currentScreenHandler;
-  NewVehicle({@required this.currentScreenHandler});
   @override
   _NewVehicleState createState() => _NewVehicleState();
 }
@@ -216,12 +214,6 @@ class _NewVehicleState extends State<NewVehicle> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
-      // rightIcon: IconButton(
-      //   icon: FaIcon(FontAwesomeIcons.check),
-      //   onPressed: () {
-      //     addVehicleHandler();
-      //   },
-      // ),
       child: isLoading
           ? Container(
               alignment: Alignment.center,

@@ -69,10 +69,6 @@ class _LiveVehicleState extends State<LiveVehicle> {
         "isAllowed": !isExpired,
       });
     } else {
-      // setState(() {
-      //   isLoading = false;
-      //   // stateErrorMsg = "Again, No vehicle found with that license number.";
-      // });
       livevehicles.doc(timestamp).update({
         "errorMsg": "Again, No vehicle found with that license number.",
       });
@@ -86,15 +82,11 @@ class _LiveVehicleState extends State<LiveVehicle> {
   Widget build(BuildContext context) {
     print("RENDERED");
     return Scaffold(
-      // backgroundColor: Colors.grey.shade100,
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // iconTheme: IconThemeData(
-        //   color: appBarIconColor,
-        // ),
         actions: [
           GestureDetector(
             onTap: () async {

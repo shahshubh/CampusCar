@@ -1,4 +1,3 @@
-import 'package:CampusCar/constants/colors.dart';
 import 'package:countup/countup.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +28,6 @@ class StatsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: MediaQuery.of(context).size.height * 0.4,
       height: MediaQuery.of(context).size.height * 0.25,
       child: Column(
         children: <Widget>[
@@ -60,14 +58,6 @@ class StatsGrid extends StatelessWidget {
               ],
             ),
           ),
-          // Flexible(
-          //   child: Row(
-          //     children: <Widget>[
-          //       _buildStatCard('Vehicles inside campus',
-          //           numberFormatter.format(11047), lightBlue),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
@@ -115,14 +105,6 @@ class StatsGrid extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // Text(
-              //   count,
-              //   style: TextStyle(
-              //     color: Colors.white,
-              //     fontSize: 22.0,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
             ],
           ),
         ),
