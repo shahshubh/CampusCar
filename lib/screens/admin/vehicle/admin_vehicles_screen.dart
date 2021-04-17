@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
@@ -11,7 +13,10 @@ import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:downloads_path_provider/downloads_path_provider.dart';
+
 
 class AdminVehiclesScreen extends StatefulWidget {
   @override
@@ -23,6 +28,44 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   var filterValue = 'All';
   List<Vehicle> filteredData;
   List<Vehicle> allVehicles;
+  String filePath;
+
+  final pdf = pw.Document();
+
+  writeOnPdf(List<Vehicle> vehicles) {
+    final headers = ['Owner Name', 'License Plate', 'Mobile No.','Model','Role','Expires','Color'];
+    final data = vehicles
+        .map((vehicle) =>
+            [
+             vehicle.ownerName, 
+             vehicle.licensePlateNo,                           
+             vehicle.ownerMobileNo,
+             vehicle.model,
+             vehicle.role,
+             vehicle.expires
+             ])
+        .toList();
+    pdf.addPage(pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: pw.EdgeInsets.all(32),
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(level: 0, child: pw.Text('All Vehicles')),
+            pw.Table.fromTextArray(headers: headers, data: data)
+          ];
+        }
+        )
+        );
+  }
+
+  Future savePdf() async {
+    Directory downloadsDirectory =
+        await DownloadsPathProvider.downloadsDirectory;
+    String documentPath = downloadsDirectory.absolute.path;
+    print(documentPath);
+    File file = File('$documentPath/Vehicles.pdf');
+    file.writeAsBytesSync(pdf.save());
+  }
 
   @override
   void initState() {
@@ -185,6 +228,13 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
                   );
                 }
               },
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                writeOnPdf((filteredData != null ? filteredData : allVehicles));
+                await savePdf();
+              },
+              child: Icon(Icons.save),
             ),
           ],
         ),
