@@ -29,11 +29,20 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
 
   final pdf = pw.Document();
 
-  writeOnPdf(_DataSource dataSource) {
-    final headers = ['Owner Name', 'License Plate', 'Time', 'Direction'];
-    final data = dataSource._rows
-        .map((row) =>
-            [row.ownerName, row.licensePlateNo, row.time, row.direction])
+  writeOnPdf(List<Log> logs) {
+    final headers = ['Owner Name', 'License Plate', 'Time', 'Direction','Mobile No.','Model','Role','Expires'];
+    final data = logs
+        .map((log) =>
+            [
+             log.vehicle['ownerName'], 
+             log.vehicle['licensePlateNo'], 
+             DateFormat("dd/MM/yyyy hh:mm aa").format(DateTime.parse(log.time)), 
+             Utils.numToString(log.direction),
+             log.vehicle['ownerMobileNo'],
+             log.vehicle['model'],
+             log.vehicle['role'],
+             log.vehicle['expires']
+             ])
         .toList();
     pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
@@ -207,8 +216,7 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
             ),
             FloatingActionButton(
               onPressed: () async {
-                writeOnPdf(_DataSource(
-                    context, filteredData != null ? filteredData : allLogs));
+                writeOnPdf((filteredData != null ? filteredData : allLogs));
                 await savePdf();
               },
               child: Icon(Icons.save),
