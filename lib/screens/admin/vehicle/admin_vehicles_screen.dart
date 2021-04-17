@@ -2,12 +2,14 @@ import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/service/admin_service.dart';
+import 'package:CampusCar/utils/csv_util.dart';
 import 'package:CampusCar/utils/sms_util.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -35,6 +37,35 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
     return allVeh;
   }
 
+  getCsvHandler() async {
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    rows.add([
+      "Name",
+      "License Plate",
+      "Mobile No.",
+      "Model",
+      "Role",
+      "Expires",
+      "Color",
+    ]);
+
+    for (int i = 0; i < allVehicles.length; i++) {
+      List<dynamic> row = List<dynamic>();
+      row.add(allVehicles[i].ownerName);
+      row.add(allVehicles[i].licensePlateNo);
+      row.add(allVehicles[i].ownerMobileNo);
+      row.add(allVehicles[i].model);
+      row.add(allVehicles[i].role);
+      row.add(DateFormat("dd/MM/yyyy hh:mm aa")
+          .format(DateTime.parse(allVehicles[i].expires)));
+      row.add(allVehicles[i].color);
+      rows.add(row);
+    }
+    String currDate = DateTime.now().toString();
+    String filename = "AllVehicles_$currDate";
+    await CsvUtil.saveCsv(rows: rows, filename: filename);
+  }
+
   void searchHandler({String text}) {
     text = text.toLowerCase();
     var newData = allVehicles
@@ -51,6 +82,16 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
+      rightIcon: GestureDetector(
+        onLongPress: () {
+          Fluttertoast.showToast(msg: "Download as CSV");
+        },
+        onTap: getCsvHandler,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Icon(Icons.file_download),
+        ),
+      ),
       child: Container(
         child: Column(
           children: [

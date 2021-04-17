@@ -1,5 +1,6 @@
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
+import 'package:CampusCar/utils/csv_util.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:animated_search_bar/animated_search_bar.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:CampusCar/models/vehicle.dart';
 import 'package:CampusCar/service/admin_service.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class AdminLogsScreen extends StatefulWidget {
@@ -18,6 +20,8 @@ class AdminLogsScreen extends StatefulWidget {
 class _AdminLogsScreenState extends State<AdminLogsScreen> {
   var adminService = locator<AdminService>();
   List<Log> filteredData;
+  List<Log> allLogs;
+  String filePath;
 
   @override
   void initState() {
@@ -25,8 +29,45 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   }
 
   Future<List<Log>> getData() async {
-    var allLogs = await adminService.getAllLogs();
-    return allLogs;
+    var data = await adminService.getAllLogs();
+    setState(() {
+      allLogs = data;
+    });
+    return data;
+  }
+
+  getCsvHandler() async {
+    List<List<dynamic>> rows = List<List<dynamic>>();
+    rows.add([
+      "Name",
+      "License Plate",
+      "Time",
+      "Direction",
+      "Mobile No.",
+      "Model",
+      "Role",
+      "Expires"
+    ]);
+
+    for (int i = 0; i < allLogs.length; i++) {
+      List<dynamic> row = List<dynamic>();
+      row.add(allLogs[i].vehicle["ownerName"]);
+      row.add(allLogs[i].vehicle["licensePlateNo"]);
+      row.add(DateFormat("dd/MM/yyyy hh:mm aa")
+          .format(DateTime.parse(allLogs[i].time)));
+      row.add(Utils.numToString(allLogs[i].direction));
+      row.add(allLogs[i].vehicle["ownerMobileNo"]);
+      row.add(allLogs[i].vehicle["model"]);
+      row.add(allLogs[i].vehicle["role"]);
+      row.add(DateFormat("dd/MM/yyyy hh:mm aa")
+          .format(DateTime.parse(allLogs[i].vehicle["expires"])));
+
+      rows.add(row);
+    }
+
+    String currDate = DateTime.now().toString();
+    String filename = "Logs_$currDate";
+    await CsvUtil.saveCsv(rows: rows, filename: filename);
   }
 
   void searchHandler({String text, List<Log> data}) {
@@ -49,83 +90,90 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   @override
   Widget build(BuildContext context) {
     return MyDrawer(
-      child: GestureDetector(
-        onTap: () {},
+      rightIcon: GestureDetector(
+        onLongPress: () {
+          Fluttertoast.showToast(msg: "Download as CSV");
+        },
+        onTap: getCsvHandler,
         child: Container(
-          child: Column(
-            children: [
-              FutureBuilder(
-                future: getData(),
-                builder: (context, AsyncSnapshot<List<Log>> snapshot) {
-                  if (snapshot.hasData) {
-                    return PaginatedDataTable(
-                      header: Row(
-                        children: [
-                          Expanded(
-                            child: AnimatedSearchBar(
-                              searchDecoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 0),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  )),
-                              label: "Vehicle Logs",
-                              labelStyle:
-                                  TextStyle(color: Colors.black, fontSize: 24),
-                              onChanged: (text) {
-                                searchHandler(text: text, data: snapshot.data);
-                              },
-                            ),
+          padding: EdgeInsets.all(10),
+          child: Icon(Icons.file_download),
+        ),
+      ),
+      child: Container(
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: getData(),
+              builder: (context, AsyncSnapshot<List<Log>> snapshot) {
+                if (snapshot.hasData) {
+                  return PaginatedDataTable(
+                    header: Row(
+                      children: [
+                        Expanded(
+                          child: AnimatedSearchBar(
+                            searchDecoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 0),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                )),
+                            label: "Vehicle Logs",
+                            labelStyle:
+                                TextStyle(color: Colors.black, fontSize: 24),
+                            onChanged: (text) {
+                              searchHandler(text: text, data: snapshot.data);
+                            },
                           ),
-                          // Expanded(
-                          //   child: TextField(
-                          //     decoration: InputDecoration(
-                          //       contentPadding: EdgeInsets.symmetric(
-                          //           horizontal: 20, vertical: 0),
-                          //       border: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(30.0),
-                          //       ),
-                          //       labelText: "Search",
-                          //       suffixIcon: Icon(Icons.search),
-                          //     ),
-                          //     onChanged: (text) {
-                          //       searchHandler(text: text, data: snapshot.data);
-                          //     },
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                      rowsPerPage:
-                          snapshot.data.length < 10 ? snapshot.data.length : 10,
-                      columns: [
-                        DataColumn(label: Text('Owner Name')),
-                        DataColumn(label: Text('License Plate')),
-                        DataColumn(label: Text('Time')),
-                        DataColumn(label: Text('Direction')),
+                        ),
+                        // Expanded(
+                        //   child: TextField(
+                        //     decoration: InputDecoration(
+                        //       contentPadding: EdgeInsets.symmetric(
+                        //           horizontal: 20, vertical: 0),
+                        //       border: OutlineInputBorder(
+                        //         borderRadius: BorderRadius.circular(30.0),
+                        //       ),
+                        //       labelText: "Search",
+                        //       suffixIcon: Icon(Icons.search),
+                        //     ),
+                        //     onChanged: (text) {
+                        //       searchHandler(text: text, data: snapshot.data);
+                        //     },
+                        //   ),
+                        // ),
                       ],
-                      source: _DataSource(context,
-                          filteredData != null ? filteredData : snapshot.data),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Container(
-                      alignment: Alignment.center,
-                      constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height - 95),
-                      child: Text("Some Error Occured !!"),
-                    );
-                  } else {
-                    return Container(
-                      alignment: Alignment.center,
-                      constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height - 145),
-                      child: LoadingScreen(
-                          lottieAssetPath: "assets/gif/loading-animation.json"),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
+                    ),
+                    rowsPerPage:
+                        snapshot.data.length < 10 ? snapshot.data.length : 10,
+                    columns: [
+                      DataColumn(label: Text('Owner Name')),
+                      DataColumn(label: Text('License Plate')),
+                      DataColumn(label: Text('Time')),
+                      DataColumn(label: Text('Direction')),
+                    ],
+                    source: _DataSource(context,
+                        filteredData != null ? filteredData : snapshot.data),
+                  );
+                } else if (snapshot.hasError) {
+                  return Container(
+                    alignment: Alignment.center,
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height - 95),
+                    child: Text("Some Error Occured !!"),
+                  );
+                } else {
+                  return Container(
+                    alignment: Alignment.center,
+                    constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height - 145),
+                    child: LoadingScreen(
+                        lottieAssetPath: "assets/gif/loading-animation.json"),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
