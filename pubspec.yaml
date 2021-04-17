@@ -35,7 +35,6 @@ dependencies:
   permission_handler: ^5.1.0+2
   downloads_path_provider: ^0.1.0
   pdf: '^1.5.0'
-  path_provider: '1.6.5'
   flutter_full_pdf_viewer: '^1.0.6'
 
 dev_dependencies:

@@ -4,6 +4,7 @@ import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart
 import 'package:CampusCar/utils/csv_util.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:animated_search_bar/animated_search_bar.dart';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
@@ -14,7 +15,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:path_provider/path_provider.dart';
 
 class AdminLogsScreen extends StatefulWidget {
   @override
@@ -27,38 +27,32 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   List<Log> allLogs;
   String filePath;
 
-  final pdf =pw.Document();
+  final pdf = pw.Document();
 
-  writeOnPdf(_DataSource dataSource){
-    final headers=['Owner Name','License Plate','Time','Direction'];    
-    final data=dataSource._rows.map((row)=>[row.ownerName,row.licensePlateNo,row.time,row.direction]).toList();
-    pdf.addPage(
-      pw.MultiPage(
+  writeOnPdf(_DataSource dataSource) {
+    final headers = ['Owner Name', 'License Plate', 'Time', 'Direction'];
+    final data = dataSource._rows
+        .map((row) =>
+            [row.ownerName, row.licensePlateNo, row.time, row.direction])
+        .toList();
+    pdf.addPage(pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        margin:pw.EdgeInsets.all(32),
-
-        build: (pw.Context context){
+        margin: pw.EdgeInsets.all(32),
+        build: (pw.Context context) {
           return <pw.Widget>[
-            pw.Header(
-              level:0,
-              child:pw.Text('All logs') 
-            ),
-            pw.Table.fromTextArray(
-              headers: headers,
-              data: data
-            )
-          ];              
-        }
-      )
-    );
+            pw.Header(level: 0, child: pw.Text('All logs')),
+            pw.Table.fromTextArray(headers: headers, data: data)
+          ];
+        }));
   }
 
-
   Future savePdf() async {
-      Directory documentDirectory= await getApplicationDocumentsDirectory();
-      String documentPath=documentDirectory.path;
-      File file=File('$documentPath/Logspdf');
-      file.writeAsBytesSync(pdf.save());
+    Directory downloadsDirectory =
+        await DownloadsPathProvider.downloadsDirectory;
+    String documentPath = downloadsDirectory.absolute.path;
+    print(documentPath);
+    File file = File('$documentPath/Logs.pdf');
+    file.writeAsBytesSync(pdf.save());
   }
 
   @override
@@ -212,11 +206,12 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
               },
             ),
             FloatingActionButton(
-                onPressed:() async{                    
-                    writeOnPdf(_DataSource(context,filteredData != null ? filteredData : allLogs));
-                    await savePdf();       
-                } ,
-                child:Icon(Icons.save),
+              onPressed: () async {
+                writeOnPdf(_DataSource(
+                    context, filteredData != null ? filteredData : allLogs));
+                await savePdf();
+              },
+              child: Icon(Icons.save),
             ),
           ],
         ),
