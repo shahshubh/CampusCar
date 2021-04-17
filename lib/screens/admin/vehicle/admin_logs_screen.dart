@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/utils/csv_util.dart';
@@ -11,6 +12,9 @@ import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 
 class AdminLogsScreen extends StatefulWidget {
   @override
@@ -22,6 +26,40 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   List<Log> filteredData;
   List<Log> allLogs;
   String filePath;
+
+  final pdf =pw.Document();
+
+  writeOnPdf(_DataSource dataSource){
+    final headers=['Owner Name','License Plate','Time','Direction'];    
+    final data=dataSource._rows.map((row)=>[row.ownerName,row.licensePlateNo,row.time,row.direction]).toList();
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin:pw.EdgeInsets.all(32),
+
+        build: (pw.Context context){
+          return <pw.Widget>[
+            pw.Header(
+              level:0,
+              child:pw.Text('All logs') 
+            ),
+            pw.Table.fromTextArray(
+              headers: headers,
+              data: data
+            )
+          ];              
+        }
+      )
+    );
+  }
+
+
+  Future savePdf() async {
+      Directory documentDirectory= await getApplicationDocumentsDirectory();
+      String documentPath=documentDirectory.path;
+      File file=File('$documentPath/Logspdf');
+      file.writeAsBytesSync(pdf.save());
+  }
 
   @override
   void initState() {
@@ -172,6 +210,13 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
                   );
                 }
               },
+            ),
+            FloatingActionButton(
+                onPressed:() async{                    
+                    writeOnPdf(_DataSource(context,filteredData != null ? filteredData : allLogs));
+                    await savePdf();       
+                } ,
+                child:Icon(Icons.save),
             ),
           ],
         ),
