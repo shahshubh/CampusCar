@@ -1,10 +1,9 @@
-import 'dart:io';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
-import 'package:CampusCar/utils/csv_util.dart';
+import 'package:CampusCar/screens/admin/vehicle/widgets/download_dialog_content.dart';
+import 'package:CampusCar/utils/export_util.dart';
 import 'package:CampusCar/widgets/my_drawer.dart';
 import 'package:animated_search_bar/animated_search_bar.dart';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:CampusCar/locator.dart';
 import 'package:CampusCar/models/vehicle.dart';
@@ -13,8 +12,6 @@ import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 
 class AdminLogsScreen extends StatefulWidget {
   @override
@@ -26,43 +23,6 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   List<Log> filteredData;
   List<Log> allLogs;
   String filePath;
-
-  final pdf = pw.Document();
-
-  writeOnPdf(List<Log> logs) {
-    final headers = ['Owner Name', 'License Plate', 'Time', 'Direction','Mobile No.','Model','Role','Expires'];
-    final data = logs
-        .map((log) =>
-            [
-             log.vehicle['ownerName'], 
-             log.vehicle['licensePlateNo'], 
-             DateFormat("dd/MM/yyyy hh:mm aa").format(DateTime.parse(log.time)), 
-             Utils.numToString(log.direction),
-             log.vehicle['ownerMobileNo'],
-             log.vehicle['model'],
-             log.vehicle['role'],
-             log.vehicle['expires']
-             ])
-        .toList();
-    pdf.addPage(pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        margin: pw.EdgeInsets.all(32),
-        build: (pw.Context context) {
-          return <pw.Widget>[
-            pw.Header(level: 0, child: pw.Text('All logs')),
-            pw.Table.fromTextArray(headers: headers, data: data)
-          ];
-        }));
-  }
-
-  Future savePdf() async {
-    Directory downloadsDirectory =
-        await DownloadsPathProvider.downloadsDirectory;
-    String documentPath = downloadsDirectory.absolute.path;
-    print(documentPath);
-    File file = File('$documentPath/Logs.pdf');
-    file.writeAsBytesSync(pdf.save());
-  }
 
   @override
   void initState() {
@@ -77,7 +37,32 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
     return data;
   }
 
-  getCsvHandler() async {
+  void downloadPdfHandler() {
+    final headers = [
+      'Owner Name',
+      'License Plate',
+      'Time',
+      'Direction',
+      'Mobile No.',
+    ];
+    final data = allLogs
+        .map((log) => [
+              log.vehicle['ownerName'],
+              log.vehicle['licensePlateNo'],
+              DateFormat("dd/MM/yyyy hh:mm aa")
+                  .format(DateTime.parse(log.time)),
+              Utils.numToString(log.direction),
+              log.vehicle['ownerMobileNo'],
+            ])
+        .toList();
+
+    String currDate = DateTime.now().toString();
+    String filename = "Logs_$currDate";
+    ExportUtil.saveAsPdf(
+        data: data, headers: headers, filename: filename, pdfTitle: "All Logs");
+  }
+
+  downloadCsvHandler() async {
     List<List<dynamic>> rows = List<List<dynamic>>();
     rows.add([
       "Name",
@@ -108,7 +93,17 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
 
     String currDate = DateTime.now().toString();
     String filename = "Logs_$currDate";
-    await CsvUtil.saveCsv(rows: rows, filename: filename);
+    await ExportUtil.saveAsCsv(rows: rows, filename: filename);
+  }
+
+  void showDownloadDialog() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => DownloadDialogContent(
+        downloadCsvHandler: downloadCsvHandler,
+        downloadPdfHandler: downloadPdfHandler,
+      ),
+    );
   }
 
   void searchHandler({String text, List<Log> data}) {
@@ -133,9 +128,9 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
     return MyDrawer(
       rightIcon: GestureDetector(
         onLongPress: () {
-          Fluttertoast.showToast(msg: "Download as CSV");
+          Fluttertoast.showToast(msg: "Download as Csv or Pdf");
         },
-        onTap: getCsvHandler,
+        onTap: showDownloadDialog,
         child: Container(
           padding: EdgeInsets.all(10),
           child: Icon(Icons.file_download),
@@ -167,22 +162,6 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
                             },
                           ),
                         ),
-                        // Expanded(
-                        //   child: TextField(
-                        //     decoration: InputDecoration(
-                        //       contentPadding: EdgeInsets.symmetric(
-                        //           horizontal: 20, vertical: 0),
-                        //       border: OutlineInputBorder(
-                        //         borderRadius: BorderRadius.circular(30.0),
-                        //       ),
-                        //       labelText: "Search",
-                        //       suffixIcon: Icon(Icons.search),
-                        //     ),
-                        //     onChanged: (text) {
-                        //       searchHandler(text: text, data: snapshot.data);
-                        //     },
-                        //   ),
-                        // ),
                       ],
                     ),
                     rowsPerPage:
@@ -213,13 +192,6 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
                   );
                 }
               },
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                writeOnPdf((filteredData != null ? filteredData : allLogs));
-                await savePdf();
-              },
-              child: Icon(Icons.save),
             ),
           ],
         ),

@@ -57,15 +57,15 @@ class AdminService {
     return allLogs;
   }
 
-  Future<Log> getLog() async {
-    var data = await logsRef.doc("2021-03-02 16:20:16.157259").get();
-    if (data.data() != null) {
-      Log log = Log.fromMap(data.data());
-      return log;
-    } else {
-      return null;
-    }
-  }
+  // Future<Log> getLog() async {
+  //   var data = await logsRef.doc("2021-03-02 16:20:16.157259").get();
+  //   if (data.data() != null) {
+  //     Log log = Log.fromMap(data.data());
+  //     return log;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<List<Vehicle>> getAllVehicles() async {
     List<Vehicle> allVehicles = [];
@@ -79,7 +79,9 @@ class AdminService {
 
   Future<List<Log>> getAllLogs() async {
     List<Log> allLogs = [];
-    QuerySnapshot querySnapshot = await logsRef.get();
+    QuerySnapshot querySnapshot =
+        await logsRef.orderBy('time', descending: true).get();
+    ;
 
     querySnapshot.docs.forEach((element) {
       allLogs.add(Log.fromMap(element.data()));
