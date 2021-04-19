@@ -1,5 +1,7 @@
 import 'package:CampusCar/constants/colors.dart';
+import 'package:CampusCar/screens/admin/admin_main_screen.dart';
 import 'package:CampusCar/screens/admin/login/admin_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +21,19 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+  void autoLoginHandler() async {
+    User user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => AdminMainScreen()),
+          (route) => false);
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => AdminLogin()),
+          (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,11 +97,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ),
                 )),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => AdminLogin()),
-                    (route) => false);
-              },
+              onTap: autoLoginHandler,
               child: Container(
                 decoration: BoxDecoration(
                     // color: Colors.grey[100],

@@ -47,7 +47,9 @@ class LoginPageState extends State<AdminLogin> {
           password: _controllerPass.text,
         ))
             .user;
+
         if (user != null) {
+          print(user.toString());
           setState(() {
             isLoading = false;
           });

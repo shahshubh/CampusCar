@@ -1,5 +1,6 @@
 import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/screens/user/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,6 +22,13 @@ class AdminDrawerScreen extends StatefulWidget {
 }
 
 class _AdminDrawerScreenState extends State<AdminDrawerScreen> {
+  void logoutHandler() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => MainScreen()),
+        (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -111,23 +119,27 @@ class _AdminDrawerScreenState extends State<AdminDrawerScreen> {
               ),
             )
           ]),
-          Row(
-            children: [
-              SizedBox(
-                width: 14,
-              ),
-              Icon(FontAwesomeIcons.signOutAlt, color: Colors.white, size: 20),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Log out',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-              )
-            ],
+          GestureDetector(
+            onTap: logoutHandler,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 14,
+                ),
+                Icon(FontAwesomeIcons.signOutAlt,
+                    color: Colors.white, size: 20),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'Log out',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )
+              ],
+            ),
           )
         ],
       ),
