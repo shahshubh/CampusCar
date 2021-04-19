@@ -1,3 +1,4 @@
+import 'package:CampusCar/components/progress_widget.dart';
 import 'package:CampusCar/screens/admin/admin_main_screen.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,72 @@ class AdminLogin extends StatefulWidget {
 }
 
 class LoginPageState extends State<AdminLogin> {
-  String _email, _password;
   final auth = FirebaseAuth.instance;
 
   var _controllerEmail = TextEditingController();
   var _controllerPass = TextEditingController();
+  bool isLoading = false;
+
+  bool validate() {
+    var emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    if (_controllerEmail.text == "" ||
+        !emailRegex.hasMatch(_controllerEmail.text)) {
+      Utils.showFlashMsg(
+          color: Colors.redAccent,
+          context: context,
+          message: 'Please enter valid email.');
+      return false;
+    } else if (_controllerPass.text == "") {
+      Utils.showFlashMsg(
+          color: Colors.redAccent,
+          context: context,
+          message: 'Please enter a password.');
+      return false;
+    }
+    return true;
+  }
+
+  void loginHandler() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (validate()) {
+      try {
+        User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _controllerEmail.text,
+          password: _controllerPass.text,
+        ))
+            .user;
+        if (user != null) {
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => AdminMainScreen()),
+              (route) => false);
+        } else {
+          Utils.showFlashMsg(
+              color: Colors.redAccent,
+              context: context,
+              message: 'Email ID or Password is incorrect !!');
+        }
+      } catch (e) {
+        print(e);
+        Utils.showFlashMsg(
+            color: Colors.redAccent,
+            context: context,
+            message: 'Email ID or Password is incorrect !');
+
+        // _controllerEmail.clear();
+        _controllerPass.clear();
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -88,11 +150,6 @@ class LoginPageState extends State<AdminLogin> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
                 controller: _controllerEmail,
-                onChanged: (String value) {
-                  setState(() {
-                    _email = value.trim();
-                  });
-                },
                 cursorColor: Constants.blue3,
                 decoration: InputDecoration(
                     hintText: "Email",
@@ -120,11 +177,6 @@ class LoginPageState extends State<AdminLogin> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
                 controller: _controllerPass,
-                onChanged: (String value) {
-                  setState(() {
-                    _password = value.trim();
-                  });
-                },
                 cursorColor: Constants.blue5,
                 decoration: InputDecoration(
                     hintText: "Password",
@@ -153,77 +205,51 @@ class LoginPageState extends State<AdminLogin> {
                     borderRadius: BorderRadius.all(Radius.circular(100)),
                     color: Constants.primaryBlue),
                 child: FlatButton(
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18),
-                  ),
-                  onPressed: () async {
-                    //Start Here
-                    try {
-                      User user = (await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                        email: _email,
-                        password: _password,
-                      ))
-                          .user;
-                      if (user != null) {
-                        //ADD Navigation
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => AdminMainScreen()),
-                            (route) => false);
-                      }
-                    } catch (e) {
-                      print(e);
-                      _email = "";
-                      _password = "";
-                      Utils.showFlashMsg(
-                          color: Colors.redAccent,
-                          context: context,
-                          message: 'Email ID or Password is incorrect!');
-
-                      _controllerEmail.clear();
-                      _controllerPass.clear();
-                    }
-                  },
+                  child: isLoading
+                      ? circularprogress()
+                      : Text(
+                          "Login",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18),
+                        ),
+                  onPressed: loginHandler,
                 ),
               )),
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                "Forgot Password ?",
-                style: TextStyle(
-                    color: Constants.primaryBlue,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Navigator.of(context).push(
-                  //     MaterialPageRoute(builder: (context) => AdminSignup()));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Don't have an Account ?",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: [
+          //     Text(
+          //       "Forgot Password ?",
+          //       style: TextStyle(
+          //           color: Constants.primaryBlue,
+          //           fontSize: 13,
+          //           fontWeight: FontWeight.w700),
+          //     ),
+          //     GestureDetector(
+          //       onTap: () {
+          //         // Navigator.of(context).push(
+          //         //     MaterialPageRoute(builder: (context) => AdminSignup()));
+          //       },
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: <Widget>[
+          //           Text(
+          //             "Don't have an Account ?",
+          //             style: TextStyle(
+          //                 color: Colors.black,
+          //                 fontSize: 13,
+          //                 fontWeight: FontWeight.normal),
+          //           ),
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
