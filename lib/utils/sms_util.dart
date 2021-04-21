@@ -1,6 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:sms/sms.dart';
+import 'package:sms_maintained/sms.dart';
 
 class SmsUtil {
   static String formatDate(String date) {

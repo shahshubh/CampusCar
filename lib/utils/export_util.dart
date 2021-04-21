@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:csv/csv.dart';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
+import 'package:ext_storage/ext_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -9,9 +8,9 @@ import 'package:pdf/widgets.dart' as pw;
 
 class ExportUtil {
   static Future<String> get _localPath async {
-    Directory downloadsDirectory =
-        await DownloadsPathProvider.downloadsDirectory;
-    return downloadsDirectory.absolute.path;
+    var downloadsDirectory = await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOWNLOADS);
+    return downloadsDirectory;
   }
 
   static Future<File> createLocalFile(
@@ -21,6 +20,7 @@ class ExportUtil {
       await Permission.storage.request();
     }
     final path = await _localPath;
+    print(path);
     return File('$path/$filename.$fileExtension').create();
   }
 
@@ -51,7 +51,7 @@ class ExportUtil {
     );
 
     // save pdf
-    file.writeAsBytesSync(pdf.save());
+    file.writeAsBytesSync(await pdf.save());
     Fluttertoast.showToast(msg: "Downloaded Successfully.");
   }
 }
