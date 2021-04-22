@@ -198,7 +198,7 @@ class _AdminAddVehicleScreenState extends State<AdminAddVehicleScreen> {
         );
 
         // add log of the vehicle
-        await vehicleService.addLog(vehicle: newVehicle);
+        // await vehicleService.addLog(vehicle: newVehicle);
         clearFormHandler();
       } catch (e) {
         print(e);
