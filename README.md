@@ -1,5 +1,5 @@
  <div align="center">
-<img src="assets/icon/logo-cc-new.png"  alt="CampusCar" width="120">
+<img src="assets/icon/logo-cc-new.png"  alt="CampusCar" width="120" style="border-radius:50%" >
 
 # CampusCar
 
@@ -40,16 +40,30 @@ Campus Car
     * Keep track of all registered vehicles and their location in/out campus.
     * Update Expiry date of vehicles access in campus.
     * Keep track of logs of all vehicles.
-    * Download/Export Logs/Vehicles to excel sheet.
+    * Download/Export Logs/Vehicles to excel sheet and pdf.
     * Add new vehicle.
     * Send reminder SMS to user of their access period's expiry.
-    * Notify user through SMS on any change in expiry date of their vehicle's access. 
+    * Notify user through SMS on any change in expiry date of their vehicle's access.
 
 
 
 ## Demo
 
 <div align="center">
+
+
+<h4 align="center"></h4>
+
+<img height=480 width=240 style="margin: 10px;" src="./ss/chat1.gif"/>
+
+<br />
+
+
+<h4 align="center">Welcome Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Login Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Signup Screen</h4>
+<img height=480 width=240 style="margin: 10px;" src="./ss/1.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="./ss/2.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="./ss/3.jpg"/>
+
 
 </div>
 
