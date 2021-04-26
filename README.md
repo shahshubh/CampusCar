@@ -137,8 +137,11 @@ Once the server is up and running copy the ngrok api url you get after running i
 2. Change directory `cd CampusCar`.
 3. Go to /lib/screens/user/home/home_screen.dart file and on Line 70 change it to
     ```dart
-    var endpoint = apiUrl != null ? apiUrl : "your-ngrok-api-url-string-that-you-copied-above";
+    var endpoint = apiUrl != null ? apiUrl : "your-ngrok-api-url";
     ```
+    replace your-ngrok-api-url with the url you copied above + "/upload".
+    
+    Final url should look something like this _http://{random-string}.ngrok.io/upload_
 3. Create a new [firebase project](https://firebase.google.com/)
 4. Go to project settings and download **google-services.json** file.
 5. Copy this file and paste it inside /CampusCar/android/app/ folder.
@@ -162,7 +165,8 @@ Contributing
 
 License
 --------
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://github.com/shahshubh/CampusCar/blob/master/LICENSE)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/shahshubh/CampusCar/blob/master/LICENSE)
 
 
 Stargazers
