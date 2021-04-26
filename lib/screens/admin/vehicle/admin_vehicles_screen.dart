@@ -32,9 +32,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
 
   Future<List<Vehicle>> getData() async {
     var allVeh = await adminService.getAllVehicles();
-    setState(() {
-      allVehicles = allVeh;
-    });
+    allVehicles = allVeh;
     return allVeh;
   }
 
