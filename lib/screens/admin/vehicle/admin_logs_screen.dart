@@ -38,6 +38,8 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   }
 
   void downloadPdfHandler() {
+    var logs = filteredData != null ? filteredData : allLogs;
+
     final headers = [
       'Owner Name',
       'License Plate',
@@ -45,7 +47,7 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
       'Direction',
       'Mobile No.',
     ];
-    final data = allLogs
+    final data = logs
         .map((log) => [
               log.vehicle['ownerName'],
               log.vehicle['licensePlateNo'],
@@ -63,7 +65,8 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   }
 
   downloadCsvHandler() async {
-    List<List<dynamic>> rows = List<List<dynamic>>();
+    var logs = filteredData != null ? filteredData : allLogs;
+    List<List<dynamic>> rows = [];
     rows.add([
       "Name",
       "License Plate",
@@ -75,18 +78,18 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
       "Expires"
     ]);
 
-    for (int i = 0; i < allLogs.length; i++) {
-      List<dynamic> row = List<dynamic>();
-      row.add(allLogs[i].vehicle["ownerName"]);
-      row.add(allLogs[i].vehicle["licensePlateNo"]);
+    for (int i = 0; i < logs.length; i++) {
+      List<dynamic> row = [];
+      row.add(logs[i].vehicle["ownerName"]);
+      row.add(logs[i].vehicle["licensePlateNo"]);
       row.add(DateFormat("dd/MM/yyyy hh:mm aa")
-          .format(DateTime.parse(allLogs[i].time)));
-      row.add(Utils.numToString(allLogs[i].direction));
-      row.add(allLogs[i].vehicle["ownerMobileNo"]);
-      row.add(allLogs[i].vehicle["model"]);
-      row.add(allLogs[i].vehicle["role"]);
+          .format(DateTime.parse(logs[i].time)));
+      row.add(Utils.numToString(logs[i].direction));
+      row.add(logs[i].vehicle["ownerMobileNo"]);
+      row.add(logs[i].vehicle["model"]);
+      row.add(logs[i].vehicle["role"]);
       row.add(DateFormat("dd/MM/yyyy hh:mm aa")
-          .format(DateTime.parse(allLogs[i].vehicle["expires"])));
+          .format(DateTime.parse(logs[i].vehicle["expires"])));
 
       rows.add(row);
     }

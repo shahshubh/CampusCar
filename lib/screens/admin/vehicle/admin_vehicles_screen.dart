@@ -39,6 +39,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   }
 
   downloadPdfHandler() {
+    var vehicles = filteredData != null ? filteredData : allVehicles;
     final headers = [
       'Owner Name',
       'License Plate',
@@ -48,7 +49,7 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
       'Expires',
       'Color'
     ];
-    final data = allVehicles
+    final data = vehicles
         .map((vehicle) => [
               vehicle.ownerName,
               vehicle.licensePlateNo,
@@ -70,7 +71,9 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
   }
 
   downloadCsvHandler() async {
-    List<List<dynamic>> rows = List<List<dynamic>>();
+    var vehicles = filteredData != null ? filteredData : allVehicles;
+
+    List<List<dynamic>> rows = [];
     rows.add([
       "Name",
       "License Plate",
@@ -81,16 +84,16 @@ class _AdminVehiclesScreenState extends State<AdminVehiclesScreen> {
       "Color",
     ]);
 
-    for (int i = 0; i < allVehicles.length; i++) {
-      List<dynamic> row = List<dynamic>();
-      row.add(allVehicles[i].ownerName);
-      row.add(allVehicles[i].licensePlateNo);
-      row.add(allVehicles[i].ownerMobileNo);
-      row.add(allVehicles[i].model);
-      row.add(allVehicles[i].role);
+    for (int i = 0; i < vehicles.length; i++) {
+      List<dynamic> row = [];
+      row.add(vehicles[i].ownerName);
+      row.add(vehicles[i].licensePlateNo);
+      row.add(vehicles[i].ownerMobileNo);
+      row.add(vehicles[i].model);
+      row.add(vehicles[i].role);
       row.add(DateFormat("dd/MM/yyyy hh:mm aa")
-          .format(DateTime.parse(allVehicles[i].expires)));
-      row.add(allVehicles[i].color);
+          .format(DateTime.parse(vehicles[i].expires)));
+      row.add(vehicles[i].color);
       rows.add(row);
     }
     String currDate = DateTime.now().toString();
