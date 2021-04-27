@@ -1,3 +1,4 @@
+import 'package:CampusCar/constants/colors.dart';
 import 'package:CampusCar/models/log.dart';
 import 'package:CampusCar/screens/admin/vehicle/admin_vehicle_detail_screen.dart';
 import 'package:CampusCar/screens/admin/vehicle/widgets/download_dialog_content.dart';
@@ -11,6 +12,7 @@ import 'package:CampusCar/service/admin_service.dart';
 import 'package:CampusCar/utils/utils.dart';
 import 'package:CampusCar/widgets/loading_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AdminLogsScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
   List<Log> filteredData;
   List<Log> allLogs;
   String filePath;
+  bool showClearFilter = false;
 
   @override
   void initState() {
@@ -31,9 +34,7 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
 
   Future<List<Log>> getData() async {
     var data = await adminService.getAllLogs();
-    setState(() {
-      allLogs = data;
-    });
+    allLogs = data;
     return data;
   }
 
@@ -109,9 +110,35 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
     );
   }
 
-  void searchHandler({String text, List<Log> data}) {
+  void filterDataOnDateRange() async {
+    final DateTimeRange newDateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: DateTimeRange(
+        start: DateTime.now().subtract(Duration(days: 1)),
+        end: DateTime.now().add(Duration(days: 1)),
+      ),
+      firstDate: DateTime(2017, 1),
+      lastDate: DateTime(2030, 7),
+      helpText: 'Select a date',
+    );
+
+    if (newDateRange != null) {
+      var newData = allLogs
+          .where((element) => (DateTime.parse(element.time)
+                      .compareTo(newDateRange.start) >=
+                  0 &&
+              DateTime.parse(element.time).compareTo(newDateRange.end) <= 0))
+          .toList();
+      setState(() {
+        filteredData = newData;
+        showClearFilter = true;
+      });
+    }
+  }
+
+  void searchHandler({String text}) {
     text = text.toLowerCase();
-    var newData = data
+    var newData = allLogs
         .where((element) =>
             element.vehicle["ownerName"].toLowerCase().contains(text) ||
             element.vehicle["licensePlateNo"].toLowerCase().contains(text) ||
@@ -142,27 +169,69 @@ class _AdminLogsScreenState extends State<AdminLogsScreen> {
       child: Container(
         child: Column(
           children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              child: AnimatedSearchBar(
+                label: "Vehicle Logs",
+                searchDecoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    )),
+                labelStyle: TextStyle(color: Colors.black, fontSize: 24),
+                onChanged: (text) {
+                  searchHandler(text: text);
+                },
+              ),
+            ),
             FutureBuilder(
               future: getData(),
               builder: (context, AsyncSnapshot<List<Log>> snapshot) {
                 if (snapshot.hasData) {
                   return PaginatedDataTable(
                     header: Row(
+                      mainAxisAlignment: showClearFilter
+                          ? MainAxisAlignment.spaceBetween
+                          : MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: AnimatedSearchBar(
-                            searchDecoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                )),
-                            label: "Vehicle Logs",
-                            labelStyle:
-                                TextStyle(color: Colors.black, fontSize: 24),
-                            onChanged: (text) {
-                              searchHandler(text: text, data: snapshot.data);
-                            },
+                        showClearFilter
+                            ? InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    filteredData = null;
+                                    showClearFilter = false;
+                                  });
+                                  Fluttertoast.showToast(
+                                      msg: "Filter Cleared !!");
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: lightBlue,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Row(
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.times,
+                                        size: 18,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text("Clear Filter",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                        InkWell(
+                          onTap: filterDataOnDateRange,
+                          child: Container(
+                            padding: EdgeInsets.all(15),
+                            child: Icon(Icons.date_range),
                           ),
                         ),
                       ],
