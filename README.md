@@ -4,15 +4,9 @@
 CampusCar
 ==========
 
-[![](https://img.shields.io/github/contributors/shahshubh/CampusCar.svg?style=for-the-badge)](https://flutter.dev/docs)
+[![](https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
 [![](https://img.shields.io/badge/Database-Firebase-yellow?style=for-the-badge&logo=firebase)](https://firebase.google.com/docs)
 [![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/ "Visual Studio Code")
-
-<br/>
-
-[![](https://img.shields.io/github/contributors/shahshubh/CampusCar.svg?style=for-the-badge&)](https://github.com/shahshubh/CampusCar/graphs/contributors)
-[![](https://img.shields.io/github/forks/shahshubh/CampusCar.svg?style=for-the-badge)](https://github.com/shahshubh/CampusCar/network/members)
-[![](https://img.shields.io/github/stars/shahshubh/CampusCar.svg?style=for-the-badge)](https://github.com/shahshubh/CampusCar/stargazers)
 
 
 </div>
@@ -129,7 +123,7 @@ Installation
 -------------
 
 Before starting with installation you would require server for license plate recognition.
-For that please follow the steps in the README file [here](https://github.com/shahshubh/CampusCar-Server) and then come back.
+For that please follow the steps in the README file here [CampusCar-Server](https://github.com/shahshubh/CampusCar-Server) and then come back.
 
 Once the server is up and running copy the ngrok api url you get after running it and follow below steps.
 
@@ -142,14 +136,15 @@ Once the server is up and running copy the ngrok api url you get after running i
     replace your-ngrok-api-url with the url you copied above + "/upload".
     
     Final url should look something like this _http://{random-string}.ngrok.io/upload_
-3. Create a new [firebase project](https://firebase.google.com/)
-4. Go to project settings and download **google-services.json** file.
-5. Copy this file and paste it inside /CampusCar/android/app/ folder.
-6. Next create .env file in root folder and add
+4. Create a new [firebase project](https://firebase.google.com/)
+5. Go to project settings and download **google-services.json** file.
+6. Copy this file and paste it inside /CampusCar/android/app/ folder.
+
+<!-- 7. Next create .env file in root folder and add
     ```dart
     ALPR_TOKEN=your-alpr-token
     ```
-    You can get your token from [here](https://platerecognizer.com/)
+    You can get your token from [here](https://app.platerecognizer.com/accounts/plan/) -->
 7. Run `flutter pub get`.
 8. Finally run `flutter run`.
 
