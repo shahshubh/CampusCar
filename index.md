@@ -54,7 +54,7 @@ Demo
 -----
 
 <div align="center">
-    <h4 align="center">Home Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Live Vehicles Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Admin Screen</h4>
+    <h4 align="center">Home Screen<span style="margin-right: 25px;margin-left: 25px;">|</span> Live Vehicles Screen <span style="margin-right: 25px;margin-left: 25px;">|</span> Admin Screen</h4>
     <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif1.gif"/>
     <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif3.gif"/>
     <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif2.gif"/>
@@ -71,12 +71,12 @@ Demo
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.1.jpg"/>
 
-<h4 align="center">Allow Access &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Access Expired &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Vehicle Not Registered</h4>
+<h4 align="center">Allow Access <span style="margin-right: 25px;margin-left: 25px;">|</span> Access Expired <span style="margin-right: 25px;margin-left: 25px;">|</span> Vehicle Not Registered</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/3.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/4.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/5.jpg"/>
 
-<h4 align="center">Add New Vehicle &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Registration Success &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Live Vehicle Screen</h4>
+<h4 align="center">Add New Vehicle <span style="margin-right: 25px;margin-left: 25px;">|</span> Registration Success <span style="margin-right: 25px;margin-left: 25px;">|</span> Live Vehicle Screen</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/6.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/7.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/8.jpg"/>
@@ -88,26 +88,26 @@ Demo
 
 <div align="center">
 
-<h4 align="center">Login Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Dashboard Screen &nbsp&nbsp&nbsp&nbsp</h4>
+<h4 align="center">Login Screen <span style="margin-right: 25px;margin-left: 25px;">|</span> Dashboard Screen </h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/9.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/10.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/11.jpg"/>
 
-<h4 align="center">Side Drawer &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Vehicle Logs &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp All Vehicles</h4>
+<h4 align="center">Side Drawer <span style="margin-right: 25px;margin-left: 25px;">|</span> Vehicle Logs <span style="margin-right: 25px;margin-left: 25px;">|</span> All Vehicles</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/12.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/13.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/15.jpg"/>
 
-<h4 align="center">Export as csv/pdf &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded pdf logs &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded csv logs</h4>
+<h4 align="center">Export as csv/pdf <span style="margin-right: 25px;margin-left: 25px;">|</span> Downloaded pdf logs <span style="margin-right: 25px;margin-left: 25px;">|</span> Downloaded csv logs</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/14.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/logs1.jpg"/>
 <img height=480 width=210 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/logs2.jpg"/>
 
-<h4 align="center">Downloaded pdf allvehicles &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded csv allvehicles &nbsp&nbsp&nbsp&nbsp</h4>
+<h4 align="center">Downloaded pdf allvehicles <span style="margin-right: 25px;margin-left: 25px;">|</span> Downloaded csv allvehicles </h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/vehicles1.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/vehicles2.jpg"/>
 
-<h4 align="center">Welcome SMS &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Reminder SMS &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Expiry date update SMS</h4>
+<h4 align="center">Welcome SMS <span style="margin-right: 25px;margin-left: 25px;">|</span> Reminder SMS <span style="margin-right: 25px;margin-left: 25px;">|</span> Expiry date update SMS</h4>
 <img width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms1.jpg"/>
 <img width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms2.jpg"/>
 <img  width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms3.jpg"/>
