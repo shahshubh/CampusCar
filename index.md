@@ -66,7 +66,7 @@ Demo
 
 <div align="center">
 
- <h4 align="center"><span style="margin-right: 5px;">Splash Screen</span>|<span style="margin-right: 5px;">Home Screen</span>|<span style="margin-right: 5px;">Side Drawer</span></h4>
+   <h4 align="center">Splash Screen <span style="margin-right: 25px;margin-left: 25px;">|</span> Home Screen <span style="margin-right: 25px;margin-left: 25px;">|</span> Side Drawer</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/1.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.1.jpg"/>
