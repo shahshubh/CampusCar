@@ -1,12 +1,15 @@
- <div align="center">
+<!-- <div align="center"> -->
 <img src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/assets/icon/logo-cc-new.png"  alt="CampusCar" width="120" >
 
 # CampusCar
 
+ 
 [<img src="https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter">](https://flutter.dev/docs)
-<!-- [![](https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
+
+
+[![](https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
 [![](https://img.shields.io/badge/Database-Firebase-yellow?style=for-the-badge&logo=firebase)](https://firebase.google.com/docs)
-[![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/ "Visual Studio Code") -->
+[![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/ "Visual Studio Code")
 
 
 </div>
@@ -68,7 +71,7 @@ Demo
 
 <div align="center">
 
-<h4 align="center"><pre>  Splash Screen   |         Home Screen          |             Side Drawer            </pre></h4>
+ <h4 align="center"><p style="margin-right: 5px;">Splash Screen</p>|<p style="margin-right: 5px;">Home Screen</p>|<p style="margin-right: 5px;">Side Drawer</p></h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/1.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.1.jpg"/>
