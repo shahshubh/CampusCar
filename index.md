@@ -1,5 +1,5 @@
  <div align="center">
-<img src="https://github.com/shahshubh/CampusCar/blob/master/assets/icon/logo-cc-new.png"  alt="CampusCar" width="120" >
+<img src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/assets/icon/logo-cc-new.png"  alt="CampusCar" width="120" >
 
 CampusCar
 ==========
@@ -58,9 +58,9 @@ Demo
 
 <div align="center">
     <h4 align="center">Home Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Live Vehicles Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Admin Screen</h4>
-    <img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master//demo/gif1.gif"/>
-    <img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master//demo/gif3.gif"/>
-    <img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master//demo/gif2.gif"/>
+    <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif1.gif"/>
+    <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif3.gif"/>
+    <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/gif2.gif"/>
 </div>
 
 <br />
