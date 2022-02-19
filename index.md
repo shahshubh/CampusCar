@@ -1,22 +1,21 @@
  <div align="center">
 <img src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/assets/icon/logo-cc-new.png"  alt="CampusCar" width="120" >
 
-CampusCar
-==========
+# CampusCar
 
-[![](https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
+[<img src="https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter">](https://flutter.dev/docs)
+<!-- [![](https://img.shields.io/badge/Made_with-Flutter-blue?style=for-the-badge&logo=flutter)](https://flutter.dev/docs)
 [![](https://img.shields.io/badge/Database-Firebase-yellow?style=for-the-badge&logo=firebase)](https://firebase.google.com/docs)
-[![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/ "Visual Studio Code")
+[![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/ "Visual Studio Code") -->
 
 
 </div>
 
-Table of contents
------------------
+## Table of contents
 
 * [Introduction](#introduction)
-* [Features](#Features)
-* [Demo](#Demo)
+* [Features](#features)
+* [Demo](#demo)
 * [Installation](#installation)
 * [Contributing](#contributing)
 * [License](#license)
@@ -69,20 +68,20 @@ Demo
 
 <div align="center">
 
-<h4 align="center">Splash Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Home Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Side Drawer</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/1.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/2.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/2.1.jpg"/>
+<h4 align="center"><pre>  Splash Screen   |         Home Screen          |             Side Drawer            </pre></h4>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/1.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/2.1.jpg"/>
 
 <h4 align="center">Allow Access &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Access Expired &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Vehicle Not Registered</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/3.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/4.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/5.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/3.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/4.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/5.jpg"/>
 
 <h4 align="center">Add New Vehicle &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Registration Success &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Live Vehicle Screen</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/6.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/7.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/8.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/6.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/7.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/8.jpg"/>
 
 </div>
 
@@ -92,28 +91,28 @@ Demo
 <div align="center">
 
 <h4 align="center">Login Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Dashboard Screen &nbsp&nbsp&nbsp&nbsp</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/9.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/10.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/11.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/9.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/10.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/11.jpg"/>
 
 <h4 align="center">Side Drawer &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Vehicle Logs &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp All Vehicles</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/12.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/13.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/15.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/12.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/13.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/15.jpg"/>
 
 <h4 align="center">Export as csv/pdf &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded pdf logs &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded csv logs</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/14.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/logs1.jpg"/>
-<img height=480 width=210 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/logs2.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/14.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/logs1.jpg"/>
+<img height=480 width=210 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/logs2.jpg"/>
 
 <h4 align="center">Downloaded pdf allvehicles &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Downloaded csv allvehicles &nbsp&nbsp&nbsp&nbsp</h4>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/vehicles1.jpg"/>
-<img height=480 width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/vehicles2.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/vehicles1.jpg"/>
+<img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/vehicles2.jpg"/>
 
 <h4 align="center">Welcome SMS &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Reminder SMS &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Expiry date update SMS</h4>
-<img width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/sms1.jpg"/>
-<img width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/sms2.jpg"/>
-<img  width=240 style="margin: 10px;" src="https://github.com/shahshubh/CampusCar/blob/master/demo/sms3.jpg"/>
+<img width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms1.jpg"/>
+<img width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms2.jpg"/>
+<img  width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/sms3.jpg"/>
 
 
 </div>
@@ -172,4 +171,4 @@ Stargazers
 
 
 <br/>
-<p align="center"><a href="https://github.com/shahshubh/CampusCar#"><img src="https://github.com/shahshubh/CampusCar/blob/master/demo/backToTopButton.png" alt="Back to top" height="29"/></a></p>
+<p align="center"><a href="https://github.com/shahshubh/CampusCar#"><img src="https://raw.githubusercontent.com/shahshubh/CampusCar/master/demo/backToTopButton.png" alt="Back to top" height="29"/></a></p>
